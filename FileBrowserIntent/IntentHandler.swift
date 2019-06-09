@@ -26,26 +26,24 @@ class GFI : NSObject, GetDirectoryListingIntentHandling {
 	public var fm = FileManager.default
 	
 	func handle(intent: GetDirectoryListingIntent, completion: @escaping (GetDirectoryListingIntentResponse) -> Void) {
+		
 		let dirListing = try? fm.contentsOfDirectory(atPath: intent.path!)[0]
 		
 		if dirListing != nil {
 			NSLog("Got a valid directory: \(intent.path!)\n\(dirListing!)")
 			completion(.success(dirList: dirListing!))
-		} else {
-			NSLog("\(intent.path!) is a valid directory.")
-			//completion(.unsupported(forReason: .wrongPath))
-		}
+		} 
 	}
 	
 	func resolvePath(for intent: GetDirectoryListingIntent, with completion: @escaping (GetDirectoryListingPathResolutionResult) -> Void) {
-		let dirListing = try? fm.contentsOfDirectory(atPath: intent.path!)[0]
 		
-		if dirListing != nil {
-			NSLog("Got a valid directory: \(intent.path!)\n\(dirListing!)")
-			completion(.success(with: dirListing!))
-		} else {
-			NSLog("\(intent.path!) is a valid directory.")
+		if intent.path == .unknown {
+			completion(.needsValue())
+		} else if let dirList = try? fm.contentsOfDirectory(atPath: intent.path!) == nil {
+			NSLog("\(intent.path!) is not a valid directory.")
 			completion(.unsupported(forReason: .wrongPath))
+		} else {
+			completion(.success(with: intent.path))
 		}
 	}
 	
