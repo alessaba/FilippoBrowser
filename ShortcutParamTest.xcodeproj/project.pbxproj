@@ -13,7 +13,35 @@
 		0BD2432522AD5298006A4929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432422AD5297006A4929 /* Assets.xcassets */; };
 		0BD2432822AD5298006A4929 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432722AD5298006A4929 /* Preview Assets.xcassets */; };
 		0BD2432B22AD5298006A4929 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */; };
+		0BD2433D22AD52C0006A4929 /* FileBrowserIntent.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0BD2434322AD5386006A4929 /* FBIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */; };
+		0BD2434422AD5386006A4929 /* FBIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */; };
+		0BD2434522AD5943006A4929 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2433822AD52C0006A4929 /* IntentHandler.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0BD2433B22AD52C0006A4929 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0BD2433522AD52C0006A4929;
+			remoteInfo = FileBrowserIntent;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0BD2434122AD52C0006A4929 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				0BD2433D22AD52C0006A4929 /* FileBrowserIntent.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0BD2431B22AD5296006A4929 /* ShortcutParamTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShortcutParamTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,10 +52,21 @@
 		0BD2432722AD5298006A4929 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0BD2432A22AD5298006A4929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0BD2432C22AD5298006A4929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileBrowserIntent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BD2433822AD52C0006A4929 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
+		0BD2433A22AD52C0006A4929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = FBIntent.intentdefinition; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		0BD2431822AD5296006A4929 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BD2433322AD52C0006A4929 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				0BD2431D22AD5296006A4929 /* ShortcutParamTest */,
+				0BD2433722AD52C0006A4929 /* FileBrowserIntent */,
 				0BD2431C22AD5296006A4929 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -49,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				0BD2431B22AD5296006A4929 /* ShortcutParamTest.app */,
+				0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -62,6 +103,7 @@
 				0BD2432422AD5297006A4929 /* Assets.xcassets */,
 				0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */,
 				0BD2432C22AD5298006A4929 /* Info.plist */,
+				0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */,
 				0BD2432622AD5298006A4929 /* Preview Content */,
 			);
 			path = ShortcutParamTest;
@@ -75,6 +117,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		0BD2433722AD52C0006A4929 /* FileBrowserIntent */ = {
+			isa = PBXGroup;
+			children = (
+				0BD2433822AD52C0006A4929 /* IntentHandler.swift */,
+				0BD2433A22AD52C0006A4929 /* Info.plist */,
+			);
+			path = FileBrowserIntent;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -85,15 +136,34 @@
 				0BD2431722AD5296006A4929 /* Sources */,
 				0BD2431822AD5296006A4929 /* Frameworks */,
 				0BD2431922AD5296006A4929 /* Resources */,
+				0BD2434122AD52C0006A4929 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0BD2433C22AD52C0006A4929 /* PBXTargetDependency */,
 			);
 			name = ShortcutParamTest;
 			productName = ShortcutParamTest;
 			productReference = 0BD2431B22AD5296006A4929 /* ShortcutParamTest.app */;
 			productType = "com.apple.product-type.application";
+		};
+		0BD2433522AD52C0006A4929 /* FileBrowserIntent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BD2433E22AD52C0006A4929 /* Build configuration list for PBXNativeTarget "FileBrowserIntent" */;
+			buildPhases = (
+				0BD2433222AD52C0006A4929 /* Sources */,
+				0BD2433322AD52C0006A4929 /* Frameworks */,
+				0BD2433422AD52C0006A4929 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FileBrowserIntent;
+			productName = FileBrowserIntent;
+			productReference = 0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -106,6 +176,9 @@
 				ORGANIZATIONNAME = "Filippo Claudi";
 				TargetAttributes = {
 					0BD2431A22AD5296006A4929 = {
+						CreatedOnToolsVersion = 11.0;
+					};
+					0BD2433522AD52C0006A4929 = {
 						CreatedOnToolsVersion = 11.0;
 					};
 				};
@@ -124,6 +197,7 @@
 			projectRoot = "";
 			targets = (
 				0BD2431A22AD5296006A4929 /* ShortcutParamTest */,
+				0BD2433522AD52C0006A4929 /* FileBrowserIntent */,
 			);
 		};
 /* End PBXProject section */
@@ -139,6 +213,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0BD2433422AD52C0006A4929 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -146,13 +227,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BD2434322AD5386006A4929 /* FBIntent.intentdefinition in Sources */,
 				0BD2431F22AD5296006A4929 /* AppDelegate.swift in Sources */,
 				0BD2432122AD5296006A4929 /* SceneDelegate.swift in Sources */,
 				0BD2432322AD5296006A4929 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0BD2433222AD52C0006A4929 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BD2434522AD5943006A4929 /* IntentHandler.swift in Sources */,
+				0BD2434422AD5386006A4929 /* FBIntent.intentdefinition in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0BD2433C22AD52C0006A4929 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0BD2433522AD52C0006A4929 /* FileBrowserIntent */;
+			targetProxy = 0BD2433B22AD52C0006A4929 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */ = {
@@ -283,6 +382,7 @@
 		0BD2433022AD5298006A4929 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "ShortcutParamTest/Preview\\ Content";
@@ -303,6 +403,7 @@
 		0BD2433122AD5298006A4929 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "ShortcutParamTest/Preview\\ Content";
@@ -315,6 +416,44 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.ShortcutParamTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0BD2433F22AD52C0006A4929 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				INFOPLIST_FILE = FileBrowserIntent/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.ShortcutParamTest.FileBrowserIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0BD2434022AD52C0006A4929 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				INFOPLIST_FILE = FileBrowserIntent/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.ShortcutParamTest.FileBrowserIntent;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -337,6 +476,15 @@
 			buildConfigurations = (
 				0BD2433022AD5298006A4929 /* Debug */,
 				0BD2433122AD5298006A4929 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0BD2433E22AD52C0006A4929 /* Build configuration list for PBXNativeTarget "FileBrowserIntent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BD2433F22AD52C0006A4929 /* Debug */,
+				0BD2434022AD52C0006A4929 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
