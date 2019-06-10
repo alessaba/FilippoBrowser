@@ -7,10 +7,15 @@
 //
 
 import SwiftUI
+import Foundation
+
+let fm = FileManager.default
 
 struct ContentView : View {
+    let dirs [String] = try? fm.contentsOfDirectory(atPath: "/") ?? [""]
     var body: some View {
-        Text("Open Shortcuts to Test the app")
+        List(dirs) { dir in
+            Text(dir)
     }
 }
 
