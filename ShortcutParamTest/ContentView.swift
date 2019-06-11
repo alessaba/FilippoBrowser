@@ -13,6 +13,16 @@ let fm = FileManager.default
 
 
 struct ContentView : View {
+	var body: some View {
+		NavigationView {
+			NavigationButton(destination: FileBrowser(path: "/")) {
+				FileBrowser(path: "/")
+			}
+		}
+	}
+}
+
+struct FileBrowser : View {
 	var path : String = "/"
 	var dirs : [String] {
 		do{
@@ -23,19 +33,15 @@ struct ContentView : View {
 		}
 		
 	}
-    var body: some View {
-		NavigationView {
-			NavigationButton(destination: ContentView(path: "/")) {
-				List(0 ..< dirs.count) { item in
-					HStack {
-						Text(self.dirs[item])
-							.fontWeight(.semibold)
-							.color(.blue)
-							.padding(.leading)
-						Spacer()
-						Text("Ciao")
-					}
-				}
+	var body: some View {
+		List(0 ..< dirs.count) { item in
+			HStack {
+				Text(self.dirs[item])
+					.fontWeight(.semibold)
+					.color(.blue)
+					.padding(.leading)
+				Spacer()
+				Text("Ciao")
 			}
 		}
 	}
