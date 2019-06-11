@@ -15,7 +15,8 @@ struct ContentView : View {
 	var body: some View {
 		NavigationView {
 			FileBrowser(path: "/System/Library/")
-		}.navigationBarTitle(Text("File Browser"))
+				.navigationBarTitle(Text("File Browser"))
+		}
 		
 	}
 }
@@ -37,7 +38,7 @@ struct FileBrowser : View {
 	}
 	var body: some View {
 		List(0 ..< subDirs.count) { subDir in
-			NavigationButton(destination: FileBrowser(path: "path\(self.subDirs[subDir])/")) {
+			NavigationButton(destination: FileBrowser(path: "self.path\(self.subDirs[subDir])/")) {
 				HStack {
 					Image(systemName: "doc")
 					Text(self.subDirs[subDir])
