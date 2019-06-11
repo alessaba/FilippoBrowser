@@ -51,7 +51,7 @@ struct FileBrowser : View {
 
 			   }
 			}
-		}
+		}.listStyle(.grouped)
 	}
 }
 
