@@ -14,11 +14,7 @@ let fm = FileManager.default
 
 struct ContentView : View {
 	var body: some View {
-		NavigationView {
-			NavigationButton(destination: FileBrowser(path: "/")) {
-				FileBrowser(path: "/")
-			}
-		}
+		
 	}
 }
 
@@ -33,17 +29,22 @@ struct FileBrowser : View {
 		}
 		
 	}
+	
 	var body: some View {
-		List(0 ..< dirs.count) { item in
-			HStack {
-				Text(self.dirs[item])
-					.fontWeight(.semibold)
-					.color(.blue)
-					.padding(.leading)
-				Spacer()
-				Text("Ciao")
-			}
-		}
+		NavigationView {
+			List(0 ..< dirs.count) { item in
+				NavigationButton(destination: Text(item)) {
+					HStack {
+					Image(systemName: "file")
+					//Spacer()
+					Text(self.dirs[item])
+						.fontWeight(.semibold)
+						.color(.blue)
+						.padding(.leading)	
+					}
+				}	
+			}			
+		} .navigationBarTitle(Text("File Browser"))
 	}
 }
 
