@@ -37,13 +37,13 @@ class GFI : NSObject, GetDirectoryListingIntentHandling {
 	
 	func resolvePath(for intent: GetDirectoryListingIntent, with completion: @escaping (GetDirectoryListingPathResolutionResult) -> Void) {
 		
-		if intent.path == .unknown {
+		if intent.path == .none {
 			completion(.needsValue())
-		} else if let dirList = try? fm.contentsOfDirectory(atPath: intent.path!) == nil {
+		} else if let dirList = try? fm.contentsOfDirectory(atPath: intent.path!) == [] {
 			NSLog("\(intent.path!) is not a valid directory.")
 			completion(.unsupported(forReason: .wrongPath))
 		} else {
-			completion(.success(with: intent.path))
+			completion(.success(with: intent.path!))
 		}
 	}
 	

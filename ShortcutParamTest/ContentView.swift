@@ -11,12 +11,34 @@ import Foundation
 
 let fm = FileManager.default
 
+
 struct ContentView : View {
-    let dirs [String] = try? fm.contentsOfDirectory(atPath: "/") ?? [""]
+	var path : String = "/"
+	var dirs : [String] {
+		do{
+			let d = try fm.contentsOfDirectory(atPath: path)
+			return d
+		} catch {
+			return [""]
+		}
+		
+	}
     var body: some View {
-        List(dirs) { dir in
-            Text(dir)
-    }
+		NavigationView {
+			NavigationButton(destination: ContentView(path: "/")) {
+				List(0 ..< dirs.count) { item in
+					HStack {
+						Text(self.dirs[item])
+							.fontWeight(.semibold)
+							.color(.blue)
+							.padding(.leading)
+						Spacer()
+						Text("Ciao")
+					}
+				}
+			}
+		}
+	}
 }
 
 #if DEBUG
@@ -26,3 +48,5 @@ struct ContentView_Previews : PreviewProvider {
     }
 }
 #endif
+
+
