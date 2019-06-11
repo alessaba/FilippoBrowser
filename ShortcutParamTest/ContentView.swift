@@ -11,47 +11,54 @@ import Foundation
 
 let fm = FileManager.default
 
-
-struct ContentView : View {
-	var body: some View {
-		
-	}
-}
-
-struct FileBrowser : View {
-	var path : String = "/"
-	var dirs : [String] {
+struct Directory : Identifiable{
+	var id = UUID()
+	var path : String
+	var subDirs : [String] {
 		do{
 			let d = try fm.contentsOfDirectory(atPath: path)
 			return d
 		} catch {
 			return [""]
 		}
-		
 	}
-	
+}
+
+struct ContentView : View {
 	var body: some View {
 		NavigationView {
-			List(0 ..< dirs.count) { item in
-				NavigationButton(destination: Text(item)) {
-					HStack {
-					Image(systemName: "file")
-					//Spacer()
-					Text(self.dirs[item])
+			FileBrowser(directory: Directory(path: "/"))
+		}.navigationBarTitle(Text("Landmarks"))
+		
+	}
+}
+
+struct FileBrowser : View {
+	var directory : Directory
+	
+	var body: some View {
+		List(directory) { item in
+			NavigationButton(destination: FileBrowser(directory: Directory(path: "/"))) {
+				HStack {
+					Image(systemName: "doc")
+					Text(item)
 						.fontWeight(.semibold)
 						.color(.blue)
-						.padding(.leading)	
-					}
-				}	
-			}			
-		} .navigationBarTitle(Text("File Browser"))
+						.padding(.leading)
+					Text("0 elements")
+						 .color(.secondary)
+						 .padding(.leading)
+
+			   }
+			}
+		}
 	}
 }
 
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(path: "/")
     }
 }
 #endif
