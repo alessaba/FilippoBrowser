@@ -109,7 +109,12 @@ struct DirectoryBrowser : View {
 
 			   }
 			}
-		}.listStyle(.grouped).navigationBarTitle(Text(path))
+		}.listStyle(.grouped)
+			.navigationBarTitle(Text(path))
+			.contextMenu {
+    				Button(action: { print("Hello.") } ) { Text("Copy Path") }
+    		}
+}
 		
 	}
 }
