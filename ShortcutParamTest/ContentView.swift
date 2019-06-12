@@ -47,6 +47,39 @@ struct FileViewer : View {
 	
 }
 
+struct Directory : Identifiable {
+	
+	var id =  UUID()
+	var path : String
+	
+	var isFolder : Bool {
+		var isFoldr : ObjCBool = false
+		fm.fileExists(atPath: path, isDirectory: &isFoldr)
+		return isFoldr.boolValue
+	}
+	
+	var subDirs : [Directory] {
+		do{
+			// Gonna do some exceptions for System and usr, else we'll judt get the files
+			if path == "/System/"{
+				return [Directory(path: "/System/Library/")]
+			} else if path == "/usr/" {
+				return [Directory(path: "/usr/lib/")]
+			} else {
+				var subDirs : [Directory] = []
+				let sdd = try fm.contentsOfDirectory(atPath: path)
+				sdd.map{ sd in
+					subDirs.append(Directory(path: "\(self.path)\(sd)/"))
+				}
+				return subDirs
+			}
+		} catch {
+			NSLog("Folder with root permissions")
+			return []
+		}
+	}
+}
+
 // MARK: Directory Viewer
 // This is the directory browser, it shows files and subdirectories of a folder
 struct DirectoryBrowser : View {
@@ -109,13 +142,9 @@ struct DirectoryBrowser : View {
 
 			   }
 			}
-		}.listStyle(.grouped)
-			.navigationBarTitle(Text(path))
-			.contextMenu {
-    				Button(action: { print("Hello.") } ) { Text("Copy Path") }
-    		}
-}
-		
+		}
+			.listStyle(.grouped).navigationBarTitle(Text(path))
+			//.contextMenu{Button(action: { print("HI") }, label: { Text("Copy")})}
 	}
 }
 
