@@ -68,7 +68,9 @@ struct FSItem : Identifiable {
 			var fileSize : UInt64
 			var fileSizeString : String = ""
 			do {
-				let attr = try FileManager.default.attributesOfItem(atPath: self.path)
+				var gp = self.path
+				gp.removeLast() // BAD WORKAROUND. MUST REMOVE ASAP
+				let attr = try FileManager.default.attributesOfItem(atPath: gp)
 				fileSize = attr[FileAttributeKey.size] as! UInt64
 			} catch {
 				fileSize = 0
