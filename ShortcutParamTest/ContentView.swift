@@ -178,6 +178,8 @@ func filesize(_ path: String) -> String {
 	return fileSizeString
 }
 
+
+// Decide what view to present: FileViewer for files, DirectoryBrowser for directories
 func properView(for path: String) -> AnyView {
 	if isFolder(path){
 		return AnyView(DirectoryBrowser(path: path))
@@ -186,7 +188,7 @@ func properView(for path: String) -> AnyView {
 	}
 }
 
-
+// Tries to read txt files
 func readFile(_ path: String) -> String {
 	//let data = Data(contentsOf: URL(string: path))
 	var data = ""
