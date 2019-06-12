@@ -7,9 +7,13 @@
 //
 
 import SwiftUI
+import UIKit
 import Foundation
 
 let fm = FileManager.default //Instance of the default file manager. we'll need it later
+let textExtensions = ["txt"]
+let listExtensions = ["plist", "json"]
+let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 
 // MARK: Starting View
 // Starting point
@@ -25,13 +29,20 @@ struct ContentView : View {
 	
 }
 
+
 // MARK: File Viewer
 // This shows the contents of most types of common files
 struct FileViewer : View {
 	
 	var path : String
 	var body: some View {
-		Text(path)
+	  Text(readFile(path))
+		.tapAction {
+			UIPasteboard.general.string = "file://" + self.path
+			let avc = UIActivityViewController(activityItems: [self.path], applicationActivities: nil)
+			let rvc = UIHostingController(rootView: self)
+			rvc.present(avc, animated: true, completion: nil)
+		}
 	}
 	
 }
@@ -52,23 +63,23 @@ struct DirectoryBrowser : View {
 				return (try fm.contentsOfDirectory(atPath: path))
 			}
 		} catch {
-			NSLog("Either a folder with root permissions or some file")
+			NSLog("Folder with root permissions")
 			return []
 		}
 	}
 	
 	var body: some View {
 		List(0 ..< subDirs.count) { subDir in
-			NavigationButton(destination: DirectoryBrowser(path: "\(self.path)\(self.subDirs[subDir])/")) { // Gotta verify if it is a folder or a file :-)
+			NavigationButton(destination: properView(for: "\(self.path)\(self.subDirs[subDir])/")) { // Gotta verify if it is a folder or a file :-)
 				HStack {
 					// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					if isFolder("\(self.path)\(self.subDirs[subDir])/") {
 						Image(systemName: "folder")
-					} else if getExtension(self.subDirs[subDir]) == "png" || getExtension(self.subDirs[subDir]) == "jpg" {
+					} else if imageExtensions.contains(getExtension(self.subDirs[subDir])) {
 						Image(systemName: "photo")
-					} else if getExtension(self.subDirs[subDir]) == "plist" || getExtension(self.subDirs[subDir]) == "json"{
+					} else if listExtensions.contains(getExtension(self.subDirs[subDir])){
 						Image(systemName: "list.bullet.indent")
-					} else if getExtension(self.subDirs[subDir]) == "txt" {
+					} else if textExtensions.contains(getExtension(self.subDirs[subDir])) {
 						Image(systemName: "doc.text.fill")
 					} else {
 						Image(systemName: "doc")
@@ -83,7 +94,7 @@ struct DirectoryBrowser : View {
 					//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
 					if isFolder("\(self.path)\(self.subDirs[subDir])"){
 						
-						Text("\(subelementsCount("\(self.path)\(self.subDirs[subDir])")) elements")
+						Text("\(subelementsCount("\(self.path)\(self.subDirs[subDir])")) \((subelementsCount("\(self.path)\(self.subDirs[subDir])") != 1) ? "elements" : "element" )")
 							.color(.secondary)
 							.padding(.leading)
 						
@@ -116,7 +127,7 @@ func isFolder(_ path: String) -> Bool {
 
 
 // Gets the file extension for later use
-func getExtension(_ path: String) -> String{
+func getExtension(_ path: String) -> String {
 	let strComponents = path.split(separator: ".")
 	var ext : String
 	if strComponents.count > 1 {
@@ -166,6 +177,27 @@ func filesize(_ path: String) -> String {
 	
 	return fileSizeString
 }
+
+func properView(for path: String) -> AnyView {
+	if isFolder(path){
+		return AnyView(DirectoryBrowser(path: path))
+	} else {
+		return AnyView(FileViewer(path: path))
+	}
+}
+
+
+func readFile(_ path: String) -> String {
+	//let data = Data(contentsOf: URL(string: path))
+	var data = ""
+	do{
+		data = try String(contentsOfFile: path)
+	} catch {
+		data = path
+	}
+	return data
+}
+
 
 
 
