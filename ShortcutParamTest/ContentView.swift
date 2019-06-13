@@ -170,24 +170,50 @@ struct DirectoryBrowser : View {
 		
 			
 			HStack{
-				Button(action: {
-					NSLog("Search button pressed")
-				},
-					   label: {Text("Search").color(.white)}).padding(5).background(Color.blue).cornerRadius(5)
+				
+				Button(
+					action: {
+						NSLog("Search button pressed")
+					},
+					   label: {Text("Search").color(.white)}
+					).padding(7)
+						.background(Color.blue)
+							.cornerRadius(5)
+								.padding(.horizontal)
+				
 				Spacer()
 				
-				Button(action: {
-					NSLog("Copy Path button pressed")
-					UIPasteboard.general.string = "file://" + self.path
-				},
-					   label: {Text("Copy Path").color(.white)}).padding(5).background(Color.blue).cornerRadius(5)
+				Button(
+					action: {
+						NSLog("Copy Path button pressed")
+						UIPasteboard.general.string = "file://" + self.path
+					},
+					   label: {Text("Copy Path").color(.white)}
+					).padding(7)
+						.background(Color.blue)
+							.cornerRadius(5)
+								.padding(.horizontal)
 				Spacer()
 				
-				Button(action: {
-					NSLog("Go To... button pressed")
+				Button(
+					action: {
+						NSLog("Go To button pressed")
 				},
-					   label: {Text("Go To").color(.white)}).padding(5).background(Color.blue).cornerRadius(5)
-			}
+					label: {Text("Go To").color(.white)}
+					).padding(7)
+						.background(Color.blue)
+							.cornerRadius(5)
+								.padding(.horizontal)
+				
+				/*NavigationButton(destination: DirectoryBrowser(path: "/System/Library/PrivateFrameworks/"),
+								 isDetail: false,
+								 onTrigger: {
+									NSLog("Go To... button pressed")
+								 },
+								 label: {Text("Go To").color(.white)})
+									.padding(5).background(Color.blue).cornerRadius(5)*/
+			}.padding(.bottom, 5)
+				.shadow(color: .secondary, radius: 3, x: 2, y: 2)
 			
 		} //.contextMenu{Button(action: { print("HI") }, label: { Text("Copy")})}*/
 	}
