@@ -125,72 +125,71 @@ struct DirectoryBrowser : View {
 		FSItem(path: self.path).subelements
 	}
 	var body: some View {
-		
-		List {
+		VStack {
 			
-			/*HStack{
-				Button(action: {
+		  List(subItems) { subItem in
+			  NavigationButton(destination: properView(for: subItem)) { // Gotta verify if it is a folder or a file :-)
+				  HStack {
+					  // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+					  if subItem.isFolder {
+						  Image(systemName: "folder")
+					  } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+						  Image(systemName: "photo")
+					  } else if listExtensions.contains(getExtension(subItem.lastComponent)){
+						  Image(systemName: "list.bullet.indent")
+					  } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+						  Image(systemName: "doc.text.fill")
+					  } else {
+						  Image(systemName: "doc")
+					  }
 					
+					  //Name of the file/directory
+					  Text(subItem.lastComponent)
+						  .fontWeight(.semibold)
+						  .color(.blue)
+						  .padding(.leading)
+					
+						  //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+						  if subItem.isFolder {
+							
+							  Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
+								  .color(.secondary)
+								  .padding(.leading)
+							
+							  } else {
+							
+								  Text(subItem.fileSize)
+									  .color(.secondary)
+									  .padding(.leading)
+							
+								  }
+							  }
+				}
+			}.listStyle(.grouped)
+				.navigationBarTitle(Text(path))
+		
+			
+			HStack{
+				Button(action: {
+					NSLog("Search button pressed")
 				},
 					   label: {Text("Search").color(.white)}).padding(5).background(Color.blue).cornerRadius(5)
 				Spacer()
 				
 				Button(action: {
+					NSLog("Copy Path button pressed")
 					UIPasteboard.general.string = "file://" + self.path
 				},
 					   label: {Text("Copy Path").color(.white)}).padding(5).background(Color.blue).cornerRadius(5)
 				Spacer()
 				
 				Button(action: {
-					
+					NSLog("Go To... button pressed")
 				},
 					   label: {Text("Go To").color(.white)}).padding(5).background(Color.blue).cornerRadius(5)
-    		}*/
-			
-			
-			
-			Section{
-				ForEach(subItems) { subItem in
-					NavigationButton(destination: properView(for: subItem)) { // Gotta verify if it is a folder or a file :-)
-						HStack {
-							// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-							if subItem.isFolder {
-								Image(systemName: "folder")
-							} else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-								Image(systemName: "photo")
-							} else if listExtensions.contains(getExtension(subItem.lastComponent)){
-								Image(systemName: "list.bullet.indent")
-							} else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-								Image(systemName: "doc.text.fill")
-							} else {
-								Image(systemName: "doc")
-							}
-							
-							//Name of the file/directory
-							Text(subItem.lastComponent)
-								.fontWeight(.semibold)
-								.color(.blue)
-								.padding(.leading)
-							
-							//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
-							if subItem.isFolder {
-								
-								Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
-									.color(.secondary)
-									.padding(.leading)
-								
-							} else {
-								
-								Text(subItem.fileSize)
-									.color(.secondary)
-									.padding(.leading)
-								
-							}
-						}
-					}
-				}
 			}
-		}.listStyle(.grouped).navigationBarTitle(Text(path)) //.contextMenu{Button(action: { print("HI") }, label: { Text("Copy")})}*/
+			
+		} //.contextMenu{Button(action: { print("HI") }, label: { Text("Copy")})}*/
 	}
 }
 
