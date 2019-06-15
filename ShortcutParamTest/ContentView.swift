@@ -146,7 +146,7 @@ struct DirectoryBrowser : View {
 					  //Name of the file/directory
 					  Text(subItem.lastComponent)
 						  .fontWeight(.semibold)
-						  .color(.systemBlue)
+						  .color(.blue)
 						  .padding(.leading)
 					
 						  //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
@@ -177,7 +177,7 @@ struct DirectoryBrowser : View {
 					},
 					   label: {Text("Search").color(.white)}
 					).padding(7)
-						.background(Color.systemBlue)
+						.background(Color.blue)
 							.cornerRadius(5)
 								.padding(.horizontal)
 				
@@ -190,7 +190,7 @@ struct DirectoryBrowser : View {
 					},
 					   label: {Text("Copy Path").color(.white)}
 					).padding(7)
-						.background(Color.systemBlue)
+						.background(Color.blue)
 							.cornerRadius(5)
 								.padding(.horizontal)
 				Spacer()
@@ -201,7 +201,7 @@ struct DirectoryBrowser : View {
 				},
 					label: {Text("Go To").color(.white)}
 					).padding(7)
-						.background(Color.systemBlue)
+						.background(Color.blue)
 							.cornerRadius(5)
 								.padding(.horizontal)
 				
@@ -211,8 +211,8 @@ struct DirectoryBrowser : View {
 									NSLog("Go To... button pressed")
 								 },
 								 label: {Text("Go To").color(.white)})
-									.padding(5).background(Color.systemBlue).cornerRadius(5)*/
-			}.background(Color.systemGray5).padding(.bottom, 5)
+									.padding(5).background(Color.blue).cornerRadius(5)*/
+			}.padding(.bottom, 5)
 				.shadow(color: .secondary, radius: 3, x: 2, y: 2)
 			
 		} //.contextMenu{Button(action: { print("HI") }, label: { Text("Copy")})}*/
