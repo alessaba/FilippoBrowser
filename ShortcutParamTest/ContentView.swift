@@ -18,13 +18,25 @@ let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 
 // MARK: Starting View
 // Starting point
-struct ContentView : View {
+struct Browser : View {
 	
 	var path : String
 	var body: some View {
 		NavigationView {
 			DirectoryBrowser(path: path)
 				.navigationBarTitle(Text("File Browser"))
+		}
+	}
+}
+
+
+struct ContentView : View {
+	
+	var path : String
+	var body: some View {
+		VStack{
+			Browser(path: path)
+			Toolbar(path: path)
 		}
 	}
 }
@@ -125,88 +137,106 @@ struct DirectoryBrowser : View {
 		FSItem(path: self.path).subelements
 	}
 	var body: some View {
-		VStack {
-			
-		  List(subItems) { subItem in
-			  NavigationButton(destination: properView(for: subItem)) { // Gotta verify if it is a folder or a file :-)
-				  HStack {
-					  // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+	  List(subItems) { subItem in
+		  NavigationButton(destination: properView(for: subItem)) { // Gotta verify if it is a folder or a file :-)
+			  HStack {
+				  // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+				  if subItem.isFolder {
+					  Image(systemName: "folder")
+				  } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+					  Image(systemName: "photo")
+				  } else if listExtensions.contains(getExtension(subItem.lastComponent)){
+					  Image(systemName: "list.bullet.indent")
+				  } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+					  Image(systemName: "doc.text.fill")
+				  } else {
+					  Image(systemName: "doc")
+				  }
+				
+				  //Name of the file/directory
+				  Text(subItem.lastComponent)
+					  .fontWeight(.semibold)
+					  .color(.blue)
+					  .padding(.leading)
+				
+					  //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
 					  if subItem.isFolder {
-						  Image(systemName: "folder")
-					  } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-						  Image(systemName: "photo")
-					  } else if listExtensions.contains(getExtension(subItem.lastComponent)){
-						  Image(systemName: "list.bullet.indent")
-					  } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-						  Image(systemName: "doc.text.fill")
-					  } else {
-						  Image(systemName: "doc")
-					  }
-					
-					  //Name of the file/directory
-					  Text(subItem.lastComponent)
-						  .fontWeight(.semibold)
-						  .color(.blue)
-						  .padding(.leading)
-					
-						  //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
-						  if subItem.isFolder {
-							
-							  Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
+						
+						  Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
+							  .color(.secondary)
+							  .padding(.leading)
+						
+						  } else {
+						
+							  Text(subItem.fileSize)
 								  .color(.secondary)
 								  .padding(.leading)
-							
-							  } else {
-							
-								  Text(subItem.fileSize)
-									  .color(.secondary)
-									  .padding(.leading)
-							
-								  }
+						
 							  }
-				}
-			}.listStyle(.grouped)
-			 .navigationBarTitle(Text(path))
-		
+						  }
+			}
+		}.listStyle(.grouped)
+		 .navigationBarTitle(Text(path))
+	}
+}
+
+struct Toolbar : View {
+	
+	var path : String
+	
+	var body: some View {
+		return HStack{
 			
-			HStack{
-				
-				Button(
-					action: {
-						NSLog("Search button pressed")
-					},
-					   label: {Text("Search").color(.white)}
-					).padding(7)
-					 .background(Color.blue)
-					 .cornerRadius(5)
-					 .padding(.horizontal)
-				
-				Spacer()
-				
-				Button(
-					action: {
-						NSLog("Copy Path button pressed")
-						UIPasteboard.general.string = "file://" + self.path
-					},
-					   label: {Text("Copy Path").color(.white)}
-					).padding(7)
-					 .background(Color.blue)
-					 .cornerRadius(5)
-					 .padding(.horizontal)
-				
-				Spacer()
-				
-				
-				PresentationButton(Text("Go To").color(.white), destination: ContentView(path: "/System/Library/PrivateFrameworks/")){
-						NSLog("Go To button pressed!")
-					}.padding(5)
-					 .background(Color.blue)
-					 .cornerRadius(5)
-				
+			Button(
+				action: {
+					NSLog("Search button pressed")
+			},
+				label: {Text("Search").color(.white)}
+				).padding(7)
+				.background(Color.blue)
+				.cornerRadius(5)
+				.padding(.horizontal)
+			
+			Spacer()
+			
+			Button(
+				action: {
+					NSLog("Copy Path button pressed")
+					UIPasteboard.general.string = "file://" + self.path
+			},
+				label: {Text("Copy Path").color(.white)}
+				).padding(7)
+				.background(Color.blue)
+				.cornerRadius(5)
+				.padding(.horizontal)
+			
+			Spacer()
+			
+			PresentationButton(Text("Go To").color(.white), destination: gotoView()){
+					NSLog("Go To button pressed!")
+				}.padding(5)
+				 .background(Color.blue)
+				 .cornerRadius(5)
+				 .padding(.horizontal)
+			
 			}.padding(.bottom, 5)
 			 .shadow(color: .secondary, radius: 5, x: 2, y: 2)
-			
-		} //.contextMenu{Button(action: { print("HI") }, label: { Text("Copy")})}*/
+		
+	}
+}
+
+
+struct gotoView : View {
+	@State var path : String = "/"
+	
+	var body : some View {
+		VStack{
+			TextField($path)
+				.padding()
+				.border(Color.secondary, width: 2, cornerRadius: 10)
+				.padding()
+			PresentationButton(Text("Go").bold(), destination: Browser(path: path))
+		}
 	}
 }
 
@@ -247,9 +277,10 @@ func readFile(_ path: String) -> String {
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
     static var previews: some View {
-        ContentView(path: "/")
+        Browser(path: "/")
     }
 }
 #endif
+
 
 
