@@ -221,8 +221,7 @@ struct DirectoryBrowser : View {
 
 
 
-
-// MARK: Helper Functions
+// MARK: – Helper Functions
 // Gets the file extension for later use
 func getExtension(_ path: String) -> String {
 	return String(path.split(separator: ".").last ?? "")

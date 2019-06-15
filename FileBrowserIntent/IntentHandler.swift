@@ -39,7 +39,7 @@ class GFI : NSObject, GetDirectoryListingIntentHandling {
 		
 		if intent.path == .none {
 			completion(.needsValue())
-		} else if let dirList = try? fm.contentsOfDirectory(atPath: intent.path!) == [] {
+		} else if (try? fm.contentsOfDirectory(atPath: intent.path!)) == [] {
 			NSLog("\(intent.path!) is not a valid directory.")
 			completion(.unsupported(forReason: .wrongPath))
 		} else {
