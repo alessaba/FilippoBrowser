@@ -36,7 +36,8 @@ struct ContentView : View {
 	var body: some View {
 		VStack{
 			Browser(path: path)
-			Toolbar(path: path)
+            Divider()
+            Toolbar(path: path)
 		}
 	}
 }
@@ -123,7 +124,7 @@ struct FSItem : Identifiable {
 				return subDirs
 			}
 		} catch {
-			NSLog("Folder with root permissions")
+			NSLog("\(path) probably has root permissions")
 			return []
 		}
 	}
@@ -175,10 +176,12 @@ struct DirectoryBrowser : View {
 							  }
 						  }
 			}
-		}.listStyle(.grouped)
+		}
+         .listStyle(.grouped)
 		 .navigationBarTitle(Text(path))
 	}
 }
+
 
 struct Toolbar : View {
 	
@@ -190,12 +193,13 @@ struct Toolbar : View {
 			Button(
 				action: {
 					NSLog("Search button pressed")
-			},
+                },
 				label: {Text("Search").color(.white)}
-				).padding(7)
-				.background(Color.blue)
-				.cornerRadius(5)
-				.padding(.horizontal)
+                )
+                 .padding(7)
+                 .background(Color.blue)
+                 .cornerRadius(5)
+                 .padding(.horizontal)
 			
 			Spacer()
 			
@@ -205,23 +209,25 @@ struct Toolbar : View {
 					UIPasteboard.general.string = "file://" + self.path
 			},
 				label: {Text("Copy Path").color(.white)}
-				).padding(7)
-				.background(Color.blue)
-				.cornerRadius(5)
-				.padding(.horizontal)
-			
-			Spacer()
-			
-			PresentationButton(Text("Go To").color(.white), destination: gotoView()){
-					NSLog("Go To button pressed!")
-				}.padding(5)
+				)
+                 .padding(7)
 				 .background(Color.blue)
 				 .cornerRadius(5)
 				 .padding(.horizontal)
+ 
+			Spacer()
 			
-			}.padding(.bottom, 5)
+            PresentationButton(destination: gotoView()){
+                    Text("Go To").color(.white)
+                }
+                .padding(5)
+                .background(Color.blue)
+                .cornerRadius(5)
+                .padding(.horizontal)
+			
+			}
+             .padding(.bottom, 5)
 			 .shadow(color: .secondary, radius: 5, x: 2, y: 2)
-		
 	}
 }
 
@@ -235,7 +241,7 @@ struct gotoView : View {
 				.padding()
 				.border(Color.secondary, width: 2, cornerRadius: 10)
 				.padding()
-			PresentationButton(Text("Go").bold(), destination: Browser(path: path))
+			PresentationButton(destination: Browser(path: path), label: {Text("Go").bold()})
 		}
 	}
 }
