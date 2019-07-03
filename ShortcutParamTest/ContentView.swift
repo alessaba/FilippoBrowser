@@ -139,7 +139,7 @@ struct DirectoryBrowser : View {
 	}
 	var body: some View {
 	  List(subItems) { subItem in
-		  NavigationButton(destination: properView(for: subItem)) { // Gotta verify if it is a folder or a file :-)
+		NavigationLink(destination: properView(for: subItem)) { // Gotta verify if it is a folder or a file :-)
 			  HStack {
 				  // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 				  if subItem.isFolder {
@@ -190,12 +190,9 @@ struct Toolbar : View {
 	var body: some View {
 		return HStack{
 			
-			Button(
-				action: {
+			Button("Search"){
 					NSLog("Search button pressed")
-                },
-				label: {Text("Search").color(.white)}
-                )
+                }
                  .padding(7)
                  .background(Color.blue)
                  .cornerRadius(5)
@@ -203,21 +200,19 @@ struct Toolbar : View {
 			
 			Spacer()
 			
-			Button(
-				action: {
-					NSLog("Copy Path button pressed")
-					UIPasteboard.general.string = "file://" + self.path
-			},
-				label: {Text("Copy Path").color(.white)}
-				)
-                 .padding(7)
-				 .background(Color.blue)
-				 .cornerRadius(5)
-				 .padding(.horizontal)
- 
+			Button("Copy Path"){
+				NSLog("Copy Path button pressed")
+				UIPasteboard.general.string = "file://" + self.path
+			}
+			.padding(7)
+				.background(Color.blue)
+				.cornerRadius(5)
+				.padding(.horizontal)
+			
 			Spacer()
 			
-            PresentationButton(destination: gotoView()){
+			
+			PresentationLink(destination: gotoView()){
                     Text("Go To").color(.white)
                 }
                 .padding(5)
@@ -241,7 +236,7 @@ struct gotoView : View {
 				.padding()
 				.border(Color.secondary, width: 2, cornerRadius: 10)
 				.padding()
-			PresentationButton(destination: Browser(path: path), label: {Text("Go").bold()})
+			PresentationLink(destination: Browser(path: path), label: {Text("Go").bold()})
 		}
 	}
 }
