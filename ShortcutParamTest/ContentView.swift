@@ -24,7 +24,21 @@ struct Browser : View {
 	var body: some View {
 		NavigationView {
 			DirectoryBrowser(path: path)
-				.navigationBarTitle(Text("File Browser"))
+                .navigationBarTitle(Text("File Browser"), displayMode: .inline)
+            .navigationBarItems(
+                
+                leading:
+                Image(systemName: "arrow.2.squarepath")
+                    .onTapGesture {
+                        NSLog("Go To")
+                    },
+                
+                trailing:
+                Image(systemName: "magnifyingglass")
+                    .onTapGesture {
+                        NSLog("Search")
+                }
+            )
 		}
 	}
 }
@@ -37,7 +51,7 @@ struct ContentView : View {
 		VStack{
 			Browser(path: path)
             Divider()
-            Toolbar(path: path)
+            //Toolbar(path: path)
 		}
 	}
 }
@@ -90,13 +104,15 @@ struct FSItem : Identifiable {
 			
 			if fileSize < 1024 {
 				fileSizeString = "\(fileSize) bytes"
-			} else if fileSize > 1024 && fileSize < 1048576 {
+			} else if fileSize >= 1024 && fileSize < 1048576 {
 				fileSizeString = "\(fileSize / 1024) KB"
-			} else if fileSize > 1048576 && fileSize < 1073741824 {
+			} else if fileSize >= 1048576 && fileSize < 1073741824 {
 				fileSizeString = "\(fileSize / 1048576) MB"
-			} else {
+			} else if fileSize >= 1073741824 && fileSize < 1099511627776 {
 				fileSizeString = "\(fileSize / 1073741824) GB"
-			}
+            } else {
+                fileSizeString = "\(fileSize / 1099511627776) TB" // We'll probably reach this condition in 2030 but thatever lol
+            }
 			
 			return fileSizeString
 		} else {
@@ -139,93 +155,59 @@ struct DirectoryBrowser : View {
 	}
 	var body: some View {
 	  List(subItems) { subItem in
-		NavigationLink(destination: properView(for: subItem)) { // Gotta verify if it is a folder or a file :-)
-			  HStack {
-				  // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-				  if subItem.isFolder {
-					  Image(systemName: "folder")
-				  } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-					  Image(systemName: "photo")
-				  } else if listExtensions.contains(getExtension(subItem.lastComponent)){
-					  Image(systemName: "list.bullet.indent")
-				  } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-					  Image(systemName: "doc.text.fill")
-				  } else {
-					  Image(systemName: "doc")
-				  }
-				
-				  //Name of the file/directory
-				  Text(subItem.lastComponent)
-					  .fontWeight(.semibold)
-					  .foregroundColor(.blue)
+        HStack {
+            // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+            if subItem.isFolder {
+                Image(systemName: "folder")
+            } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+                Image(systemName: "photo")
+            } else if listExtensions.contains(getExtension(subItem.lastComponent)){
+                Image(systemName: "list.bullet.indent")
+            } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+                Image(systemName: "doc.text.fill")
+            } else {
+                Image(systemName: "doc")
+            }
+            
+            //Name of the file/directory
+            NavigationLink(destination: properView(for: subItem)){
+                Text(subItem.lastComponent)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.blue)
+                    .padding(.leading)
+                    .contextMenu{
+                        HStack{
+                            //Image(systemName: "doc")
+                            Button("Copy Path"){
+                                NSLog("Copy Path button pressed")
+                                UIPasteboard.general.string = "file://" + self.path + subItem.lastComponent
+                            }
+                            
+                        }
+                    }
+            }
+                
+            
+            //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+            if subItem.isFolder {
+              
+                Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
+                  .foregroundColor(.secondary)
+                  .padding(.leading)
+              
+                } else {
+              
+                    Text(subItem.fileSize)
+                        .foregroundColor(.secondary)
                       .padding(.leading)
-				
-					  //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
-					  if subItem.isFolder {
-						
-						  Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
-                            .foregroundColor(.secondary)
-                            .padding(.leading)
-						
-						  } else {
-						
-							  Text(subItem.fileSize)
-								  .foregroundColor(.secondary)
-                                .padding(.leading)
-						
-							  }
-						  }
-			}
-		}
-         .listStyle(.grouped)
-		 .navigationBarTitle(Text(path))
+              
+                    }
+                }
+      }
+         .listStyle(GroupedListStyle())
+      .navigationBarTitle(Text(path), displayMode: .inline)
 	}
 }
-
-
-struct Toolbar : View {
-	
-	var path : String
-	
-	var body: some View {
-		return HStack{
-			
-			Button("Search"){
-                Foundation.NSLog("Search button pressed")
-                }
-                 .padding(7)
-                 .background(Color.blue)
-                 .cornerRadius(5)
-            .padding(.horizontal)
-			
-			Spacer()
-			
-			Button("Copy Path"){
-				NSLog("Copy Path button pressed")
-				UIPasteboard.general.string = "file://" + self.path
-			}
-			.padding(7)
-				.background(Color.blue)
-				.cornerRadius(5)
-				.padding(.horizontal)
-			
-			Spacer()
-			
-        
-			NavigationLink(destination: gotoView()){
-                    Text("Go To").foregroundColor(.white)
-                }
-                .padding(5)
-                .background(Color.blue)
-                .cornerRadius(5)
-            .padding(.horizontal)
-			
-			}
-        .padding(.bottom, 5)
-			 .shadow(color: .secondary, radius: 5, x: 2, y: 2)
-	}
-}
-
 
 struct gotoView : View {
 	@State var path : String = "/"
