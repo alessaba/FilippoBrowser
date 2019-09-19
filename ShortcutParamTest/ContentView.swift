@@ -50,12 +50,12 @@ struct FileViewer : View {
 	var path : String
 	var body: some View {
 	  Text(readFile(path))
-		.tapAction {
-			UIPasteboard.general.string = "file://" + self.path
-			let avc = UIActivityViewController(activityItems: [self.path], applicationActivities: nil)
-			let rvc = UIHostingController(rootView: self)
-			rvc.present(avc, animated: true, completion: nil)
-		}
+        .onTapGesture {
+            UIPasteboard.general.string = "file://" + self.path
+            let avc = UIActivityViewController(activityItems: [self.path], applicationActivities: nil)
+            let rvc = UIHostingController(rootView: self)
+            rvc.present(avc, animated: true, completion: nil)
+        }
 	}
 	
 }
@@ -157,21 +157,21 @@ struct DirectoryBrowser : View {
 				  //Name of the file/directory
 				  Text(subItem.lastComponent)
 					  .fontWeight(.semibold)
-					  .color(.blue)
-					  .padding(.leading)
+					  .foregroundColor(.blue)
+                      .padding(.leading)
 				
 					  //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
 					  if subItem.isFolder {
 						
 						  Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
-							  .color(.secondary)
-							  .padding(.leading)
+                            .foregroundColor(.secondary)
+                            .padding(.leading)
 						
 						  } else {
 						
 							  Text(subItem.fileSize)
-								  .color(.secondary)
-								  .padding(.leading)
+								  .foregroundColor(.secondary)
+                                .padding(.leading)
 						
 							  }
 						  }
@@ -191,12 +191,12 @@ struct Toolbar : View {
 		return HStack{
 			
 			Button("Search"){
-					NSLog("Search button pressed")
+                Foundation.NSLog("Search button pressed")
                 }
                  .padding(7)
                  .background(Color.blue)
                  .cornerRadius(5)
-                 .padding(.horizontal)
+            .padding(.horizontal)
 			
 			Spacer()
 			
@@ -211,17 +211,17 @@ struct Toolbar : View {
 			
 			Spacer()
 			
-			
-			PresentationLink(destination: gotoView()){
-                    Text("Go To").color(.white)
+        
+			NavigationLink(destination: gotoView()){
+                    Text("Go To").foregroundColor(.white)
                 }
                 .padding(5)
                 .background(Color.blue)
                 .cornerRadius(5)
-                .padding(.horizontal)
+            .padding(.horizontal)
 			
 			}
-             .padding(.bottom, 5)
+        .padding(.bottom, 5)
 			 .shadow(color: .secondary, radius: 5, x: 2, y: 2)
 	}
 }
@@ -232,11 +232,8 @@ struct gotoView : View {
 	
 	var body : some View {
 		VStack{
-			TextField($path)
-				.padding()
-				.border(Color.secondary, width: 2, cornerRadius: 10)
-				.padding()
-			PresentationLink(destination: Browser(path: path), label: {Text("Go").bold()})
+            TextField("Path", text: $path)
+			NavigationLink(destination: Browser(path: path), label: {Text("Go").bold()})
 		}
 	}
 }
