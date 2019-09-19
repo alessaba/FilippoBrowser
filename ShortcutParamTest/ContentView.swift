@@ -44,30 +44,19 @@ struct Browser : View {
 }
 
 
-struct ContentView : View {
-	
-	var path : String
-	var body: some View {
-		VStack{
-			Browser(path: path)
-            Divider()
-            //Toolbar(path: path)
-		}
-	}
-}
-
-
 // MARK: File Viewer
 // This shows the contents of most types of common files
 struct FileViewer : View {
 	
 	var path : String
+    @State var sheetPresented : Bool = false
 	var body: some View {
 	  Text(readFile(path))
         .onTapGesture {
             UIPasteboard.general.string = "file://" + self.path
             let avc = UIActivityViewController(activityItems: [self.path], applicationActivities: nil)
             let rvc = UIHostingController(rootView: self)
+            //sheet(isPresented: $sheetPresented, content: rvc)
             rvc.present(avc, animated: true, completion: nil)
         }
 	}
