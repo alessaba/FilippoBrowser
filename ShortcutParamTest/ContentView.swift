@@ -281,7 +281,7 @@ func readFile(_ path: String) -> Data {
 	//let data = Data(contentsOf: URL(string: path))
     var data : Data
 	do{
-		data = try Data(contentsOf: URL(string: path)!)
+		data = try Data(contentsOf: URL(string: "file://" + path)!)
 	} catch {
 		data = Data()
 	}
