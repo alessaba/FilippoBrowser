@@ -21,6 +21,8 @@ let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 struct Browser : View {
 	
 	var path : String
+    @State private var gotoView_presented : Bool = false // We need it for presenting the popover 🙄
+    
 	var body: some View {
 		NavigationView {
 			DirectoryBrowser(path: path)
@@ -29,14 +31,13 @@ struct Browser : View {
                 
                 leading:
                 Image(systemName: "arrow.2.squarepath")
-                    .onTapGesture {
-                        NSLog("Go To")
-                    },
-                
+                    .onTapGesture { self.gotoView_presented = true }
+                    .popover(isPresented: $gotoView_presented){ gotoView() }
+                ,
                 trailing:
-                Image(systemName: "magnifyingglass")
+                Image(systemName: "doc.on.clipboard")
                     .onTapGesture {
-                        NSLog("Search")
+                        UIPasteboard.general.string = "file//}" + self.path
                 }
             )
 		}
@@ -49,16 +50,14 @@ struct Browser : View {
 struct FileViewer : View {
 	
 	var path : String
-    @State var sheetPresented : Bool = false
+    @State private var popoverPresented : Bool = false
 	var body: some View {
-	  Text(readFile(path))
-        .onTapGesture {
-            UIPasteboard.general.string = "file://" + self.path
-            let avc = UIActivityViewController(activityItems: [self.path], applicationActivities: nil)
-            let rvc = UIHostingController(rootView: self)
-            //sheet(isPresented: $sheetPresented, content: rvc)
-            rvc.present(avc, animated: true, completion: nil)
+        Text(self.path)
+        .onAppear { self.popoverPresented = true }
+        .sheet(isPresented: $popoverPresented){
+            ActivityView(activityItems: [readFile(self.path)], applicationActivities: nil)
         }
+        
 	}
 	
 }
@@ -138,73 +137,103 @@ struct FSItem : Identifiable {
 // MARK: Directory Viewer
 // This is the directory browser, it shows files and subdirectories of a folder
 struct DirectoryBrowser : View {
+    @State private var searchText : String = ""
 	var path : String
 	var subItems : [FSItem] {
 		FSItem(path: self.path).subelements
 	}
 	var body: some View {
-	  List(subItems) { subItem in
-        HStack {
-            // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-            if subItem.isFolder {
-                Image(systemName: "folder")
-            } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-                Image(systemName: "photo")
-            } else if listExtensions.contains(getExtension(subItem.lastComponent)){
-                Image(systemName: "list.bullet.indent")
-            } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-                Image(systemName: "doc.text.fill")
-            } else {
-                Image(systemName: "doc")
+        List{
+            Section{
+                TextField("Search...", text: $searchText)
             }
             
-            //Name of the file/directory
-            NavigationLink(destination: properView(for: subItem)){
-                Text(subItem.lastComponent)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.blue)
-                    .padding(.leading)
-                    .contextMenu{
-                        HStack{
-                            //Image(systemName: "doc")
-                            Button("Copy Path"){
-                                NSLog("Copy Path button pressed")
-                                UIPasteboard.general.string = "file://" + self.path + subItem.lastComponent
+            ForEach(subItems.filter{
+                // MARK: Search Function
+                // The entries will update automatically eveerytime searchText changes! 🤩
+                if searchText == ""{
+                    return true // Every item will be shown
+                } else {
+                    // Only the items containing the search term will be shown (fuzzy too 🤩)
+                    return $0.lastComponent.contains(searchText)
+                }
+                
+            }) { subItem in
+                HStack {
+                    // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+                    if subItem.isFolder {
+                        Image(systemName: "folder")
+                    } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+                        Image(systemName: "photo")
+                    } else if listExtensions.contains(getExtension(subItem.lastComponent)){
+                        Image(systemName: "list.bullet.indent")
+                    } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+                        Image(systemName: "doc.text.fill")
+                    } else {
+                        Image(systemName: "doc")
+                    }
+                    
+                    //Name of the file/directory
+                    NavigationLink(destination: properView(for: subItem)){
+                        Text(subItem.lastComponent)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.blue)
+                            .padding(.leading)
+                            .contextMenu{
+                                HStack{
+                                    //Image(systemName: "doc")
+                                    Button("Copy Path"){
+                                        NSLog("Copy Path button pressed")
+                                        UIPasteboard.general.string = "file://" + self.path + subItem.lastComponent
+                                    }
+                                    
+                                }
                             }
-                            
+                    }
+                    
+                    
+                    //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+                    if subItem.isFolder {
+                      
+                        Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
+                          .foregroundColor(.secondary)
+                          .padding(.leading)
+                      
+                        } else {
+                      
+                            Text(subItem.fileSize)
+                                .foregroundColor(.secondary)
+                                .padding(.leading)
+                      
+                            }
                         }
                     }
-            }
-                
-            
-            //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
-            if subItem.isFolder {
-              
-                Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
-                  .foregroundColor(.secondary)
-                  .padding(.leading)
-              
-                } else {
-              
-                    Text(subItem.fileSize)
-                        .foregroundColor(.secondary)
-                      .padding(.leading)
-              
-                    }
                 }
-      }
-         .listStyle(GroupedListStyle())
-      .navigationBarTitle(Text(path), displayMode: .inline)
+            .listStyle(GroupedListStyle())
+            .navigationBarTitle(Text(path), displayMode: .inline)
 	}
 }
 
+// MARK: Go To View
 struct gotoView : View {
 	@State var path : String = "/"
 	
 	var body : some View {
 		VStack{
+            Text("Go To...").bold()
             TextField("Path", text: $path)
-			NavigationLink(destination: Browser(path: path), label: {Text("Go").bold()})
+                .padding(.all)
+                .border(Color.secondary, width: 1)
+                .cornerRadius(3)
+                .padding(.all)
+            NavigationLink(destination: Browser(path: path)){
+                Text("Go")
+                    .foregroundColor(.primary)
+                    .bold()
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(15)
+            }
 		}
 	}
 }
@@ -212,6 +241,25 @@ struct gotoView : View {
 
 
 // MARK: – Helper Functions
+
+
+struct ActivityView: UIViewControllerRepresentable {
+    // Port of the UIActivityViewController to SwiftUI. basically we proxy the arguments then conform to the protocol.
+    let activityItems: [Any]
+    let applicationActivities: [UIActivity]?
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
+        return UIActivityViewController(activityItems: activityItems,
+                                        applicationActivities: applicationActivities)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController,
+                                context: UIViewControllerRepresentableContext<ActivityView>) {
+        NSLog("ActivityVC called. whatever.")
+    }
+}
+
+
 // Gets the file extension for later use
 func getExtension(_ path: String) -> String {
 	return String(path.split(separator: ".").last ?? "")
@@ -229,16 +277,17 @@ func properView(for directory: FSItem) -> AnyView {
 
 
 // Tries to read txt files
-func readFile(_ path: String) -> String {
+func readFile(_ path: String) -> Data {
 	//let data = Data(contentsOf: URL(string: path))
-	var data = ""
+    var data : Data
 	do{
-		data = try String(contentsOfFile: path)
+		data = try Data(contentsOf: URL(string: path)!)
 	} catch {
-		data = path
+		data = Data()
 	}
 	return data
 }
+
 
 
 
