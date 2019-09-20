@@ -36,6 +36,7 @@
     {
       "size" : "44x44",
       "idiom" : "watch",
+      "filename" : "folder-invoices--v1.png",
       "scale" : "2x",
       "role" : "appLauncher",
       "subtype" : "40mm"
@@ -57,6 +58,7 @@
     {
       "size" : "98x98",
       "idiom" : "watch",
+      "filename" : "folder-invoices--v1-1.png",
       "scale" : "2x",
       "role" : "quickLook",
       "subtype" : "42mm"
