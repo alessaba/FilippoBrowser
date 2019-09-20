@@ -166,9 +166,9 @@ struct DirectoryBrowser : View {
                     }
         }
         .contextMenu {
-            /*@START_MENU_TOKEN@*/Text("Menu Item 1")/*@END_MENU_TOKEN@*/
-            /*@START_MENU_TOKEN@*/Text("Menu Item 2")/*@END_MENU_TOKEN@*/
-            /*@START_MENU_TOKEN@*/Text("Menu Item 3")/*@END_MENU_TOKEN@*/
+            Text("Ambarabà")
+            Text("Ciccì")
+            Text("Cocò")
         }
     }
 }
