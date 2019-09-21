@@ -30,15 +30,17 @@ struct Browser : View {
             .navigationBarItems(
                 
                 leading:
-                Image(systemName: "arrow.2.squarepath")
-                    .onTapGesture { self.gotoView_presented = true }
-                    .popover(isPresented: $gotoView_presented){ gotoView() }
+                    Image(systemName: "paperclip.circle.fill")
+                        .onTapGesture {
+                            UIPasteboard.general.string = "file//" + self.path
+                    }
                 ,
                 trailing:
-                Image(systemName: "doc.on.clipboard")
-                    .onTapGesture {
-                        UIPasteboard.general.string = "file//}" + self.path
+                NavigationLink(destination: gotoView()){
+                    Image(systemName: "arrow.right.circle.fill")
+                        .foregroundColor(.primary)
                 }
+                
             )
 		}
 	}
@@ -225,8 +227,8 @@ struct gotoView : View {
             Text("Go To...").bold()
             TextField("Path", text: $path)
                 .padding(.all)
-                .border(Color.secondary, width: 1)
-                .cornerRadius(3)
+                .background(Color.gray)
+                .cornerRadius(15)
                 .padding(.all)
             NavigationLink(destination: properView(for: FSItem(path: path))){
                 Text("Go")

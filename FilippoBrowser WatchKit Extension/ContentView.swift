@@ -94,7 +94,7 @@ struct FSItem : Identifiable {
                 return subDirs
             }
         } catch {
-            NSLog("\(path) probably has root permissions")
+            //NSLog("\(path) probably has root permissions")
             return []
         }
     }
@@ -167,7 +167,6 @@ struct DirectoryBrowser : View {
             Button("Go To..."){
                 self.gotoView_presented = true
             }.sheet(isPresented: $gotoView_presented, content: {gotoView()})
-            
         }
     }
 }
@@ -175,15 +174,18 @@ struct DirectoryBrowser : View {
 // MARK: Go To View
 struct gotoView : View {
     @State var path : String = "/"
-    
+    @State private var viewPushed : Bool = false
     var body : some View {
         VStack{
             Text("Go To...").bold()
             TextField("Path", text: $path)
-            NavigationLink(destination: properView(for: FSItem(path: path))){
+            Button("Go"){
+                self.viewPushed = true
+            }.sheet(isPresented: $viewPushed, content: {properView(for: FSItem(path: self.path))})
+            /*NavigationLink(destination: properView(for: FSItem(path: path))){
                 Text("Go")
                     .bold()
-            }
+            }*/
         }
     }
 }
