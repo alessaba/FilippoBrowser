@@ -125,10 +125,9 @@ struct FSItem : Identifiable {
 				return [FSItem(path: "/usr/lib/")]
 			} else {
 				var subDirs : [FSItem] = []
-				let sdd = try fm.contentsOfDirectory(atPath: path)
-				sdd.map{ sd in
-					subDirs.append(FSItem(path: "\(self.path)\(sd)/"))
-				}
+                for sd in try fm.contentsOfDirectory(atPath: path) {
+                    subDirs.append(FSItem(path: "\(self.path)\(sd)/"))
+                }
 				return subDirs
 			}
 		} catch {
