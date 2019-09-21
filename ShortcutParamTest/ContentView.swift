@@ -197,7 +197,7 @@ struct DirectoryBrowser : View {
                       
                         Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
                           .foregroundColor(.secondary)
-                          .padding(.leading)
+                            .padding(.leading)
                       
                         } else {
                       

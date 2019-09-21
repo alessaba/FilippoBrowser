@@ -125,45 +125,44 @@ struct DirectoryBrowser : View {
                 }
                 
             }) { subItem in
-                HStack {
-                    // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-                    if subItem.isFolder {
-                        Image(systemName: "folder")
-                    } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-                        Image(systemName: "photo")
-                    } else if listExtensions.contains(getExtension(subItem.lastComponent)){
-                        Image(systemName: "list.bullet.indent")
-                    } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-                        Image(systemName: "doc.text.fill")
-                    } else {
-                        Image(systemName: "doc")
+                VStack(alignment: .leading) {
+                    HStack {
+                        // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+                        if subItem.isFolder {
+                            Image(systemName: "folder")
+                        } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+                            Image(systemName: "photo")
+                        } else if listExtensions.contains(getExtension(subItem.lastComponent)){
+                            Image(systemName: "list.bullet.indent")
+                        } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+                            Image(systemName: "doc.text.fill")
+                        } else {
+                            Image(systemName: "doc")
+                        }
+                        
+                        //Name of the file/directory
+                        NavigationLink(destination: properView(for: subItem)){
+                            Text(subItem.lastComponent)
+                                .font(.system(.headline, design: .rounded))
+                                .fontWeight(.medium)
+                                .foregroundColor(.blue)
+                                //.multilineTextAlignment(.leading)
+                                .padding(.leading)
+                        }
+                        
                     }
-                    
-                    //Name of the file/directory
-                    NavigationLink(destination: properView(for: subItem)){
-                        Text(subItem.lastComponent)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.blue)
-                            .padding(.leading)
-                    }
-                    
                     
                     //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
                     if subItem.isFolder {
-                      
-                        Text("\(subItem.subelementCount)")
-                          .foregroundColor(.secondary)
-                          .padding(.leading)
+                      Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
+                        .foregroundColor(.secondary)
                       
                         } else {
-                      
                             Text(subItem.fileSize)
                                 .foregroundColor(.secondary)
-                                .padding(.leading)
-                      
-                            }
                         }
                     }
+                }
         }
         .contextMenu {
             Text("Ambarabà")
