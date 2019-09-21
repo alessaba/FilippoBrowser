@@ -104,6 +104,7 @@ struct FSItem : Identifiable {
 // This is the directory browser, it shows files and subdirectories of a folder
 struct DirectoryBrowser : View {
     @State private var searchText : String = ""
+    @State private var gotoView_presented : Bool = false
     var path : String
     var subItems : [FSItem] {
         FSItem(path: self.path).subelements
@@ -125,53 +126,52 @@ struct DirectoryBrowser : View {
                 }
                 
             }) { subItem in
-                VStack(alignment: .leading) {
-                    HStack {
-                        // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-                        if subItem.isFolder {
-                            Image(systemName: "folder")
-                        } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-                            Image(systemName: "photo")
-                        } else if listExtensions.contains(getExtension(subItem.lastComponent)){
-                            Image(systemName: "list.bullet.indent")
-                        } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-                            Image(systemName: "doc.text.fill")
-                        } else {
-                            Image(systemName: "doc")
-                        }
-                        
+                HStack{
+                    // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+                    if subItem.isFolder {
+                        Image(systemName: "folder")
+                    } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+                        Image(systemName: "photo")
+                    } else if listExtensions.contains(getExtension(subItem.lastComponent)){
+                        Image(systemName: "list.bullet.indent")
+                    } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+                        Image(systemName: "doc.text.fill")
+                    } else {
+                        Image(systemName: "doc")
+                    }
+
+                    VStack(alignment: .leading) {
                         //Name of the file/directory
                         NavigationLink(destination: properView(for: subItem)){
                             Text(subItem.lastComponent)
                                 .font(.system(.headline, design: .rounded))
                                 .fontWeight(.medium)
                                 .foregroundColor(.blue)
-                                //.multilineTextAlignment(.leading)
-                                .padding(.leading)
                         }
                         
-                    }
-                    
-                    //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
-                    if subItem.isFolder {
-                      Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
-                        .foregroundColor(.secondary)
-                      
+                        //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+                        if subItem.isFolder {
+                            Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
                         } else {
                             Text(subItem.fileSize)
+                                .font(.subheadline)
                                 .foregroundColor(.secondary)
                         }
                     }
                 }
+            }
         }
         .contextMenu {
-            Text("Ambarabà")
-            Text("Ciccì")
-            Text("Cocò")
+            Button("Go To..."){
+                self.gotoView_presented = true
+            }.sheet(isPresented: $gotoView_presented, content: {gotoView()})
+            
         }
     }
 }
-/*
+
 // MARK: Go To View
 struct gotoView : View {
     @State var path : String = "/"
@@ -180,22 +180,14 @@ struct gotoView : View {
         VStack{
             Text("Go To...").bold()
             TextField("Path", text: $path)
-                .padding(.all)
-                .border(Color.secondary, width: 1)
-                .cornerRadius(3)
-                .padding(.all)
-            NavigationLink(destination: Browser(path: path)){
+            NavigationLink(destination: properView(for: FSItem(path: path))){
                 Text("Go")
-                    .foregroundColor(.primary)
                     .bold()
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(15)
             }
         }
     }
 }
-*/
+
 
 
 // Gets the file extension for later use

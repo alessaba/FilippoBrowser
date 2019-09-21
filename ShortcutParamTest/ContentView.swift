@@ -56,6 +56,8 @@ struct FileViewer : View {
         .onAppear { self.popoverPresented = true }
         .sheet(isPresented: $popoverPresented){
             ActivityView(activityItems: [readFile(self.path)], applicationActivities: nil)
+        }.onDisappear{
+            NSLog("Share Sheet dismissed.")
         }
         
 	}
@@ -226,7 +228,7 @@ struct gotoView : View {
                 .border(Color.secondary, width: 1)
                 .cornerRadius(3)
                 .padding(.all)
-            NavigationLink(destination: Browser(path: path)){
+            NavigationLink(destination: properView(for: FSItem(path: path))){
                 Text("Go")
                     .foregroundColor(.primary)
                     .bold()
