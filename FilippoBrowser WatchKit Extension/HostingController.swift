@@ -12,6 +12,6 @@ import SwiftUI
 
 class HostingController: WKHostingController<DirectoryBrowser> {
     override var body: DirectoryBrowser {
-        return DirectoryBrowser(path: "/")
+        return DirectoryBrowser(directory: FSItem(path: "/"))
     }
 }

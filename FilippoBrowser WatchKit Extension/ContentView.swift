@@ -16,18 +16,6 @@ let listExtensions = ["plist", "json"]
 let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 
 
-
-
-
-// MARK: File Viewer
-// This shows the contents of most types of common files
-struct FileViewer : View {
-    var path : String
-    var body: some View {
-        Text(self.path)
-    }
-}
-
 struct FSItem : Identifiable {
     
     var id =  UUID()
@@ -104,22 +92,30 @@ struct FSItem : Identifiable {
     }
 }
 
+
+// MARK: File Viewer
+// This shows the contents of most types of common files
+struct FileViewer : View {
+    var file : FSItem
+    var body: some View {
+        Text(self.file.path)
+    }
+}
+
+
 // MARK: Directory Viewer
 // This is the directory browser, it shows files and subdirectories of a folder
 struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
-    var path : String
-    var subItems : [FSItem] {
-        FSItem(path: self.path).subelements
-    }
+    var directory : FSItem
     var body: some View {
         List{
             Section{
                 TextField("Search...", text: $searchText)
             }
             
-            ForEach(subItems.filter{
+            ForEach(directory.subelements.filter{
                 // MARK: Search Function
                 // The entries will update automatically eveerytime searchText changes! 🤩
                 if searchText == ""{
@@ -207,11 +203,11 @@ func getExtension(_ path: String) -> String {
 
 
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
-func properView(for directory: FSItem) -> AnyView {
-    if directory.isFolder{
-        return AnyView(DirectoryBrowser(path: directory.path))
+func properView(for item: FSItem) -> AnyView {
+    if item.isFolder{
+        return AnyView(DirectoryBrowser(directory: item))
     } else {
-        return AnyView(FileViewer(path: directory.path))
+        return AnyView(FileViewer(file: item))
     }
 }
 
@@ -234,7 +230,7 @@ func readFile(_ path: String) -> Data {
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
     static var previews: some View {
-        DirectoryBrowser(path: "/")
+        DirectoryBrowser(directory: FSItem(path: "/"))
     }
 }
 #endif

@@ -25,7 +25,7 @@ struct Browser : View {
     
 	var body: some View {
 		NavigationView {
-			DirectoryBrowser(path: path)
+			DirectoryBrowser(directory: FSItem(path: path))
                 .navigationBarTitle(Text("File Browser"), displayMode: .inline)
             .navigationBarItems(
                 
@@ -44,26 +44,6 @@ struct Browser : View {
             )
 		}
 	}
-}
-
-
-// MARK: File Viewer
-// This shows the contents of most types of common files
-struct FileViewer : View {
-	
-	var path : String
-    @State private var popoverPresented : Bool = false
-	var body: some View {
-        Text(self.path)
-        .onAppear { self.popoverPresented = true }
-        .sheet(isPresented: $popoverPresented){
-            ActivityView(activityItems: [readFile(self.path)], applicationActivities: nil)
-        }.onDisappear{
-            NSLog("Share Sheet dismissed.")
-        }
-        
-	}
-	
 }
 
 struct FSItem : Identifiable {
@@ -142,21 +122,42 @@ struct FSItem : Identifiable {
 	}
 }
 
+
+// MARK: File Viewer
+// This shows the contents of most types of common files
+struct FileViewer : View {
+   
+    var file : FSItem
+    @State private var popoverPresented : Bool = false
+    
+    var body: some View {
+        Text(self.file.path)
+        .onAppear { self.popoverPresented = true }
+        .sheet(isPresented: $popoverPresented){
+            ActivityView(activityItems: [readFile(self.file.path)], applicationActivities: nil)
+        }.onDisappear{
+            NSLog("Share Sheet dismissed.")
+        }
+        
+    }
+    
+}
+
 // MARK: Directory Viewer
 // This is the directory browser, it shows files and subdirectories of a folder
 struct DirectoryBrowser : View {
+    
     @State private var searchText : String = ""
-	var path : String
-	var subItems : [FSItem] {
-		FSItem(path: self.path).subelements
-	}
+	var directory : FSItem
+    
 	var body: some View {
         List{
+            
             Section{
                 TextField("Search...", text: $searchText)
             }
             
-            ForEach(subItems.filter{
+            ForEach(directory.subelements.filter{
                 // MARK: Search Function
                 // The entries will update automatically eveerytime searchText changes! 🤩
                 if searchText == ""{
@@ -199,7 +200,7 @@ struct DirectoryBrowser : View {
                                     //Image(systemName: "doc")
                                     Button("Copy Path"){
                                         NSLog("Copy Path button pressed")
-                                        UIPasteboard.general.string = "file://" + self.path + subItem.lastComponent
+                                        UIPasteboard.general.string = "file://" + self.directory.path + subItem.lastComponent
                                     }
                                 }
                             }
@@ -224,7 +225,7 @@ struct DirectoryBrowser : View {
                     }
                 }
             .listStyle(GroupedListStyle())
-            .navigationBarTitle(Text(path), displayMode: .inline)
+            .navigationBarTitle(Text(directory.path), displayMode: .inline)
 	}
 }
 
@@ -281,11 +282,11 @@ func getExtension(_ path: String) -> String {
 
 
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
-func properView(for directory: FSItem) -> AnyView {
-	if directory.isFolder{
-		return AnyView(DirectoryBrowser(path: directory.path))
+func properView(for item: FSItem) -> AnyView {
+	if item.isFolder{
+		return AnyView(DirectoryBrowser(directory: item))
 	} else {
-		return AnyView(FileViewer(path: directory.path))
+        return AnyView(FileViewer(file: item))
 	}
 }
 
