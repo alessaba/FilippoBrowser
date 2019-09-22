@@ -111,9 +111,14 @@ struct FSItem : Identifiable {
 			return ""
 		}
 	}
-	
-	var subelementCount : Int {
-		return subelements.count
+    
+	// this is a dumb assumption
+	var rootProtected : Bool {
+        if isFolder && subelements.count == 0 {
+            return true
+        } else {
+            return false
+        }
 	}
 	
 	var subelements : [FSItem] {
@@ -164,22 +169,29 @@ struct DirectoryBrowser : View {
             }) { subItem in
                 HStack {
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-                    if subItem.isFolder {
-                        Image(systemName: "folder")
-                    } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-                        Image(systemName: "photo")
-                    } else if listExtensions.contains(getExtension(subItem.lastComponent)){
-                        Image(systemName: "list.bullet.indent")
-                    } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-                        Image(systemName: "doc.text.fill")
-                    } else {
-                        Image(systemName: "doc")
+                    Group{
+                        if subItem.isFolder {
+                            Image(systemName: "folder.fill")
+                        } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+                            Image(systemName: "photo.fill")
+                        } else if listExtensions.contains(getExtension(subItem.lastComponent)){
+                            Image(systemName: "list.bullet.indent")
+                        } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+                            Image(systemName: "doc.text.fill")
+                        } else {
+                            Image(systemName: "doc.fill")
+                        }
                     }
+                    .foregroundColor((subItem.rootProtected) ? .orange : .green)
+                    
+                    
+                        
                     
                     //Name of the file/directory
                     NavigationLink(destination: properView(for: subItem)){
                         Text(subItem.lastComponent)
                             .fontWeight(.semibold)
+                            .lineLimit(1)
                             .foregroundColor(.blue)
                             .padding(.leading)
                             .contextMenu{
@@ -189,7 +201,6 @@ struct DirectoryBrowser : View {
                                         NSLog("Copy Path button pressed")
                                         UIPasteboard.general.string = "file://" + self.path + subItem.lastComponent
                                     }
-                                    
                                 }
                             }
                     }
@@ -198,7 +209,7 @@ struct DirectoryBrowser : View {
                     //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
                     if subItem.isFolder {
                       
-                        Text("\(subItem.subelementCount) \((subItem.subelementCount != 1) ? "elements" : "element" )")
+                        Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
                           .foregroundColor(.secondary)
                             .padding(.leading)
                       
