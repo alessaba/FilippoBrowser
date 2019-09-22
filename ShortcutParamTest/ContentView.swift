@@ -134,7 +134,7 @@ struct FileViewer : View {
         Text(self.file.path)
         .onAppear { self.popoverPresented = true }
         .sheet(isPresented: $popoverPresented){
-            ActivityView(activityItems: [readFile(self.file.path)], applicationActivities: nil)
+            ActivityView(activityItems: [URL(string: "file://" + self.file.path)!], applicationActivities: nil)
         }.onDisappear{
             NSLog("Share Sheet dismissed.")
         }
@@ -290,10 +290,9 @@ func properView(for item: FSItem) -> AnyView {
 	}
 }
 
-
-// Tries to read txt files
+/*
+// Tries to read files
 func readFile(_ path: String) -> Data {
-	//let data = Data(contentsOf: URL(string: path))
     var data : Data
 	do{
 		data = try Data(contentsOf: URL(string: "file://" + path)!)
@@ -302,7 +301,7 @@ func readFile(_ path: String) -> Data {
 	}
 	return data
 }
-
+*/
 
 
 
