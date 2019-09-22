@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import UIKit
+import WatchKit
 import Foundation
 
 let fm = FileManager.default //Instance of the default file manager. we'll need it later
