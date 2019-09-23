@@ -112,6 +112,9 @@ struct DirectoryBrowser : View {
     var body: some View {
         List{
             Section{
+                NavigationLink(destination: gotoView()){
+                        Text("Go To...")
+                }
                 TextField("Search...", text: $searchText)
             }
             
@@ -167,11 +170,11 @@ struct DirectoryBrowser : View {
                 }
             }
         }
-        .contextMenu {
+        /*.contextMenu {
             Button("Go To..."){
                 self.gotoView_presented = true
             }.sheet(isPresented: $gotoView_presented, content: {gotoView()})
-        }
+        }*/
     }
 }
 
@@ -183,13 +186,13 @@ struct gotoView : View {
         VStack{
             Text("Go To...").bold()
             TextField("Path", text: $path)
-            Button("Go"){
+            /*Button("Go"){
                 self.viewPushed = true
-            }.sheet(isPresented: $viewPushed, content: {properView(for: FSItem(path: self.path))})
-            /*NavigationLink(destination: properView(for: FSItem(path: path))){
+            }.sheet(isPresented: $viewPushed, content: {properView(for: FSItem(path: self.path))})*/
+            NavigationLink(destination: properView(for: FSItem(path: path))){
                 Text("Go")
                     .bold()
-            }*/
+            }
         }
     }
 }
