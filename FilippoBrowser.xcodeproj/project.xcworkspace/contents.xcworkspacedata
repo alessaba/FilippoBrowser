@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:ShortcutParamTest.xcodeproj">
+      location = "self:/Volumes/DATI/Macintosh/Documents/Xcode/ShortcutParamTest/FilippoBrowser.xcodeproj">
    </FileRef>
 </Workspace>

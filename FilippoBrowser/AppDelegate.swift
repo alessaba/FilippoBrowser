@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  ShortcutParamTest
+//  FilippoBrowser
 //
 //  Created by Filippo Claudi on 09/06/2019.
 //  Copyright © 2019 Filippo Claudi. All rights reserved.
