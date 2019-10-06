@@ -118,8 +118,11 @@ struct DirectoryBrowser : View {
 			Button(action: {
 				setFavorite(name: self.directory.lastComponent, path: self.directory.path)
 			}){
-				//Image(systemName: "heart.circle.fill")
-				Text("Add to Favorites ♥️")
+				VStack{
+					Image(systemName: "heart.fill")
+					Text("Add to Favorites ")
+				}
+				
 				// Shows two Separate actions :-(
 			}
 		}
