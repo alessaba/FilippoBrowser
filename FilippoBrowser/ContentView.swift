@@ -170,32 +170,47 @@ struct gotoView : View {
 	@State var path : String = "/"
 	
 	var body : some View {
-		VStack{
+        VStack{
             Text("Go To...").bold()
             TextField("Path", text: $path)
                 .padding(.all)
                 .background(Color.gray)
                 .cornerRadius(15)
                 .padding(.all)
-            NavigationLink(destination: properView(for: FSItem(path: path))){
-                Text("Go")
-                    .foregroundColor(.primary)
-                    .bold()
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(15)
-            }
-			Spacer()
-			NavigationLink(destination: favoritesView()){
-				Text("Favorites ♥️")
-					.foregroundColor(.primary)
-					.bold()
-					.padding()
-					.background(Color.blue)
-					.cornerRadius(15)
-			}
-		}
-	}
+            HStack{
+                NavigationLink(destination: favoritesView()){
+                    Text("Favorites ♥️")
+                        .foregroundColor(.primary)
+                        .bold()
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(15)
+                }
+                
+                Spacer()
+                
+                NavigationLink(destination: properView(for: FSItem(path: path))){
+                    Text("Go")
+                        .foregroundColor(.primary)
+                        .bold()
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(15)
+                }
+                
+                Spacer()
+                
+                NavigationLink(destination: properView(for: FSItem(path: NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]))){
+                    Text("Documents")
+                        .foregroundColor(.primary)
+                        .bold()
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(15)
+                }
+            }.padding(.horizontal)
+        }
+    }
 }
 
 extension String : Identifiable{
@@ -207,18 +222,10 @@ extension String : Identifiable{
 struct favoritesView : View {
 	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
 	
-	var allKeys : [String]{
-		var allK : [String] = []
-		for key in userDefaultsKeys{
-			if key.starts(with: "FB_"){
-				allK.append(key)
-			}
-		}
-		return allK
-	}
-	
 	var body : some View{
-		List(allKeys){ key in
+		List(userDefaultsKeys.filter{
+            return $0.starts(with: "FB_")
+        }){ key in
 			NavigationLink(destination:
 				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/")))
 			{
