@@ -125,6 +125,7 @@ struct DirectoryBrowser : View {
 								VStack {
 									Button(action: {
 										setFavorite(name: subItem.lastComponent, path: subItem.path)
+										NSLog("Added to Favorites.")
 									}){
 										Image(systemName: "heart.circle.fill")
 										Text("Add to Favorites")
@@ -206,20 +207,30 @@ extension String : Identifiable{
 struct favoritesView : View {
 	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
 	
-	func allKeys() -> [String]{
+	var allKeys : [String]{
 		var allK : [String] = []
 		for key in userDefaultsKeys{
 			if key.starts(with: "FB_"){
-				allK.append(String(key.split(separator: "_").last!))
+				allK.append(key)
 			}
 		}
 		return allK
 	}
 	
 	var body : some View{
-		List(allKeys()){ key in
-			NavigationLink(destination: properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))){
-				Text(key)
+		List(allKeys){ key in
+			NavigationLink(destination:
+				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/")))
+			{
+				Text(String(key.split(separator: "_").last!))
+					.contextMenu{
+						Button(action: {
+							userDefaults.removeObject(forKey: key)
+						}){
+							Image(systemName: "bin.xmark.fill")
+							Text("Delete")
+						}.foregroundColor(.red)
+					}
 			}
 			.listStyle(GroupedListStyle())
 		}
@@ -264,20 +275,6 @@ func properView(for item: FSItem) -> AnyView {
         return AnyView(FileViewer(file: item))
 	}
 }
-
-/*
-// Tries to read files
-func readFile(_ path: String) -> Data {
-    var data : Data
-	do{
-		data = try Data(contentsOf: URL(string: "file://" + path)!)
-	} catch {
-		data = Data()
-	}
-	return data
-}
-*/
-
 
 
 

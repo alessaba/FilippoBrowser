@@ -117,13 +117,12 @@ struct DirectoryBrowser : View {
 			*/
 			Button(action: {
 				setFavorite(name: self.directory.lastComponent, path: self.directory.path)
+				NSLog("Added favourite!")
 			}){
 				VStack{
 					Image(systemName: "heart.fill")
 					Text("Add to Favorites ")
 				}
-				
-				// Shows two Separate actions :-(
 			}
 		}
     }
@@ -135,11 +134,8 @@ struct gotoView : View {
     @State private var viewPushed : Bool = false
     var body : some View {
         VStack{
-            Text("Go To...").bold()
+			Spacer()
             TextField("Path", text: $path)
-            /*Button("Go"){
-                self.viewPushed = true
-            }.sheet(isPresented: $viewPushed, content: {properView(for: FSItem(path: self.path))})*/
             NavigationLink(destination: properView(for: FSItem(path: path))){
                 Text("Go")
                     .bold()
@@ -163,20 +159,22 @@ extension String : Identifiable{
 struct favoritesView : View {
 	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
 	
-	func allKeys() -> [String]{
+	var allKeys : [String]{
 		var allK : [String] = []
 		for key in userDefaultsKeys{
 			if key.starts(with: "FB_"){
-				allK.append(String(key.split(separator: "_").last!))
+				allK.append(key)
 			}
 		}
 		return allK
 	}
 	
 	var body : some View{
-		List(allKeys()){ key in
-			NavigationLink(destination: properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))){
-				Text(key)
+		List(allKeys){ key in
+			NavigationLink(destination:
+				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/")))
+			{
+				Text(String(key.split(separator: "_").last!))
 			}
 		}
 	}
@@ -204,7 +202,6 @@ func properView(for item: FSItem) -> AnyView {
 
 // Tries to read txt files
 func readFile(_ path: String) -> Data {
-    //let data = Data(contentsOf: URL(string: path))
     var data : Data
     do{
         data = try Data(contentsOf: URL(string: "file://" + path)!)
