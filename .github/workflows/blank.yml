@@ -1,0 +1,15 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macOS-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build Project
+      run: |
+        xcodebuild -project FilippoBrowser.xcodeproj -scheme FilippoBrowser build
+        echo Done.
