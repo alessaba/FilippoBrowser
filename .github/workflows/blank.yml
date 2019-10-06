@@ -11,5 +11,5 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build Project
       run: |
-        xcodebuild -project FilippoBrowser.xcodeproj -scheme ShortcutParamTest build
+        xcodebuild -project FilippoBrowser.xcodeproj -list build
         echo Done.
