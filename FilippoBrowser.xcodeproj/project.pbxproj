@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,6 +16,14 @@
 		0B4BED9E233531DA005E5BB1 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BED9D233531DA005E5BB1 /* ComplicationController.swift */; };
 		0B4BEDA0233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED9F233531DA005E5BB1 /* Assets.xcassets */; };
 		0B4BEDA3233531DA005E5BB1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */; };
+		0BBC8B652349D3AF007A6EFB /* FBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BBC8B632349D3AF007A6EFB /* FBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0BBC8B682349D3AF007A6EFB /* FBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; };
+		0BBC8B692349D3AF007A6EFB /* FBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0BBC8B702349D40B007A6EFB /* FSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC8B6F2349D40B007A6EFB /* FSItem.swift */; };
+		0BBC8B852349D906007A6EFB /* FBrowser_Watch.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BBC8B832349D906007A6EFB /* FBrowser_Watch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0BBC8B882349D906007A6EFB /* FBrowser_Watch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B812349D906007A6EFB /* FBrowser_Watch.framework */; };
+		0BBC8B892349D906007A6EFB /* FBrowser_Watch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B812349D906007A6EFB /* FBrowser_Watch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0BBC8B8D2349D90D007A6EFB /* FSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC8B6F2349D40B007A6EFB /* FSItem.swift */; };
 		0BD2431F22AD5296006A4929 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2431E22AD5296006A4929 /* AppDelegate.swift */; };
 		0BD2432122AD5296006A4929 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2432022AD5296006A4929 /* SceneDelegate.swift */; };
 		0BD2432322AD5296006A4929 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2432222AD5296006A4929 /* ContentView.swift */; };
@@ -36,6 +44,20 @@
 			remoteGlobalIDString = 0B4BED91233531DA005E5BB1;
 			remoteInfo = "FilippoBrowser WatchKit Extension";
 		};
+		0BBC8B662349D3AF007A6EFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0BBC8B602349D3AF007A6EFB;
+			remoteInfo = FBrowser;
+		};
+		0BBC8B862349D906007A6EFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0BBC8B802349D906007A6EFB;
+			remoteInfo = "FBrowser Watch";
+		};
 		0BD2433B22AD52C0006A4929 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
@@ -55,6 +77,28 @@
 				0B4BED93233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B6A2349D3AF007A6EFB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0BBC8B692349D3AF007A6EFB /* FBrowser.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B732349D4FF007A6EFB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0BBC8B892349D906007A6EFB /* FBrowser_Watch.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0BD2434122AD52C0006A4929 /* Embed App Extensions */ = {
@@ -83,6 +127,12 @@
 		0B4BED9F233531DA005E5BB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0B4BEDA4233531DA005E5BB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0BBC8B612349D3AF007A6EFB /* FBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BBC8B632349D3AF007A6EFB /* FBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBrowser.h; sourceTree = "<group>"; };
+		0BBC8B642349D3AF007A6EFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0BBC8B6F2349D40B007A6EFB /* FSItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSItem.swift; sourceTree = "<group>"; };
+		0BBC8B812349D906007A6EFB /* FBrowser_Watch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FBrowser_Watch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0BBC8B832349D906007A6EFB /* FBrowser_Watch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBrowser_Watch.h; sourceTree = "<group>"; };
 		0BD2431B22AD5296006A4929 /* FilippoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilippoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BD2431E22AD5296006A4929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BD2432022AD5296006A4929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +152,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BBC8B882349D906007A6EFB /* FBrowser_Watch.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B5E2349D3AF007A6EFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B7A2349D7FF007A6EFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B7E2349D906007A6EFB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BBC8B682349D3AF007A6EFB /* FBrowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +227,31 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		0BBC8B622349D3AF007A6EFB /* FBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				0BBC8B832349D906007A6EFB /* FBrowser_Watch.h */,
+				0BBC8B632349D3AF007A6EFB /* FBrowser.h */,
+				0BBC8B642349D3AF007A6EFB /* Info.plist */,
+				0BBC8B6F2349D40B007A6EFB /* FSItem.swift */,
+			);
+			path = FBrowser;
+			sourceTree = "<group>";
+		};
+		0BBC8B752349D7FF007A6EFB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0BBC8B822349D906007A6EFB /* FBrowser Watch */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "FBrowser Watch";
+			sourceTree = "<group>";
+		};
 		0BD2431222AD5296006A4929 = {
 			isa = PBXGroup;
 			children = (
@@ -161,7 +259,10 @@
 				0BD2433722AD52C0006A4929 /* FileBrowserIntent */,
 				0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
+				0BBC8B622349D3AF007A6EFB /* FBrowser */,
+				0BBC8B822349D906007A6EFB /* FBrowser Watch */,
 				0BD2431C22AD5296006A4929 /* Products */,
+				0BBC8B752349D7FF007A6EFB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,6 +273,8 @@
 				0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */,
 				0B4BED83233531D9005E5BB1 /* FilippoBrowser WatchKit App.app */,
 				0B4BED92233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex */,
+				0BBC8B612349D3AF007A6EFB /* FBrowser.framework */,
+				0BBC8B812349D906007A6EFB /* FBrowser_Watch.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -210,6 +313,25 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		0BBC8B5C2349D3AF007A6EFB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BBC8B652349D3AF007A6EFB /* FBrowser.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B7C2349D906007A6EFB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BBC8B852349D906007A6EFB /* FBrowser_Watch.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		0B4BED82233531D9005E5BB1 /* FilippoBrowser WatchKit App */ = {
 			isa = PBXNativeTarget;
@@ -217,6 +339,7 @@
 			buildPhases = (
 				0B4BED81233531D9005E5BB1 /* Resources */,
 				0B4BEDAA233531DA005E5BB1 /* Embed App Extensions */,
+				0BBC8B7A2349D7FF007A6EFB /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -235,15 +358,53 @@
 				0B4BED8E233531DA005E5BB1 /* Sources */,
 				0B4BED8F233531DA005E5BB1 /* Frameworks */,
 				0B4BED90233531DA005E5BB1 /* Resources */,
+				0BBC8B732349D4FF007A6EFB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0BBC8B872349D906007A6EFB /* PBXTargetDependency */,
 			);
 			name = "FilippoBrowser WatchKit Extension";
 			productName = "FilippoBrowser WatchKit Extension";
 			productReference = 0B4BED92233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		0BBC8B602349D3AF007A6EFB /* FBrowser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BBC8B6D2349D3AF007A6EFB /* Build configuration list for PBXNativeTarget "FBrowser" */;
+			buildPhases = (
+				0BBC8B5C2349D3AF007A6EFB /* Headers */,
+				0BBC8B5D2349D3AF007A6EFB /* Sources */,
+				0BBC8B5E2349D3AF007A6EFB /* Frameworks */,
+				0BBC8B5F2349D3AF007A6EFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FBrowser;
+			productName = FBrowser;
+			productReference = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		0BBC8B802349D906007A6EFB /* FBrowser Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BBC8B8A2349D906007A6EFB /* Build configuration list for PBXNativeTarget "FBrowser Watch" */;
+			buildPhases = (
+				0BBC8B7C2349D906007A6EFB /* Headers */,
+				0BBC8B7D2349D906007A6EFB /* Sources */,
+				0BBC8B7E2349D906007A6EFB /* Frameworks */,
+				0BBC8B7F2349D906007A6EFB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FBrowser Watch";
+			productName = "FBrowser Watch";
+			productReference = 0BBC8B812349D906007A6EFB /* FBrowser_Watch.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		0BD2431A22AD5296006A4929 /* FilippoBrowser */ = {
 			isa = PBXNativeTarget;
@@ -253,11 +414,13 @@
 				0BD2431822AD5296006A4929 /* Frameworks */,
 				0BD2431922AD5296006A4929 /* Resources */,
 				0BD2434122AD52C0006A4929 /* Embed App Extensions */,
+				0BBC8B6A2349D3AF007A6EFB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				0BD2433C22AD52C0006A4929 /* PBXTargetDependency */,
+				0BBC8B672349D3AF007A6EFB /* PBXTargetDependency */,
 			);
 			name = FilippoBrowser;
 			productName = ShortcutParamTest;
@@ -297,6 +460,13 @@
 					0B4BED91233531DA005E5BB1 = {
 						CreatedOnToolsVersion = 11.0;
 					};
+					0BBC8B602349D3AF007A6EFB = {
+						CreatedOnToolsVersion = 11.2;
+						LastSwiftMigration = 1120;
+					};
+					0BBC8B802349D906007A6EFB = {
+						CreatedOnToolsVersion = 11.2;
+					};
 					0BD2431A22AD5296006A4929 = {
 						CreatedOnToolsVersion = 11.0;
 					};
@@ -306,7 +476,7 @@
 				};
 			};
 			buildConfigurationList = 0BD2431622AD5296006A4929 /* Build configuration list for PBXProject "FilippoBrowser" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 11.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -322,6 +492,8 @@
 				0BD2433522AD52C0006A4929 /* FileBrowserIntent */,
 				0B4BED82233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED91233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
+				0BBC8B602349D3AF007A6EFB /* FBrowser */,
+				0BBC8B802349D906007A6EFB /* FBrowser Watch */,
 			);
 		};
 /* End PBXProject section */
@@ -342,6 +514,20 @@
 			files = (
 				0B4BEDA3233531DA005E5BB1 /* Preview Assets.xcassets in Resources */,
 				0B4BEDA0233531DA005E5BB1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B5F2349D3AF007A6EFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B7F2349D906007A6EFB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +562,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0BBC8B5D2349D3AF007A6EFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BBC8B702349D40B007A6EFB /* FSItem.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0BBC8B7D2349D906007A6EFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0BBC8B8D2349D90D007A6EFB /* FSItem.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0BD2431722AD5296006A4929 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -403,6 +605,16 @@
 			isa = PBXTargetDependency;
 			target = 0B4BED91233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */;
 			targetProxy = 0B4BED94233531DA005E5BB1 /* PBXContainerItemProxy */;
+		};
+		0BBC8B672349D3AF007A6EFB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0BBC8B602349D3AF007A6EFB /* FBrowser */;
+			targetProxy = 0BBC8B662349D3AF007A6EFB /* PBXContainerItemProxy */;
+		};
+		0BBC8B872349D906007A6EFB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0BBC8B802349D906007A6EFB /* FBrowser Watch */;
+			targetProxy = 0BBC8B862349D906007A6EFB /* PBXContainerItemProxy */;
 		};
 		0BD2433C22AD52C0006A4929 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -440,13 +652,17 @@
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				IBSC_MODULE = FilippoBrowser_WatchKit_Extension;
 				INFOPLIST_FILE = "FilippoBrowser WatchKit App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 6.1;
 			};
 			name = Debug;
 		};
@@ -459,13 +675,17 @@
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				IBSC_MODULE = FilippoBrowser_WatchKit_Extension;
 				INFOPLIST_FILE = "FilippoBrowser WatchKit App/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 6.1;
 			};
 			name = Release;
 		};
@@ -489,7 +709,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 6.1;
 			};
 			name = Debug;
 		};
@@ -513,7 +733,126 @@
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+			};
+			name = Release;
+		};
+		0BBC8B6B2349D3AF007A6EFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FBrowser/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		0BBC8B6C2349D3AF007A6EFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FBrowser/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		0BBC8B8B2349D906007A6EFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "FBrowser Watch/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "claudi.filippo.FBrowser-Watch";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 6.1;
+			};
+			name = Debug;
+		};
+		0BBC8B8C2349D906007A6EFB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "FBrowser Watch/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "claudi.filippo.FBrowser-Watch";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 6.1;
 			};
 			name = Release;
 		};
@@ -728,6 +1067,24 @@
 			buildConfigurations = (
 				0B4BEDA8233531DA005E5BB1 /* Debug */,
 				0B4BEDA9233531DA005E5BB1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0BBC8B6D2349D3AF007A6EFB /* Build configuration list for PBXNativeTarget "FBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BBC8B6B2349D3AF007A6EFB /* Debug */,
+				0BBC8B6C2349D3AF007A6EFB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0BBC8B8A2349D906007A6EFB /* Build configuration list for PBXNativeTarget "FBrowser Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0BBC8B8B2349D906007A6EFB /* Debug */,
+				0BBC8B8C2349D906007A6EFB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

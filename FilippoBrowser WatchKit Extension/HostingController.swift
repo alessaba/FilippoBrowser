@@ -9,6 +9,7 @@
 import WatchKit
 import Foundation
 import SwiftUI
+import FBrowser_Watch
 
 class HostingController: WKHostingController<DirectoryBrowser> {
     override var body: DirectoryBrowser {

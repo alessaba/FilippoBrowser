@@ -9,8 +9,9 @@
 import SwiftUI
 import UIKit
 import Foundation
+import FBrowser
 
-let fm = FileManager.default //Instance of the default file manager. we'll need it later
+let userDefaults = UserDefaults.standard
 let textExtensions = ["txt"]
 let listExtensions = ["plist", "json"]
 let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
@@ -42,82 +43,6 @@ struct Browser : View {
                 }
                 
             )
-		}
-	}
-}
-
-struct FSItem : Identifiable {
-	
-	var id =  UUID()
-	var path : String
-	
-	var lastComponent : String {
-		String(self.path.split(separator: "/").last ?? "")
-	}
-	
-	var isFolder : Bool {
-		var isFoldr : ObjCBool = false
-		fm.fileExists(atPath: path, isDirectory: &isFoldr)
-		return isFoldr.boolValue
-	}
-	
-	var fileSize : String {
-		if !isFolder{
-			var fileSize : UInt64
-			var fileSizeString : String = ""
-			do {
-				var gp = self.path
-				gp.removeLast() // BAD WORKAROUND. MUST REMOVE ASAP
-				let attr = try FileManager.default.attributesOfItem(atPath: gp)
-				fileSize = attr[FileAttributeKey.size] as! UInt64
-			} catch {
-				fileSize = 0
-			}
-			
-			if fileSize < 1024 {
-				fileSizeString = "\(fileSize) bytes"
-			} else if fileSize >= 1024 && fileSize < 1048576 {
-				fileSizeString = "\(fileSize / 1024) KB"
-			} else if fileSize >= 1048576 && fileSize < 1073741824 {
-				fileSizeString = "\(fileSize / 1048576) MB"
-			} else if fileSize >= 1073741824 && fileSize < 1099511627776 {
-				fileSizeString = "\(fileSize / 1073741824) GB"
-            } else {
-                fileSizeString = "\(fileSize / 1099511627776) TB" // We'll probably reach this condition in 2030 but thatever lol
-            }
-			
-			return fileSizeString
-		} else {
-			return ""
-		}
-	}
-    
-	// this is a dumb assumption
-	var rootProtected : Bool {
-        if isFolder && subelements.count == 0 {
-            return true
-        } else {
-            return false
-        }
-	}
-	
-	var subelements : [FSItem] {
-		do{
-			// Gonna do some exceptions for System and usr, else we'll judt get the files
-			if path == "/System/"{
-				return [FSItem(path: "/System/Library/")]
-			} else if path == "/usr/" {
-				return [FSItem(path: "/usr/lib/")]
-			} else {
-				var subDirs : [FSItem] = []
-                for sd in try fm.contentsOfDirectory(atPath: path) {
-                    subDirs.append(FSItem(path: "\(self.path)\(sd)/"))
-                }
-				return subDirs
-			}
-		} catch {
-			NSLog("\(path) probably has root permissions")
-			return []
 		}
 	}
 }
@@ -196,13 +121,23 @@ struct DirectoryBrowser : View {
                             .foregroundColor(.blue)
                             .padding(.leading)
                             .contextMenu{
-                                HStack{
-                                    //Image(systemName: "doc")
-                                    Button("Copy Path"){
-                                        NSLog("Copy Path button pressed")
-                                        UIPasteboard.general.string = "file://" + self.directory.path + subItem.lastComponent
-                                    }
-                                }
+								
+								VStack {
+									Button(action: {
+										setFavorite(name: subItem.lastComponent, path: subItem.path)
+									}){
+										Image(systemName: "heart.circle.fill")
+										Text("Add to Favorites")
+									}
+									
+									Button(action: {
+										NSLog("Copy Path button pressed")
+										UIPasteboard.general.string = "file://" + self.directory.path + subItem.lastComponent
+									}){
+										Image(systemName: "doc.circle.fill")
+										Text("Copy Path")
+									}
+								}
                             }
                     }
                     
@@ -249,10 +184,47 @@ struct gotoView : View {
                     .background(Color.blue)
                     .cornerRadius(15)
             }
+			Spacer()
+			NavigationLink(destination: favoritesView()){
+				Text("Favorites ♥️")
+					.foregroundColor(.primary)
+					.bold()
+					.padding()
+					.background(Color.blue)
+					.cornerRadius(15)
+			}
 		}
 	}
 }
 
+extension String : Identifiable{
+	public var id : UUID {
+		return UUID()
+	}
+}
+
+struct favoritesView : View {
+	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
+	
+	func allKeys() -> [String]{
+		var allK : [String] = []
+		for key in userDefaultsKeys{
+			if key.starts(with: "FB_"){
+				allK.append(String(key.split(separator: "_").last!))
+			}
+		}
+		return allK
+	}
+	
+	var body : some View{
+		List(allKeys()){ key in
+			NavigationLink(destination: properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))){
+				Text(key)
+			}
+			.listStyle(GroupedListStyle())
+		}
+	}
+}
 
 
 // MARK: – Helper Functions
@@ -280,6 +252,9 @@ func getExtension(_ path: String) -> String {
 	return String(path.split(separator: ".").last ?? "")
 }
 
+public func setFavorite(name : String, path : String) {
+	userDefaults.set(path, forKey: "FB_\(name)")
+}
 
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
 func properView(for item: FSItem) -> AnyView {
