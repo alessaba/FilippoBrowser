@@ -10,6 +10,7 @@ import SwiftUI
 import UIKit
 import Foundation
 import FBrowser
+//import NotificationCenter
 
 let userDefaults = UserDefaults.standard
 let textExtensions = ["txt"]
@@ -22,7 +23,7 @@ let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 struct Browser : View {
 	
 	var path : String
-    @State private var gotoView_presented : Bool = false // We need it for presenting the popover 🙄
+    @State private var watchFilesPresented : Bool = false // We need it for presenting the popover 🙄
     
 	var body: some View {
 		NavigationView {
@@ -43,6 +44,10 @@ struct Browser : View {
                 }
                 
             )
+		}.onAppear{
+			//NotificationCenter.default.addObserver(self, selector: #selector("watchFileReceived"), name: Notification.Name("watchFileReceived"), object: nil)
+		}.sheet(isPresented: $watchFilesPresented){
+			properView(for: FSItem(path: NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]))
 		}
 	}
 }
@@ -177,23 +182,36 @@ struct gotoView : View {
                 .background(Color.gray)
                 .cornerRadius(15)
                 .padding(.all)
-            NavigationLink(destination: properView(for: FSItem(path: path))){
-                Text("Go")
-                    .foregroundColor(.primary)
-                    .bold()
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(15)
-            }
-			Spacer()
-			NavigationLink(destination: favoritesView()){
-				Text("Favorites ♥️")
-					.foregroundColor(.primary)
-					.bold()
-					.padding()
-					.background(Color.blue)
-					.cornerRadius(15)
-			}
+			HStack{
+				NavigationLink(destination: favoritesView()){
+					Text("Favorites ♥️")
+						.foregroundColor(.primary)
+						.bold()
+						.padding()
+						.background(Color.blue)
+						.cornerRadius(15)
+				}
+				Spacer()
+				
+				NavigationLink(destination: properView(for: FSItem(path: path))){
+					Text("Go")
+						.foregroundColor(.primary)
+						.bold()
+						.padding()
+						.background(Color.blue)
+						.cornerRadius(15)
+				}
+				
+				Spacer()
+				NavigationLink(destination: properView(for: FSItem(path: NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]))){
+					Text("Documents")
+						.foregroundColor(.primary)
+						.bold()
+						.padding()
+						.background(Color.blue)
+						.cornerRadius(15)
+				}
+			}.padding(.horizontal)
 		}
 	}
 }
@@ -205,23 +223,15 @@ extension String : Identifiable{
 }
 
 struct favoritesView : View {
-	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
-	
-	var allKeys : [String]{
-		var allK : [String] = []
-		for key in userDefaultsKeys{
-			if key.starts(with: "FB_"){
-				allK.append(key)
-			}
-		}
-		return allK
-	}
+	var userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
 	
 	var body : some View{
-		List(allKeys){ key in
+		List(userDefaultsKeys.filter{
+			return $0.starts(with: "FB_")
+		}){ key in
 			NavigationLink(destination:
-				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/")))
-			{
+				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
+			){
 				Text(String(key.split(separator: "_").last!))
 					.contextMenu{
 						Button(action: {
@@ -230,7 +240,7 @@ struct favoritesView : View {
 							Image(systemName: "bin.xmark.fill")
 							Text("Delete")
 						}.foregroundColor(.red)
-					}
+				}
 			}
 			.listStyle(GroupedListStyle())
 		}

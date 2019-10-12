@@ -133,19 +133,25 @@ struct gotoView : View {
     @State var path : String = "/"
     @State private var viewPushed : Bool = false
     var body : some View {
-        VStack{
-			Spacer()
-            TextField("Path", text: $path)
-            NavigationLink(destination: properView(for: FSItem(path: path))){
-                Text("Go")
-                    .bold()
-            }
-			Spacer()
+		ScrollView{
+			
+			TextField("Path", text: $path)
+			
+			NavigationLink(destination: properView(for: FSItem(path: path))){
+				Text("Go")
+					.bold()
+			}
+			
 			NavigationLink(destination: favoritesView()){
 				Text("Favorites ♥️")
 					.bold()
 			}
-        }
+			
+			NavigationLink(destination: properView(for: FSItem(path: NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]))){
+				Text("Documents")
+					.bold()
+			}
+		}
     }
 }
 
@@ -158,22 +164,14 @@ extension String : Identifiable{
 
 struct favoritesView : View {
 	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
-	
-	var allKeys : [String]{
-		var allK : [String] = []
-		for key in userDefaultsKeys{
-			if key.starts(with: "FB_"){
-				allK.append(key)
-			}
-		}
-		return allK
-	}
-	
+
 	var body : some View{
-		List(allKeys){ key in
+		List(userDefaultsKeys.filter{
+			return $0.starts(with: "FB_")
+		}){ key in
 			NavigationLink(destination:
-				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/")))
-			{
+				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
+			){
 				Text(String(key.split(separator: "_").last!))
 			}
 		}

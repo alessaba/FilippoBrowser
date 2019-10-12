@@ -7,6 +7,10 @@
 //
 
 import UIKit
+import WatchConnectivity
+import UserNotifications
+
+public let un = UNUserNotificationCenter.current()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +19,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
+		
+		
+		un.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
+			NSLog("Notification Authorization Granted.")
+		}
+		
+		if WCSession.isSupported(){
+			let watchSession = WCSession.default
+			watchSession.delegate = WatchDelegate()
+			watchSession.activate()
+		} else {
+			NSLog("Device not supported or Apple Watch is not paired.")
+		}
+		
 		return true
 	}
 
@@ -37,5 +55,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 
+}
+
+class WatchDelegate : NSObject, WCSessionDelegate {
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+		NSLog("WatchConnectivity session completed with status: \(activationState.rawValue)")
+	}
+	
+	func sessionDidBecomeInactive(_ session: WCSession) {
+		// Session Inactive
+	}
+	
+	func sessionDidDeactivate(_ session: WCSession) {
+		// Session deactivated
+	}
+	
+	func session(_ session: WCSession, didReceive file: WCSessionFile) {
+		let fm = FileManager.default
+		let docsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]
+		do{
+			try fm.copyItem(at: file.fileURL, to: URL(string: "file://\(docsDirectory)")!)
+			
+			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
+			
+			let notificationContent = UNMutableNotificationContent()
+			notificationContent.badge = 1
+			notificationContent.title = "Watch File"
+			notificationContent.body = "Your Apple Watch just shared \(filename) with you 😃"
+			
+			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
+			let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
+			
+			un.add(request, withCompletionHandler: nil)
+		}catch{
+			NSLog("WatchConnectivity file transfer failed :-(")
+		}
+	}
 }
 
