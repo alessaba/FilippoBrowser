@@ -65,7 +65,7 @@ struct DirectoryBrowser : View {
                     return true // Every item will be shown
                 } else {
                     // Only the items containing the search term will be shown (fuzzy too 🤩)
-                    return $0.lastComponent.contains(searchText)
+					return $0.lastComponent.lowercased().contains(searchText.lowercased())
                 }
                 
             }) { subItem in
