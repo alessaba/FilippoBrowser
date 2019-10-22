@@ -25,6 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSLog("Notification Authorization Granted.")
 		}
 		
+		NSLog("Session supported: \(WCSession.isSupported())")
 		if WCSession.isSupported(){
 			let watchSession = WCSession.default
 			watchSession.delegate = WatchDelegate()
