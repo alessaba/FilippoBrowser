@@ -28,18 +28,25 @@ class SessionDelegate : NSObject, WCSessionDelegate{
 // MARK: File Viewer
 // This shows the contents of most types of common files
 struct FileViewer : View {
-    var file : FSItem
-    var body: some View {
-        Text(self.file.path)
-			.onAppear{
-				if WCSession.isSupported() {
-					let session = WCSession.default
-					session.delegate = SessionDelegate()
-					session.activate()
-					session.transferFile(URL(string: "file://\(self.file.path)")!, metadata: nil)
+	var file : FSItem
+	var body: some View {
+		VStack {
+			if (getExtension(self.file.path) == "png/"){
+				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
+			} else {
+				Text(self.file.path)
+					.onAppear{
+						if WCSession.isSupported() {
+							let session = WCSession.default
+							let del = SessionDelegate()
+							session.delegate = del
+							session.activate()
+							session.transferFile(URL(string: "file://\(self.file.path)")!, metadata: nil)
+						}
 				}
+			}
 		}
-    }
+	}
 }
 
 
