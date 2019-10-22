@@ -33,6 +33,8 @@ struct FileViewer : View {
 		VStack {
 			if (getExtension(self.file.path) == "png/"){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
+					.resizable()
+					.aspectRatio(contentMode: .fit)
 			} else {
 				Text(self.file.path)
 					.onAppear{
