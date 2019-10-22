@@ -56,21 +56,26 @@ struct Browser : View {
 // MARK: File Viewer
 // This shows the contents of most types of common files
 struct FileViewer : View {
-   
-    var file : FSItem
-    @State private var popoverPresented : Bool = false
-    
-    var body: some View {
-        Text(self.file.path)
-        .onAppear { self.popoverPresented = true }
-        .sheet(isPresented: $popoverPresented){
-            ActivityView(activityItems: [URL(string: "file://" + self.file.path)!], applicationActivities: nil)
-        }.onDisappear{
-            NSLog("Share Sheet dismissed.")
-        }
-        
-    }
-    
+	
+	var file : FSItem
+	@State private var popoverPresented : Bool = false
+	
+	var body: some View {
+		VStack {
+			if (getExtension(self.file.path) == "png/"){
+				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
+			} else {
+				Text(self.file.path)
+					.onAppear { self.popoverPresented = true }
+					.sheet(isPresented: $popoverPresented){
+						ActivityView(activityItems: [URL(string: "file://" + self.file.path)!], applicationActivities: nil)
+				}.onDisappear{
+					NSLog("Share Sheet dismissed.")
+				}
+			}
+		}
+	}
+	
 }
 
 // MARK: Directory Viewer
