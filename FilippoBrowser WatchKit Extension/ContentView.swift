@@ -10,7 +10,7 @@ import SwiftUI
 import WatchKit
 import WatchConnectivity
 import Foundation
-import FBrowser_Watch
+import FBrowser
 
 let userDefaults = UserDefaults.standard
 let textExtensions = ["txt"]
