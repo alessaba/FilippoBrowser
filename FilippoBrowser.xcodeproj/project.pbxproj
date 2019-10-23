@@ -26,10 +26,7 @@
 		0BD2432522AD5298006A4929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432422AD5297006A4929 /* Assets.xcassets */; };
 		0BD2432822AD5298006A4929 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432722AD5298006A4929 /* Preview Assets.xcassets */; };
 		0BD2432B22AD5298006A4929 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */; };
-		0BD2433D22AD52C0006A4929 /* FileBrowserIntent.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0BD2434322AD5386006A4929 /* FBIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */; };
-		0BD2434422AD5386006A4929 /* FBIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */; };
-		0BD2434522AD5943006A4929 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2433822AD52C0006A4929 /* IntentHandler.swift */; };
 		0BE503AE2360BF6F0025A369 /* FBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; };
 		0BE503AF2360BF6F0025A369 /* FBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -48,13 +45,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0BBC8B602349D3AF007A6EFB;
 			remoteInfo = FBrowser;
-		};
-		0BD2433B22AD52C0006A4929 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0BD2433522AD52C0006A4929;
-			remoteInfo = FileBrowserIntent;
 		};
 		0BE503B02360BF6F0025A369 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -105,7 +95,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				0BD2433D22AD52C0006A4929 /* FileBrowserIntent.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -139,9 +128,6 @@
 		0BD2432722AD5298006A4929 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0BD2432A22AD5298006A4929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0BD2432C22AD5298006A4929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileBrowserIntent.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		0BD2433822AD52C0006A4929 /* IntentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHandler.swift; sourceTree = "<group>"; };
-		0BD2433A22AD52C0006A4929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = FBIntent.intentdefinition; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -173,13 +159,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BBC8B682349D3AF007A6EFB /* FBrowser.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BD2433322AD52C0006A4929 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,7 +219,6 @@
 			isa = PBXGroup;
 			children = (
 				0BD2431D22AD5296006A4929 /* FilippoBrowser */,
-				0BD2433722AD52C0006A4929 /* FileBrowserIntent */,
 				0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
 				0BBC8B622349D3AF007A6EFB /* FBrowser */,
@@ -253,7 +231,6 @@
 			isa = PBXGroup;
 			children = (
 				0BD2431B22AD5296006A4929 /* FilippoBrowser.app */,
-				0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */,
 				0B4BED83233531D9005E5BB1 /* FilippoBrowser WatchKit App.app */,
 				0B4BED92233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex */,
 				0BBC8B612349D3AF007A6EFB /* FBrowser.framework */,
@@ -283,15 +260,6 @@
 				0BD2432722AD5298006A4929 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		0BD2433722AD52C0006A4929 /* FileBrowserIntent */ = {
-			isa = PBXGroup;
-			children = (
-				0BD2433822AD52C0006A4929 /* IntentHandler.swift */,
-				0BD2433A22AD52C0006A4929 /* Info.plist */,
-			);
-			path = FileBrowserIntent;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -376,30 +344,12 @@
 			buildRules = (
 			);
 			dependencies = (
-				0BD2433C22AD52C0006A4929 /* PBXTargetDependency */,
 				0BBC8B672349D3AF007A6EFB /* PBXTargetDependency */,
 			);
 			name = FilippoBrowser;
 			productName = ShortcutParamTest;
 			productReference = 0BD2431B22AD5296006A4929 /* FilippoBrowser.app */;
 			productType = "com.apple.product-type.application";
-		};
-		0BD2433522AD52C0006A4929 /* FileBrowserIntent */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0BD2433E22AD52C0006A4929 /* Build configuration list for PBXNativeTarget "FileBrowserIntent" */;
-			buildPhases = (
-				0BD2433222AD52C0006A4929 /* Sources */,
-				0BD2433322AD52C0006A4929 /* Frameworks */,
-				0BD2433422AD52C0006A4929 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FileBrowserIntent;
-			productName = FileBrowserIntent;
-			productReference = 0BD2433622AD52C0006A4929 /* FileBrowserIntent.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -424,9 +374,6 @@
 					0BD2431A22AD5296006A4929 = {
 						CreatedOnToolsVersion = 11.0;
 					};
-					0BD2433522AD52C0006A4929 = {
-						CreatedOnToolsVersion = 11.0;
-					};
 				};
 			};
 			buildConfigurationList = 0BD2431622AD5296006A4929 /* Build configuration list for PBXProject "FilippoBrowser" */;
@@ -443,7 +390,6 @@
 			projectRoot = "";
 			targets = (
 				0BD2431A22AD5296006A4929 /* FilippoBrowser */,
-				0BD2433522AD52C0006A4929 /* FileBrowserIntent */,
 				0B4BED82233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED91233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
 				0BBC8B602349D3AF007A6EFB /* FBrowser */,
@@ -487,13 +433,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0BD2433422AD52C0006A4929 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -527,15 +466,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0BD2433222AD52C0006A4929 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0BD2434522AD5943006A4929 /* IntentHandler.swift in Sources */,
-				0BD2434422AD5386006A4929 /* FBIntent.intentdefinition in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -548,12 +478,6 @@
 			isa = PBXTargetDependency;
 			target = 0BBC8B602349D3AF007A6EFB /* FBrowser */;
 			targetProxy = 0BBC8B662349D3AF007A6EFB /* PBXContainerItemProxy */;
-		};
-		0BD2433C22AD52C0006A4929 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			platformFilter = ios;
-			target = 0BD2433522AD52C0006A4929 /* FileBrowserIntent */;
-			targetProxy = 0BD2433B22AD52C0006A4929 /* PBXContainerItemProxy */;
 		};
 		0BE503B12360BF6F0025A369 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -899,46 +823,6 @@
 			};
 			name = Release;
 		};
-		0BD2433F22AD52C0006A4929 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 974TR9G2UN;
-				INFOPLIST_FILE = FileBrowserIntent/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.FileBrowserIntent;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		0BD2434022AD52C0006A4929 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 974TR9G2UN;
-				INFOPLIST_FILE = FileBrowserIntent/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.FileBrowserIntent;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -983,15 +867,6 @@
 			buildConfigurations = (
 				0BD2433022AD5298006A4929 /* Debug */,
 				0BD2433122AD5298006A4929 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0BD2433E22AD52C0006A4929 /* Build configuration list for PBXNativeTarget "FileBrowserIntent" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0BD2433F22AD52C0006A4929 /* Debug */,
-				0BD2434022AD52C0006A4929 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
