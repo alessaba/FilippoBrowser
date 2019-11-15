@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B4AE26C237F23E400D6733D /* FSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC8B6F2349D40B007A6EFB /* FSItem.swift */; };
 		0B4BED8A233531D9005E5BB1 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED88233531D9005E5BB1 /* Interface.storyboard */; };
 		0B4BED8C233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED8B233531DA005E5BB1 /* Assets.xcassets */; };
 		0B4BED93233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0B4BED92233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -19,16 +20,12 @@
 		0BBC8B652349D3AF007A6EFB /* FBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BBC8B632349D3AF007A6EFB /* FBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0BBC8B682349D3AF007A6EFB /* FBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; };
 		0BBC8B692349D3AF007A6EFB /* FBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0BBC8B702349D40B007A6EFB /* FSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC8B6F2349D40B007A6EFB /* FSItem.swift */; };
 		0BD2431F22AD5296006A4929 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2431E22AD5296006A4929 /* AppDelegate.swift */; };
 		0BD2432122AD5296006A4929 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2432022AD5296006A4929 /* SceneDelegate.swift */; };
 		0BD2432322AD5296006A4929 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2432222AD5296006A4929 /* ContentView.swift */; };
 		0BD2432522AD5298006A4929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432422AD5297006A4929 /* Assets.xcassets */; };
 		0BD2432822AD5298006A4929 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432722AD5298006A4929 /* Preview Assets.xcassets */; };
 		0BD2432B22AD5298006A4929 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */; };
-		0BD2434322AD5386006A4929 /* FBIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */; };
-		0BE503AE2360BF6F0025A369 /* FBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; };
-		0BE503AF2360BF6F0025A369 /* FBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,13 +37,6 @@
 			remoteInfo = "FilippoBrowser WatchKit Extension";
 		};
 		0BBC8B662349D3AF007A6EFB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0BBC8B602349D3AF007A6EFB;
-			remoteInfo = FBrowser;
-		};
-		0BE503B02360BF6F0025A369 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
 			proxyType = 1;
@@ -74,17 +64,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				0BBC8B692349D3AF007A6EFB /* FBrowser.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BBC8B732349D4FF007A6EFB /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				0BE503AF2360BF6F0025A369 /* FBrowser.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,7 +99,6 @@
 		0BBC8B632349D3AF007A6EFB /* FBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBrowser.h; sourceTree = "<group>"; };
 		0BBC8B642349D3AF007A6EFB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0BBC8B6F2349D40B007A6EFB /* FSItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSItem.swift; sourceTree = "<group>"; };
-		0BBC8B832349D906007A6EFB /* FBrowser_Watch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBrowser_Watch.h; sourceTree = "<group>"; };
 		0BD2431B22AD5296006A4929 /* FilippoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilippoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BD2431E22AD5296006A4929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BD2432022AD5296006A4929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,7 +107,6 @@
 		0BD2432722AD5298006A4929 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0BD2432A22AD5298006A4929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0BD2432C22AD5298006A4929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = FBIntent.intentdefinition; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,7 +114,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BE503AE2360BF6F0025A369 /* FBrowser.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +177,6 @@
 		0BBC8B622349D3AF007A6EFB /* FBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				0BBC8B832349D906007A6EFB /* FBrowser_Watch.h */,
 				0BBC8B632349D3AF007A6EFB /* FBrowser.h */,
 				0BBC8B642349D3AF007A6EFB /* Info.plist */,
 				0BBC8B6F2349D40B007A6EFB /* FSItem.swift */,
@@ -250,7 +225,6 @@
 				0BD2432422AD5297006A4929 /* Assets.xcassets */,
 				0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */,
 				0BD2432C22AD5298006A4929 /* Info.plist */,
-				0BD2434222AD5386006A4929 /* FBIntent.intentdefinition */,
 				0BD2432622AD5298006A4929 /* Preview Content */,
 			);
 			path = FilippoBrowser;
@@ -303,12 +277,10 @@
 				0B4BED8E233531DA005E5BB1 /* Sources */,
 				0B4BED8F233531DA005E5BB1 /* Frameworks */,
 				0B4BED90233531DA005E5BB1 /* Resources */,
-				0BBC8B732349D4FF007A6EFB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0BE503B12360BF6F0025A369 /* PBXTargetDependency */,
 			);
 			name = "FilippoBrowser WatchKit Extension";
 			productName = "FilippoBrowser WatchKit Extension";
@@ -453,7 +425,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BBC8B702349D40B007A6EFB /* FSItem.swift in Sources */,
+				0B4AE26C237F23E400D6733D /* FSItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,7 +433,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BD2434322AD5386006A4929 /* FBIntent.intentdefinition in Sources */,
 				0BD2431F22AD5296006A4929 /* AppDelegate.swift in Sources */,
 				0BD2432122AD5296006A4929 /* SceneDelegate.swift in Sources */,
 				0BD2432322AD5296006A4929 /* ContentView.swift in Sources */,
@@ -480,11 +451,6 @@
 			isa = PBXTargetDependency;
 			target = 0BBC8B602349D3AF007A6EFB /* FBrowser */;
 			targetProxy = 0BBC8B662349D3AF007A6EFB /* PBXContainerItemProxy */;
-		};
-		0BE503B12360BF6F0025A369 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0BBC8B602349D3AF007A6EFB /* FBrowser */;
-			targetProxy = 0BE503B02360BF6F0025A369 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -623,11 +589,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchsimulator";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,4";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s arm64_32 armv7k x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -654,10 +622,12 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchsimulator";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,4";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s arm64_32 armv7k x86_64";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
