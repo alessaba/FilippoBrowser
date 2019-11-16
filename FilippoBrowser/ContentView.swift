@@ -13,6 +13,8 @@ import FBrowser
 //import NotificationCenter
 
 let userDefaults = UserDefaults.standard
+let appGroup_directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser")!.path + "/"
+
 let textExtensions = ["txt"]
 let listExtensions = ["plist", "json"]
 let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
@@ -210,8 +212,8 @@ struct gotoView : View {
 				}
 				
 				Spacer()
-				NavigationLink(destination: properView(for: FSItem(path: NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]))){
-					Text("Documents")
+				NavigationLink(destination: properView(for: FSItem(path: appGroup_directory))){
+					Text("App Group ⌚️")
 						.foregroundColor(.primary)
 						.bold()
 						.padding()

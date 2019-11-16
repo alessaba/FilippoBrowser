@@ -94,6 +94,7 @@
 		0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0B4BEDA4233531DA005E5BB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B850E3A23660E6800D8A63B /* folder-invoices--v1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "folder-invoices--v1.png"; sourceTree = "<group>"; };
+		0B9301E423806D6E0039A1AB /* FilippoBrowser WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FilippoBrowser WatchKit App.entitlements"; sourceTree = "<group>"; };
 		0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FilippoBrowser.entitlements; sourceTree = "<group>"; };
 		0BBC8B612349D3AF007A6EFB /* FBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BBC8B632349D3AF007A6EFB /* FBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBrowser.h; sourceTree = "<group>"; };
@@ -145,6 +146,7 @@
 		0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */ = {
 			isa = PBXGroup;
 			children = (
+				0B9301E423806D6E0039A1AB /* FilippoBrowser WatchKit App.entitlements */,
 				0B4BED88233531D9005E5BB1 /* Interface.storyboard */,
 				0B4BED8B233531DA005E5BB1 /* Assets.xcassets */,
 				0B4BED8D233531DA005E5BB1 /* Info.plist */,
@@ -479,6 +481,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "FilippoBrowser WatchKit App/FilippoBrowser WatchKit App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				IBSC_MODULE = FilippoBrowser_WatchKit_Extension;
@@ -502,6 +505,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "FilippoBrowser WatchKit App/FilippoBrowser WatchKit App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				IBSC_MODULE = FilippoBrowser_WatchKit_Extension;
