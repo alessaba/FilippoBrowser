@@ -13,6 +13,8 @@ import Foundation
 //import FBrowserWatch
 
 let userDefaults = UserDefaults.standard
+let appGroup_directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser")!.path + "/"
+
 let textExtensions = ["txt"]
 let listExtensions = ["plist", "json"]
 let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
@@ -38,13 +40,20 @@ struct FileViewer : View {
 			} else {
 				Text(self.file.path)
 					.onAppear{
-						if WCSession.isSupported() {
+						/*if WCSession.isSupported() {
 							let session = WCSession.default
 							let del = SessionDelegate()
 							session.delegate = del
 							session.activate()
 							session.transferFile(URL(string: "file://\(self.file.path)")!, metadata: nil)
+						}*/
+						do{
+							try FileManager.default.copyItem(atPath: self.file.path, toPath: appGroup_directory)
+							NSLog("File Copied!")
+						} catch {
+							NSLog("File copy failed :-/")
 						}
+						
 				}
 			}
 		}
@@ -156,13 +165,14 @@ struct gotoView : View {
 					.bold()
 			}
 			
-			NavigationLink(destination: properView(for: FSItem(path: NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]))){
-				Text("Documents")
+			NavigationLink(destination: properView(for: FSItem(path: appGroup_directory))){
+				Text("App Group ⌚️")
 					.bold()
 			}
 		}
-    }
+	}
 }
+
 
 
 extension String : Identifiable{

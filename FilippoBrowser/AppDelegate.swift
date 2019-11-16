@@ -25,14 +25,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSLog("Notification Authorization Granted.")
 		}
 		
-		NSLog("Session supported: \(WCSession.isSupported())")
+		/*NSLog("Session supported: \(WCSession.isSupported())")
 		if WCSession.isSupported(){
 			let watchSession = WCSession.default
-			watchSession.delegate = WatchDelegate()
+			let watch_delegate = WatchDelegate()
+			watchSession.delegate = watch_delegate
 			watchSession.activate()
 		} else {
 			NSLog("Device not supported or Apple Watch is not paired.")
-		}
+		}*/
 		
 		return true
 	}
