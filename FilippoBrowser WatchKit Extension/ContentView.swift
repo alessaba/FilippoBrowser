@@ -12,7 +12,7 @@ import WatchConnectivity
 import Foundation
 //import FBrowserWatch
 
-let userDefaults = UserDefaults.standard
+let userDefaults = UserDefaults.init(suiteName: "group.FilippoBrowser") ?? UserDefaults.standard
 let appGroup_directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser")!.path + "/"
 
 let textExtensions = ["txt"]
@@ -205,6 +205,7 @@ public func getExtension(_ path: String) -> String {
 
 public func setFavorite(name : String, path : String) {
 	userDefaults.set(path, forKey: "FB_\(name)")
+	userDefaults.synchronize()
 }
 
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
