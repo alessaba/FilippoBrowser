@@ -235,6 +235,7 @@ struct gotoView : View {
 								}.foregroundColor(.red)
 						}*/
 					}
+					Spacer()
 				}
 				Spacer()
 				
