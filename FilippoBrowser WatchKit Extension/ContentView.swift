@@ -13,7 +13,7 @@ import Foundation
 //import FBrowserWatch
 
 let userDefaults = UserDefaults.init(suiteName: "group.FilippoBrowser") ?? UserDefaults.standard
-let appGroup_directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser")!.path + "/"
+let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
 
 let textExtensions = ["txt"]
 let listExtensions = ["plist", "json"]
@@ -150,6 +150,8 @@ struct DirectoryBrowser : View {
 struct gotoView : View {
     @State var path : String = "/"
     @State private var viewPushed : Bool = false
+	let userDefaultsKeys = userDefaults.dictionaryRepresentation().keys
+	
     var body : some View {
 		ScrollView{
 			
@@ -157,17 +159,32 @@ struct gotoView : View {
 			
 			NavigationLink(destination: properView(for: FSItem(path: path))){
 				Text("Go")
+					.foregroundColor(.green)
 					.bold()
 			}
 			
-			NavigationLink(destination: favoritesView()){
-				Text("Favorites ♥️")
-					.bold()
+			ForEach(userDefaultsKeys.filter{
+				return $0.starts(with: "FB_")
+			}){ key in
+				NavigationLink(destination:
+					properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
+				){
+					Text(String(key.split(separator: "_").last!))
+						.bold()
+				}
 			}
 			
 			NavigationLink(destination: properView(for: FSItem(path: appGroup_directory))){
 				Text("App Group ⌚️")
+					.foregroundColor(.blue)
 					.bold()
+			}
+			Spacer()
+			NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
+				Text("Media 🖥")
+					.foregroundColor(.blue)
+					.bold()
+	
 			}
 		}
 	}
