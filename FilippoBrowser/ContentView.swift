@@ -13,7 +13,7 @@ import FBrowser
 //import NotificationCenter
 
 let userDefaults = UserDefaults.init(suiteName: "group.FilippoBrowser") ?? UserDefaults.standard
-let appGroup_directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser")!.path + "/"
+let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
 
 let textExtensions = ["txt"]
 let listExtensions = ["plist", "json"]
@@ -182,6 +182,7 @@ struct DirectoryBrowser : View {
 // MARK: Go To View
 struct gotoView : View {
 	@State var path : String = "/"
+	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
 	
 	var body : some View {
 		VStack{
@@ -191,27 +192,52 @@ struct gotoView : View {
                 .background(Color.gray)
                 .cornerRadius(15)
                 .padding(.all)
-			HStack{
-				NavigationLink(destination: favoritesView()){
-					Text("Favorites ♥️")
-						.foregroundColor(.primary)
-						.bold()
-						.padding()
-						.background(Color.blue)
-						.cornerRadius(15)
-				}
-				Spacer()
-				
+			ScrollView {
 				NavigationLink(destination: properView(for: FSItem(path: path))){
 					Text("Go")
 						.foregroundColor(.primary)
 						.bold()
 						.padding()
-						.background(Color.blue)
+						.background(Color.green)
+						.cornerRadius(15)
+				}
+				Spacer()
+				NavigationLink(destination: favoritesView()){
+					Text("Favorites")
+						.foregroundColor(.primary)
+						.bold()
+						.padding()
+						.background(Color.red)
 						.cornerRadius(15)
 				}
 				
 				Spacer()
+				Spacer()
+				
+				ForEach(userDefaultsKeys.filter{
+					return $0.starts(with: "FB_")
+				}){ key in
+					NavigationLink(destination:
+						properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
+					){
+						Text(String(key.split(separator: "_").last!))
+							.foregroundColor(.primary)
+							.bold()
+							.padding()
+							.background(Color.red)
+							.cornerRadius(15)
+							/*.contextMenu{
+								Button(action: {
+									userDefaults.removeObject(forKey: key)
+								}){
+									Image(systemName: "bin.xmark.fill")
+									Text("Delete")
+								}.foregroundColor(.red)
+						}*/
+					}
+				}
+				Spacer()
+				
 				NavigationLink(destination: properView(for: FSItem(path: appGroup_directory))){
 					Text("App Group ⌚️")
 						.foregroundColor(.primary)
@@ -220,6 +246,17 @@ struct gotoView : View {
 						.background(Color.blue)
 						.cornerRadius(15)
 				}
+				#if os(iOS) || os(watchOS)
+				Spacer()
+				NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
+					Text("Media 🖥")
+						.foregroundColor(.primary)
+						.bold()
+						.padding()
+						.background(Color.blue)
+						.cornerRadius(15)
+				}
+				#endif
 			}.padding(.horizontal)
 		}
 	}
