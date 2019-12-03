@@ -26,10 +26,6 @@
 		0BD2432522AD5298006A4929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432422AD5297006A4929 /* Assets.xcassets */; };
 		0BD2432822AD5298006A4929 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432722AD5298006A4929 /* Preview Assets.xcassets */; };
 		0BD2432B22AD5298006A4929 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */; };
-		0BF68E492396CDA100A191BA /* FBrowserWatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BF68E472396CDA100A191BA /* FBrowserWatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0BF68E4C2396CDA100A191BA /* FBrowserWatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF68E452396CDA100A191BA /* FBrowserWatch.framework */; };
-		0BF68E4D2396CDA100A191BA /* FBrowserWatch.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF68E452396CDA100A191BA /* FBrowserWatch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0BF68E522396CDAB00A191BA /* FSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC8B6F2349D40B007A6EFB /* FSItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,13 +42,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0BBC8B602349D3AF007A6EFB;
 			remoteInfo = FBrowser;
-		};
-		0BF68E4A2396CDA100A191BA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0BF68E442396CDA100A191BA;
-			remoteInfo = FBrowserWatch;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -95,7 +84,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0BF68E4D2396CDA100A191BA /* FBrowserWatch.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,9 +118,6 @@
 		0BD2432722AD5298006A4929 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0BD2432A22AD5298006A4929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0BD2432C22AD5298006A4929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0BF68E452396CDA100A191BA /* FBrowserWatch.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FBrowserWatch.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0BF68E472396CDA100A191BA /* FBrowserWatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBrowserWatch.h; sourceTree = "<group>"; };
-		0BF68E482396CDA100A191BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +125,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0BF68E4C2396CDA100A191BA /* FBrowserWatch.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,13 +147,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BBC8B682349D3AF007A6EFB /* FBrowser.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BF68E422396CDA100A191BA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,7 +211,6 @@
 				0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
 				0BBC8B622349D3AF007A6EFB /* FBrowser */,
-				0BF68E462396CDA100A191BA /* FBrowserWatch */,
 				0BD2431C22AD5296006A4929 /* Products */,
 				0BBC8B752349D7FF007A6EFB /* Frameworks */,
 			);
@@ -247,7 +223,6 @@
 				0B4BED83233531D9005E5BB1 /* FilippoBrowser WatchKit App.app */,
 				0B4BED92233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex */,
 				0BBC8B612349D3AF007A6EFB /* FBrowser.framework */,
-				0BF68E452396CDA100A191BA /* FBrowserWatch.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -275,15 +250,6 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		0BF68E462396CDA100A191BA /* FBrowserWatch */ = {
-			isa = PBXGroup;
-			children = (
-				0BF68E472396CDA100A191BA /* FBrowserWatch.h */,
-				0BF68E482396CDA100A191BA /* Info.plist */,
-			);
-			path = FBrowserWatch;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -292,14 +258,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BBC8B652349D3AF007A6EFB /* FBrowser.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BF68E402396CDA100A191BA /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0BF68E492396CDA100A191BA /* FBrowserWatch.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,7 +294,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				0BF68E4B2396CDA100A191BA /* PBXTargetDependency */,
 			);
 			name = "FilippoBrowser WatchKit Extension";
 			productName = "FilippoBrowser WatchKit Extension";
@@ -381,24 +338,6 @@
 			productReference = 0BD2431B22AD5296006A4929 /* FilippoBrowser.app */;
 			productType = "com.apple.product-type.application";
 		};
-		0BF68E442396CDA100A191BA /* FBrowserWatch */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0BF68E512396CDA100A191BA /* Build configuration list for PBXNativeTarget "FBrowserWatch" */;
-			buildPhases = (
-				0BF68E402396CDA100A191BA /* Headers */,
-				0BF68E412396CDA100A191BA /* Sources */,
-				0BF68E422396CDA100A191BA /* Frameworks */,
-				0BF68E432396CDA100A191BA /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = FBrowserWatch;
-			productName = FBrowserWatch;
-			productReference = 0BF68E452396CDA100A191BA /* FBrowserWatch.framework */;
-			productType = "com.apple.product-type.framework";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -422,9 +361,6 @@
 					0BD2431A22AD5296006A4929 = {
 						CreatedOnToolsVersion = 11.0;
 					};
-					0BF68E442396CDA100A191BA = {
-						CreatedOnToolsVersion = 11.2.1;
-					};
 				};
 			};
 			buildConfigurationList = 0BD2431622AD5296006A4929 /* Build configuration list for PBXProject "FilippoBrowser" */;
@@ -444,7 +380,6 @@
 				0B4BED82233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED91233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
 				0BBC8B602349D3AF007A6EFB /* FBrowser */,
-				0BF68E442396CDA100A191BA /* FBrowserWatch */,
 			);
 		};
 /* End PBXProject section */
@@ -485,13 +420,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0BF68E432396CDA100A191BA /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -524,14 +452,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0BF68E412396CDA100A191BA /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0BF68E522396CDAB00A191BA /* FSItem.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -544,11 +464,6 @@
 			isa = PBXTargetDependency;
 			target = 0BBC8B602349D3AF007A6EFB /* FBrowser */;
 			targetProxy = 0BBC8B662349D3AF007A6EFB /* PBXContainerItemProxy */;
-		};
-		0BF68E4B2396CDA100A191BA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0BF68E442396CDA100A191BA /* FBrowserWatch */;
-			targetProxy = 0BF68E4A2396CDA100A191BA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -895,66 +810,6 @@
 			};
 			name = Release;
 		};
-		0BF68E4F2396CDA100A191BA /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 974TR9G2UN;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = FBrowserWatch/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FBrowserWatch;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-				WATCHOS_DEPLOYMENT_TARGET = 6.1;
-			};
-			name = Debug;
-		};
-		0BF68E502396CDA100A191BA /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = 974TR9G2UN;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = FBrowserWatch/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FBrowserWatch;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-				WATCHOS_DEPLOYMENT_TARGET = 6.1;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -999,15 +854,6 @@
 			buildConfigurations = (
 				0BD2433022AD5298006A4929 /* Debug */,
 				0BD2433122AD5298006A4929 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0BF68E512396CDA100A191BA /* Build configuration list for PBXNativeTarget "FBrowserWatch" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0BF68E4F2396CDA100A191BA /* Debug */,
-				0BF68E502396CDA100A191BA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
