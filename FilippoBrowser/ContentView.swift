@@ -201,15 +201,6 @@ struct gotoView : View {
 						.background(Color.green)
 						.cornerRadius(15)
 				}
-				Spacer()
-				NavigationLink(destination: favoritesView()){
-					Text("Favorites")
-						.foregroundColor(.primary)
-						.bold()
-						.padding()
-						.background(Color.red)
-						.cornerRadius(15)
-				}
 				
 				Spacer()
 				Spacer()
@@ -226,14 +217,14 @@ struct gotoView : View {
 							.padding()
 							.background(Color.red)
 							.cornerRadius(15)
-							/*.contextMenu{
+							.contextMenu{
 								Button(action: {
 									userDefaults.removeObject(forKey: key)
 								}){
 									Image(systemName: "bin.xmark.fill")
 									Text("Delete")
 								}.foregroundColor(.red)
-						}*/
+						}
 					}
 					Spacer()
 				}
@@ -266,31 +257,6 @@ struct gotoView : View {
 extension String : Identifiable{
 	public var id : UUID {
 		return UUID()
-	}
-}
-
-struct favoritesView : View {
-	var userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
-	
-	var body : some View{
-		List(userDefaultsKeys.filter{
-			return $0.starts(with: "FB_")
-		}){ key in
-			NavigationLink(destination:
-				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
-			){
-				Text(String(key.split(separator: "_").last!))
-					.contextMenu{
-						Button(action: {
-							userDefaults.removeObject(forKey: key)
-						}){
-							Image(systemName: "bin.xmark.fill")
-							Text("Delete")
-						}.foregroundColor(.red)
-				}
-			}
-			.listStyle(GroupedListStyle())
-		}
 	}
 }
 

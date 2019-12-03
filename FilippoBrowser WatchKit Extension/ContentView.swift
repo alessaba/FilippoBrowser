@@ -170,6 +170,7 @@ struct gotoView : View {
 					properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
 				){
 					Text(String(key.split(separator: "_").last!))
+						.foregroundColor(.red)
 						.bold()
 				}
 			}
@@ -195,22 +196,6 @@ struct gotoView : View {
 extension String : Identifiable{
 	public var id : UUID {
 		return UUID()
-	}
-}
-
-struct favoritesView : View {
-	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
-
-	var body : some View{
-		List(userDefaultsKeys.filter{
-			return $0.starts(with: "FB_")
-		}){ key in
-			NavigationLink(destination:
-				properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
-			){
-				Text(String(key.split(separator: "_").last!))
-			}
-		}
 	}
 }
 
