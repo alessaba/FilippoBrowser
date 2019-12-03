@@ -70,8 +70,10 @@ struct DirectoryBrowser : View {
     var body: some View {
         List{
             Section{
-                NavigationLink(destination: gotoView()){
-                        Text("Go To...")
+				if (directory.path == "/"){
+					NavigationLink(destination: gotoView()){
+						Text("Go To...")
+					}
                 }
                 TextField("Search...", text: $searchText)
             }
