@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B477F0A2397DFA4000400CD /* FLEX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B477F082397DF69000400CD /* FLEX.framework */; platformFilter = ios; };
+		0B477F0B2397DFA4000400CD /* FLEX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0B477F082397DF69000400CD /* FLEX.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0B4AE26C237F23E400D6733D /* FSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC8B6F2349D40B007A6EFB /* FSItem.swift */; };
 		0B4BED8A233531D9005E5BB1 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED88233531D9005E5BB1 /* Interface.storyboard */; };
 		0B4BED8C233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED8B233531DA005E5BB1 /* Assets.xcassets */; };
@@ -64,6 +66,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				0BBC8B692349D3AF007A6EFB /* FBrowser.framework in Embed Frameworks */,
+				0B477F0B2397DFA4000400CD /* FLEX.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +94,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0B477F082397DF69000400CD /* FLEX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FLEX.framework; sourceTree = "<group>"; };
 		0B4BED83233531D9005E5BB1 /* FilippoBrowser WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FilippoBrowser WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B4BED89233531D9005E5BB1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		0B4BED8B233531DA005E5BB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BBC8B682349D3AF007A6EFB /* FBrowser.framework in Frameworks */,
+				0B477F0A2397DFA4000400CD /* FLEX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,6 +204,7 @@
 		0BBC8B752349D7FF007A6EFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0B477F082397DF69000400CD /* FLEX.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -773,6 +779,11 @@
 				DEVELOPMENT_ASSET_PATHS = "FilippoBrowser/Preview\\ Content";
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Mobile\\ Documents/com~apple~CloudDocs/Documents",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -797,6 +808,11 @@
 				DEVELOPMENT_ASSET_PATHS = "FilippoBrowser/Preview\\ Content";
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(USER_LIBRARY_DIR)/Mobile\\ Documents/com~apple~CloudDocs/Documents",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
