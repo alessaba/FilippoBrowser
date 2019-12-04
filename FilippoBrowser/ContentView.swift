@@ -10,6 +10,9 @@ import SwiftUI
 import UIKit
 import Foundation
 import FBrowser
+#if os(iOS)
+import FLEX
+#endif
 //import NotificationCenter
 
 let userDefaults = UserDefaults.init(suiteName: "group.FilippoBrowser") ?? UserDefaults.standard
@@ -30,13 +33,18 @@ struct Browser : View {
 	var body: some View {
 		NavigationView {
 			DirectoryBrowser(directory: FSItem(path: path))
-                .navigationBarTitle(Text("File Browser"), displayMode: .inline)
+                .navigationBarTitle(
+					Text("File Browser"), displayMode: .inline)
             .navigationBarItems(
                 
                 leading:
-                    Image(systemName: "paperclip.circle.fill")
+                    Image(systemName: "f.circle.fill")
                         .onTapGesture {
-                            UIPasteboard.general.string = "file//" + self.path
+								#if os(iOS)
+								FLEXManager.shared().showExplorer()
+								#endif
+								NSLog("FLEX activated!")
+                            //UIPasteboard.general.string = "file//" + self.path
                     }
                 ,
                 trailing:
