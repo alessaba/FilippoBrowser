@@ -66,7 +66,6 @@ struct Browser : View {
 // MARK: File Viewer
 // This shows the contents of most types of common files
 struct FileViewer : View {
-	
 	var file : FSItem
 	@State private var popoverPresented : Bool = false
 	
@@ -87,13 +86,11 @@ struct FileViewer : View {
 			}
 		}
 	}
-	
 }
 
 // MARK: Directory Viewer
 // This is the directory browser, it shows files and subdirectories of a folder
 struct DirectoryBrowser : View {
-    
     @State private var searchText : String = ""
 	var directory : FSItem
     
@@ -115,7 +112,7 @@ struct DirectoryBrowser : View {
                 }
                 
             }) { subItem in
-                HStack {
+                HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
                     Group{
                         if subItem.isFolder {
@@ -195,23 +192,49 @@ struct gotoView : View {
 	var body : some View {
 		VStack{
             Text("Go To...").bold()
-            TextField("Path", text: $path)
+            
+			TextField("Path", text: $path)
                 .padding(.all)
                 .background(Color.gray)
                 .cornerRadius(15)
                 .padding(.all)
+			
+			NavigationLink(destination: properView(for: FSItem(path: path))){
+				Text("Go")
+					.foregroundColor(.primary)
+					.bold()
+					.padding()
+					.background(Color.green)
+					.cornerRadius(15)
+			}
+			
+			Spacer()
+			
 			ScrollView {
-				NavigationLink(destination: properView(for: FSItem(path: path))){
-					Text("Go")
+				Spacer()
+				
+				NavigationLink(destination: properView(for: FSItem(path: appGroup_directory))){
+					Text("App Group ⌚️")
 						.foregroundColor(.primary)
 						.bold()
 						.padding()
-						.background(Color.green)
+						.background(Color.blue)
 						.cornerRadius(15)
 				}
+				#if os(iOS) || os(watchOS)
+				Spacer()
+				NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
+					Text("Media 🖥")
+						.foregroundColor(.primary)
+						.bold()
+						.padding()
+						.background(Color.blue)
+						.cornerRadius(15)
+				}
+				#endif
 				
 				Spacer()
-				Spacer()
+				
 				
 				ForEach(userDefaultsKeys.filter{
 					return $0.starts(with: "FB_")
@@ -236,31 +259,11 @@ struct gotoView : View {
 					}
 					Spacer()
 				}
-				Spacer()
-				
-				NavigationLink(destination: properView(for: FSItem(path: appGroup_directory))){
-					Text("App Group ⌚️")
-						.foregroundColor(.primary)
-						.bold()
-						.padding()
-						.background(Color.blue)
-						.cornerRadius(15)
-				}
-				#if os(iOS) || os(watchOS)
-				Spacer()
-				NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
-					Text("Media 🖥")
-						.foregroundColor(.primary)
-						.bold()
-						.padding()
-						.background(Color.blue)
-						.cornerRadius(15)
-				}
-				#endif
 			}.padding(.horizontal)
 		}
 	}
 }
+
 
 extension String : Identifiable{
 	public var id : UUID {
