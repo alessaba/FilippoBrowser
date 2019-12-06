@@ -31,6 +31,7 @@ class SessionDelegate : NSObject, WCSessionDelegate{
 // This shows the contents of most types of common files
 struct FileViewer : View {
 	var file : FSItem
+	
 	var body: some View {
 		VStack {
 			if (getExtension(self.file.path) == "png/"){
@@ -67,7 +68,8 @@ struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
     var directory : FSItem
-    var body: some View {
+   
+	var body: some View {
         List{
             Section{
 				if (directory.path == "/"){

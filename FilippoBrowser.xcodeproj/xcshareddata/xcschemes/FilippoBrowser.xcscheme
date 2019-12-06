@@ -52,7 +52,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "FB_System"
+            argument = "FB_System=&quot;/System/&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
