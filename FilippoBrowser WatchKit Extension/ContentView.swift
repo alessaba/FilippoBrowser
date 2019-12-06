@@ -12,7 +12,7 @@ import WatchConnectivity
 import Foundation
 //import FBrowserWatch
 
-let userDefaults = UserDefaults.init(suiteName: "group.FilippoBrowser") ?? UserDefaults.standard
+let userDefaults = UserDefaults.standard
 let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
 
 let textExtensions = ["txt"]
@@ -34,7 +34,7 @@ struct FileViewer : View {
 	
 	var body: some View {
 		VStack {
-			if (getExtension(self.file.path) == "png/"){
+			if (imageExtensions.contains(getExtension(self.file.path)+"/")){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 					.resizable()
 					.aspectRatio(contentMode: .fit)
@@ -54,7 +54,6 @@ struct FileViewer : View {
 						} catch {
 							NSLog("File copy failed :-/")
 						}
-						
 				}
 			}
 		}
