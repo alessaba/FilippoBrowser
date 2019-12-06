@@ -15,7 +15,7 @@ import FLEX
 #endif
 //import NotificationCenter
 
-let userDefaults = UserDefaults.init(suiteName: "group.FilippoBrowser") ?? UserDefaults.standard
+let userDefaults = UserDefaults.standard
 let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
 
 let textExtensions = ["txt"]
