@@ -107,7 +107,7 @@
 		0B4BED9F233531DA005E5BB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0B4BEDA4233531DA005E5BB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0B850E3A23660E6800D8A63B /* folder-invoices--v1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "folder-invoices--v1.png"; sourceTree = "<group>"; };
+		0B850E3A23660E6800D8A63B /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		0B9301E423806D6E0039A1AB /* FilippoBrowser WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FilippoBrowser WatchKit App.entitlements"; sourceTree = "<group>"; };
 		0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FilippoBrowser.entitlements; sourceTree = "<group>"; };
 		0BBC8B612349D3AF007A6EFB /* FBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,7 +212,7 @@
 		0BD2431222AD5296006A4929 = {
 			isa = PBXGroup;
 			children = (
-				0B850E3A23660E6800D8A63B /* folder-invoices--v1.png */,
+				0B850E3A23660E6800D8A63B /* icon.png */,
 				0BD2431D22AD5296006A4929 /* FilippoBrowser */,
 				0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,

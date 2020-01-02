@@ -202,6 +202,7 @@ extension String : Identifiable{
 	}
 }
 
+// MARK: Helper Functions
 
 // Gets the file extension for later use
 public func getExtension(_ path: String) -> String {
@@ -245,7 +246,7 @@ struct ContentView_Previews : PreviewProvider {
 }
 #endif
 
-
+// MARK: FSItem
 
 public class FSItem : Identifiable, Equatable{
 	
