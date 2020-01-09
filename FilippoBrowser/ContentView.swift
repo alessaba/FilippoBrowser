@@ -18,9 +18,9 @@ import FLEX
 let userDefaults = UserDefaults.standard
 let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
 
-let textExtensions = ["txt"]
-let listExtensions = ["plist", "json"]
-let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
+let textExtensions = ["txt/", "strings/"]
+let listExtensions = ["plist/", "json/"]
+let imageExtensions = ["jpg/", "jpeg/", "png/" , "tiff/"]
 
 
 // MARK: Starting View
@@ -71,10 +71,14 @@ struct FileViewer : View {
 	
 	var body: some View {
 		VStack {
-			if (getExtension(self.file.path) == "png/"){
+			if (imageExtensions.contains(getExtension(self.file.path))){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
+			/*} else if (textExtensions.contains(getExtension(self.file.path))){
+				ScrollView{
+					Text(contentsOfFile(self.file.path))
+				}*/
 			} else {
 				Text(self.file.path)
 					.onAppear { self.popoverPresented = true }
@@ -308,6 +312,16 @@ func properView(for item: FSItem) -> AnyView {
 		return AnyView(DirectoryBrowser(directory: item))
 	} else {
         return AnyView(FileViewer(file: item))
+	}
+}
+
+func contentsOfFile(_ path: String) -> String{
+	var p = path
+	do{
+		let contents = try String(contentsOfFile: String(p.removeLast()), encoding: .utf8)
+		return contents
+	} catch {
+		return "Unable to read file (\(p))"
 	}
 }
 

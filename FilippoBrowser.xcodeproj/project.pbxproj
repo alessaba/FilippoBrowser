@@ -612,11 +612,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchsimulator";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchsimulator macosx";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,4";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s arm64_32 armv7k x86_64";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s arm64_32 armv7k x86_64 x86_64h ";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -645,10 +645,10 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchsimulator";
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos watchos watchsimulator macosx";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,4";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s arm64_32 armv7k x86_64";
+				VALID_ARCHS = "arm64 arm64e armv7 armv7s arm64_32 armv7k x86_64 x86_64h ";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
