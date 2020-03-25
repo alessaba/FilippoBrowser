@@ -10,9 +10,7 @@ import SwiftUI
 import UIKit
 import Foundation
 import FBrowser
-#if os(iOS) && !targetEnvironment(simulator)
-	import FLEX
-#endif
+import FLEX
 //import NotificationCenter
 
 let userDefaults = UserDefaults.standard
