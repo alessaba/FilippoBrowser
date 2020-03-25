@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0B477F0A2397DFA4000400CD /* FLEX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B477F082397DF69000400CD /* FLEX.framework */; platformFilter = ios; };
-		0B477F0B2397DFA4000400CD /* FLEX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0B477F082397DF69000400CD /* FLEX.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0B4AE26C237F23E400D6733D /* FSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC8B6F2349D40B007A6EFB /* FSItem.swift */; };
 		0B4BED8A233531D9005E5BB1 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED88233531D9005E5BB1 /* Interface.storyboard */; };
 		0B4BED8C233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED8B233531DA005E5BB1 /* Assets.xcassets */; };
@@ -19,6 +17,8 @@
 		0B4BED9E233531DA005E5BB1 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BED9D233531DA005E5BB1 /* ComplicationController.swift */; };
 		0B4BEDA0233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED9F233531DA005E5BB1 /* Assets.xcassets */; };
 		0B4BEDA3233531DA005E5BB1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */; };
+		0B671732242BB97D00311160 /* FLEX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B671726242BB81C00311160 /* FLEX.framework */; };
+		0B671733242BB97D00311160 /* FLEX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0B671726242BB81C00311160 /* FLEX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0BBC8B652349D3AF007A6EFB /* FBrowser.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BBC8B632349D3AF007A6EFB /* FBrowser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0BBC8B682349D3AF007A6EFB /* FBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; };
 		0BBC8B692349D3AF007A6EFB /* FBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0BBC8B612349D3AF007A6EFB /* FBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -66,7 +66,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				0BBC8B692349D3AF007A6EFB /* FBrowser.framework in Embed Frameworks */,
-				0B477F0B2397DFA4000400CD /* FLEX.framework in Embed Frameworks */,
+				0B671733242BB97D00311160 /* FLEX.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +107,7 @@
 		0B4BED9F233531DA005E5BB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0B4BEDA4233531DA005E5BB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0B671726242BB81C00311160 /* FLEX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FLEX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B850E3A23660E6800D8A63B /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		0B9301E423806D6E0039A1AB /* FilippoBrowser WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FilippoBrowser WatchKit App.entitlements"; sourceTree = "<group>"; };
 		0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FilippoBrowser.entitlements; sourceTree = "<group>"; };
@@ -151,7 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BBC8B682349D3AF007A6EFB /* FBrowser.framework in Frameworks */,
-				0B477F0A2397DFA4000400CD /* FLEX.framework in Frameworks */,
+				0B671732242BB97D00311160 /* FLEX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +205,7 @@
 		0BBC8B752349D7FF007A6EFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0B671726242BB81C00311160 /* FLEX.framework */,
 				0B477F082397DF69000400CD /* FLEX.framework */,
 			);
 			name = Frameworks;
@@ -593,6 +595,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -626,6 +629,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;

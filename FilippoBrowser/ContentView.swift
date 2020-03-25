@@ -10,8 +10,8 @@ import SwiftUI
 import UIKit
 import Foundation
 import FBrowser
-#if os(iOS)
-import FLEX
+#if os(iOS) && !targetEnvironment(simulator)
+	import FLEX
 #endif
 //import NotificationCenter
 
@@ -41,7 +41,7 @@ struct Browser : View {
                     Image(systemName: "f.circle.fill")
                         .onTapGesture {
 								#if os(iOS)
-								FLEXManager.shared().showExplorer()
+							FLEXManager.shared.showExplorer()
 								#endif
 								NSLog("FLEX activated!")
                             //UIPasteboard.general.string = "file//" + self.path
