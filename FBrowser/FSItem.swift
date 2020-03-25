@@ -8,6 +8,8 @@
 
 import Foundation
 
+let runningInXcode = (ProcessInfo.processInfo.arguments.count > 1)
+
 public class FSItem : Identifiable, Equatable{
 	
 	public static func == (lhs: FSItem, rhs: FSItem) -> Bool {
@@ -87,7 +89,9 @@ public class FSItem : Identifiable, Equatable{
 				return subDirs
 			}
 		} catch {
-			NSLog("\(path) probably has root permissions")
+			if (runningInXcode) {
+				NSLog("\(path) probably has root permissions")
+			}
 			return []
 		}
 	}
