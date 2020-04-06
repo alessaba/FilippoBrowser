@@ -37,6 +37,7 @@ struct Browser : View {
                 
                 leading:
                     Image(systemName: "f.circle.fill")
+						.hoverEffect(.lift)
                         .onTapGesture {
 								#if os(iOS)
 							FLEXManager.shared.showExplorer()
@@ -48,6 +49,7 @@ struct Browser : View {
                 trailing:
                 NavigationLink(destination: gotoView()){
                     Image(systemName: "arrow.right.circle.fill")
+						.hoverEffect(.lift)
                         .foregroundColor(.primary)
                 }
                 
@@ -208,6 +210,7 @@ struct gotoView : View {
 					.padding()
 					.background(Color.green)
 					.cornerRadius(15)
+					.hoverEffect(.lift)
 			}
 			
 			Spacer()
@@ -222,6 +225,7 @@ struct gotoView : View {
 						.padding()
 						.background(Color.blue)
 						.cornerRadius(15)
+						.hoverEffect(.lift)
 				}
 				#if os(iOS) || os(watchOS)
 				Spacer()
@@ -232,6 +236,7 @@ struct gotoView : View {
 						.padding()
 						.background(Color.blue)
 						.cornerRadius(15)
+						.hoverEffect(.lift)
 				}
 				#endif
 				
@@ -241,30 +246,40 @@ struct gotoView : View {
 				ForEach(userDefaultsKeys.filter{
 					return $0.starts(with: "FB_")
 				}){ key in
-					NavigationLink(destination:
-						properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
-					){
-						Text(String(key.split(separator: "_").last!))
-							.foregroundColor(.primary)
-							.bold()
-							.padding()
-							.background(Color.red)
-							.cornerRadius(15)
-							.contextMenu{
-								Button(action: {
-									userDefaults.removeObject(forKey: key)
-								}){
-									Image(systemName: "bin.xmark.fill")
-									Text("Delete")
-								}.foregroundColor(.red)
-						}
-					}
+					FavoriteItem(key: key)
 					Spacer()
 				}
 			}.padding(.horizontal)
 		}
 	}
 }
+
+struct FavoriteItem: View {
+	
+	var key : String
+	
+	var body: some View {
+		NavigationLink(destination:
+			properView(for: FSItem(path: userDefaults.string(forKey: self.key) ?? "/"))
+		){
+			Text(String(key.split(separator: "_").last!))
+				.foregroundColor(.primary)
+				.bold()
+				.padding()
+				.background(Color.red)
+				.cornerRadius(15)
+				.contextMenu{
+					Button(action: {
+						userDefaults.removeObject(forKey: self.key)
+					}){
+						Image(systemName: "bin.xmark.fill")
+						Text("Delete")
+					}.foregroundColor(.red)
+			}
+		}.hoverEffect(.lift)
+	}
+}
+
 
 
 extension String : Identifiable{
@@ -332,6 +347,3 @@ struct ContentView_Previews : PreviewProvider {
     }
 }
 #endif
-
-
-
