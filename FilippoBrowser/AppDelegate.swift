@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSLog("Notification Authorization Granted.")
 		}
 		
-		/*NSLog("Session supported: \(WCSession.isSupported())")
+		NSLog("Session supported: \(WCSession.isSupported())")
 		if WCSession.isSupported(){
 			let watchSession = WCSession.default
 			let watch_delegate = WatchDelegate()
@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			watchSession.activate()
 		} else {
 			NSLog("Device not supported or Apple Watch is not paired.")
-		}*/
+		}
 		
 		return true
 	}
@@ -66,10 +66,12 @@ class WatchDelegate : NSObject, WCSessionDelegate {
 	
 	func sessionDidBecomeInactive(_ session: WCSession) {
 		// Session Inactive
+		NSLog("Session Became inactive")
 	}
 	
 	func sessionDidDeactivate(_ session: WCSession) {
 		// Session deactivated
+		NSLog("Session deactivated")
 	}
 	
 	func session(_ session: WCSession, didReceive file: WCSessionFile) {
