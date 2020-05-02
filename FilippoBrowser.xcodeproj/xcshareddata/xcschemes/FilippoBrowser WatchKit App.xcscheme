@@ -28,7 +28,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0B4BED7F233531D9005E5BB1"
+               BlueprintIdentifier = "0BD2431A22AD5296006A4929"
                BuildableName = "FilippoBrowser.app"
                BlueprintName = "FilippoBrowser"
                ReferencedContainer = "container:FilippoBrowser.xcodeproj">

@@ -13,8 +13,7 @@ import Foundation
 //import FBrowserWatch
 
 let userDefaults = UserDefaults.standard
-let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
-
+let session = WCSession.default
 let textExtensions = ["txt"]
 let listExtensions = ["plist", "json"]
 let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
@@ -41,19 +40,7 @@ struct FileViewer : View {
 			} else {
 				Text(self.file.path)
 					.onAppear{
-						/*if WCSession.isSupported() {
-							let session = WCSession.default
-							let del = SessionDelegate()
-							session.delegate = del
-							session.activate()
-							session.transferFile(URL(string: "file://\(self.file.path)")!, metadata: nil)
-						}*/
-						do{
-							try FileManager.default.copyItem(atPath: self.file.path, toPath: appGroup_directory)
-							NSLog("File Copied!")
-						} catch {
-							NSLog("File copy failed :-/")
-						}
+						session.transferFile(URL(string: "file://\(self.file.path)")!, metadata: nil)
 				}
 			}
 		}
@@ -67,9 +54,22 @@ struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
     var directory : FSItem
+	
+	func activateSession() -> Bool {
+		if WCSession.isSupported(){
+			let del = SessionDelegate()
+			session.delegate = del
+			session.activate()
+			NSLog("Session Activated")
+			return true
+		} else {
+			return false
+		}
+	}
    
 	var body: some View {
-        List{
+		activateSession()
+        return List{
             Section{
 				if (directory.path == "/"){
 					NavigationLink(destination: gotoView()){
@@ -153,7 +153,9 @@ struct DirectoryBrowser : View {
 struct gotoView : View {
     @State var path : String = "/"
     @State private var viewPushed : Bool = false
-	let userDefaultsKeys = userDefaults.dictionaryRepresentation().keys
+	let userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
+		return $0.starts(with: "FB_")
+	}
 	
     var body : some View {
 		ScrollView{
@@ -166,9 +168,18 @@ struct gotoView : View {
 					.bold()
 			}
 			
-			ForEach(userDefaultsKeys.filter{
-				return $0.starts(with: "FB_")
-			}){ key in
+			Spacer()
+			
+			NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
+				Text("Media 🖥")
+					.foregroundColor(.blue)
+					.bold()
+				
+			}
+			
+			Spacer()
+			
+			ForEach(userDefaultsKeys){ key in
 				NavigationLink(destination:
 					properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
 				){
@@ -178,18 +189,7 @@ struct gotoView : View {
 				}
 			}
 			
-			NavigationLink(destination: properView(for: FSItem(path: appGroup_directory))){
-				Text("App Group ⌚️")
-					.foregroundColor(.blue)
-					.bold()
-			}
-			Spacer()
-			NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
-				Text("Media 🖥")
-					.foregroundColor(.blue)
-					.bold()
-	
-			}
+			
 		}
 	}
 }
@@ -327,7 +327,7 @@ public class FSItem : Identifiable, Equatable{
 				return subDirs
 			}
 		} catch {
-			NSLog("\(path) probably has root permissions")
+			//NSLog("\(path) probably has root permissions")
 			return []
 		}
 	}

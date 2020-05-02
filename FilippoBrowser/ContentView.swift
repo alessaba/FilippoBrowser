@@ -37,7 +37,8 @@ struct Browser : View {
                 
                 leading:
                     Image(systemName: "f.circle.fill")
-						.hoverEffect(.lift)
+						.padding(.vertical, 10)
+						.safeHover()
                         .onTapGesture {
 								#if os(iOS)
 							FLEXManager.shared.showExplorer()
@@ -49,7 +50,8 @@ struct Browser : View {
                 trailing:
                 NavigationLink(destination: gotoView()){
                     Image(systemName: "arrow.right.circle.fill")
-						.hoverEffect(.lift)
+						.padding(.vertical, 10)
+						.safeHover()
                         .foregroundColor(.primary)
                 }
                 
@@ -191,7 +193,9 @@ struct DirectoryBrowser : View {
 // MARK: Go To View
 struct gotoView : View {
 	@State var path : String = "/"
-	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys
+	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys.filter{
+		$0.starts(with: "FB_")
+	}
 	
 	var body : some View {
 		VStack{
@@ -210,7 +214,7 @@ struct gotoView : View {
 					.padding()
 					.background(Color.green)
 					.cornerRadius(15)
-					.hoverEffect(.lift)
+					.safeHover()
 			}
 			
 			Spacer()
@@ -225,7 +229,8 @@ struct gotoView : View {
 						.padding()
 						.background(Color.blue)
 						.cornerRadius(15)
-						.hoverEffect(.lift)
+						.padding(.horizontal, 10)
+						.safeHover()
 				}
 				#if os(iOS) || os(watchOS)
 				Spacer()
@@ -236,17 +241,16 @@ struct gotoView : View {
 						.padding()
 						.background(Color.blue)
 						.cornerRadius(15)
-						.hoverEffect(.lift)
+						.padding(.horizontal, 10)
+						.safeHover()
 				}
 				#endif
 				
 				Spacer()
 				
 				
-				ForEach(userDefaultsKeys.filter{
-					return $0.starts(with: "FB_")
-				}){ key in
-					FavoriteItem(key: key)
+				ForEach(userDefaultsKeys){ key in
+					FavoriteItem(key: key, type: .userAdded)
 					Spacer()
 				}
 			}.padding(.horizontal)
@@ -254,9 +258,24 @@ struct gotoView : View {
 	}
 }
 
+enum FavoriteItemType{
+	case system, userAdded
+}
+
 struct FavoriteItem: View {
 	
 	var key : String
+	
+	var type : FavoriteItemType
+	
+	var color : Color{
+		switch self.type{
+			case .system:
+				return .blue
+			case .userAdded:
+				return .red
+		}
+	}
 	
 	var body: some View {
 		NavigationLink(destination:
@@ -266,7 +285,7 @@ struct FavoriteItem: View {
 				.foregroundColor(.primary)
 				.bold()
 				.padding()
-				.background(Color.red)
+				.background(self.color)
 				.cornerRadius(15)
 				.contextMenu{
 					Button(action: {
@@ -276,11 +295,26 @@ struct FavoriteItem: View {
 						Text("Delete")
 					}.foregroundColor(.red)
 			}
-		}.hoverEffect(.lift)
+		}
+		.padding(.horizontal, 10)
+		.safeHover()
+
 	}
+	
 }
 
-
+extension View {
+	
+	// This is really ugly but it's the only way i could find to not require iOS 13.4 just for the hover function
+	
+	func safeHover() -> AnyView {
+		if #available(iOS 13.4, *){
+			return AnyView(hoverEffect(.lift))
+		} else {
+			return AnyView(_fromValue: Self.self)!
+		}
+	}
+}
 
 extension String : Identifiable{
 	public var id : UUID {
