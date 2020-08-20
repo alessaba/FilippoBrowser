@@ -94,17 +94,29 @@ struct FileViewer : View {
 	}
 }
 
+enum ViewStyle {
+	case list, grid
+}
+
 // MARK: Directory Viewer
 // This is the directory browser, it shows files and subdirectories of a folder
 struct DirectoryBrowser : View {
     @State private var searchText : String = ""
+	@State var viewStyle : ViewStyle = .list
 	var directory : FSItem
-    
 	var body: some View {
         List{
             
             Section{
-                TextField("Search...", text: $searchText)
+				//Text(.init(systemName: "magnifyingglass")) + Text("Search")
+				HStack{
+					TextField("Search..." , text: $searchText)
+					Picker("View", selection: $viewStyle){
+						Image(systemName: "list.dash")
+						Image(systemName: "square.grid.2x2.fill")
+					}
+						.pickerStyle(SegmentedPickerStyle())
+				}
             }
             
             ForEach(directory.subelements.filter{
@@ -150,6 +162,8 @@ struct DirectoryBrowser : View {
 								VStack {
 									Button(action: {
 										setFavorite(name: subItem.lastComponent, path: subItem.path)
+										let newFavorite = UIMutableApplicationShortcutItem(type: "Favorite", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+										UIApplication.shared.shortcutItems?.append(newFavorite)
 										NSLog("Added to Favorites.")
 									}){
 										Image(systemName: "heart.circle.fill")
@@ -290,6 +304,7 @@ struct FavoriteItem: View {
 				.contextMenu{
 					Button(action: {
 						userDefaults.removeObject(forKey: self.key)
+						#warning("Must add removal of shortcut Items")
 					}){
 						Image(systemName: "bin.xmark.fill")
 						Text("Delete")
