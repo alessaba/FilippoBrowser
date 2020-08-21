@@ -94,15 +94,16 @@ struct FileViewer : View {
 	}
 }
 
-enum ViewStyle {
-	case list, grid
+enum ViewStyle : Int {
+	case list = 0
+	case grid = 1
 }
 
 // MARK: Directory Viewer
 // This is the directory browser, it shows files and subdirectories of a folder
 struct DirectoryBrowser : View {
     @State private var searchText : String = ""
-	@State var viewStyle : ViewStyle = .list
+	@State var viewStyle : Int = 0
 	var directory : FSItem
 	var body: some View {
         List{
@@ -112,8 +113,9 @@ struct DirectoryBrowser : View {
 				HStack{
 					TextField("Search..." , text: $searchText)
 					Picker("View", selection: $viewStyle){
-						Image(systemName: "list.dash")
-						Image(systemName: "square.grid.2x2.fill")
+						Image(systemName: "list.dash").tag(0)
+						Image(systemName: "square.grid.2x2.fill").tag(1)
+						
 					}
 						.pickerStyle(SegmentedPickerStyle())
 				}
