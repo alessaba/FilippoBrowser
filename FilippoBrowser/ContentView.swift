@@ -208,9 +208,10 @@ struct DirectoryGridBrowser : View {
 		ScrollView {
 			VStack{
 				TextField("Search..." , text: $searchText)
-					.padding(.vertical, 10)
-					.background(Color.init(.displayP3, white: 0.25, opacity: 1.0))
-					.cornerRadius(10)
+					.padding(.all, 15)
+					.background(Color.init(.displayP3, white: 0.10, opacity: 1.0))
+					//.cornerRadius(10)
+					.padding(.vertical, 30)
 				LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3) as [GridItem]){
 					ForEach(directory.subelements.filter{
 						// MARK: Search Function
@@ -288,7 +289,7 @@ struct DirectoryGridBrowser : View {
 							}
 						}
 						.padding(.all, 10)
-						.background(Color.init(.displayP3, white: 0.25, opacity: 1.0))
+						.background(Color.init(.displayP3, white: 0.15, opacity: 1.0))
 						.cornerRadius(10.0)
 					}
 				}
