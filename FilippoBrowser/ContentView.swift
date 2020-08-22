@@ -26,11 +26,12 @@ let imageExtensions = ["jpg/", "jpeg/", "png/" , "tiff/"]
 struct Browser : View {
 	
 	var path : String
+	@State var gridStyleEnabled : Bool = UserDefaults.standard.bool(forKey: "gridStyleEnabled")
     @State private var watchFilesPresented : Bool = false // We need it for presenting the popover 🙄
-    
 	var body: some View {
 		NavigationView {
-			DirectoryBrowser(directory: FSItem(path: path))
+			properDirectoryBrowser(for: FSItem(path: path))
+			//DirectoryGridBrowser(directory: )
                 .navigationBarTitle(
 					Text("File Browser"), displayMode: .inline)
             .navigationBarItems(
@@ -48,13 +49,20 @@ struct Browser : View {
                     }
                 ,
                 trailing:
-                NavigationLink(destination: gotoView()){
-                    Image(systemName: "arrow.right.circle.fill")
-						.padding(.vertical, 10)
-						.safeHover()
-                        .foregroundColor(.primary)
-                }
-                
+					HStack{
+						Image(systemName: gridStyleEnabled ? "list.dash" :  "square.grid.2x2.fill").onTapGesture {
+							UserDefaults.standard.toggleBool(forKey: "gridStyleEnabled")
+							gridStyleEnabled.toggle()
+							//NSLog("Grid: \(gridStyleEnabled)")
+						}
+						
+						NavigationLink(destination: gotoView()){
+							Image(systemName: "arrow.right.circle.fill")
+								.padding(.vertical, 10)
+								.safeHover()
+								.foregroundColor(.primary)
+						}.padding(.leading, 40)
+					}
             )
 		}.onAppear{
 			//NotificationCenter.default.addObserver(self, selector: #selector("watchFileReceived"), name: Notification.Name("watchFileReceived"), object: nil)
@@ -94,31 +102,16 @@ struct FileViewer : View {
 	}
 }
 
-enum ViewStyle : Int {
-	case list = 0
-	case grid = 1
-}
-
-// MARK: Directory Viewer
-// This is the directory browser, it shows files and subdirectories of a folder
-struct DirectoryBrowser : View {
+// MARK: Directory List Viewer
+// This is the directory browser, it shows files and subdirectories of a folder in list style
+struct DirectoryListBrowser : View {
     @State private var searchText : String = ""
-	@State var viewStyle : Int = 0
 	var directory : FSItem
 	var body: some View {
         List{
-            
             Section{
 				//Text(.init(systemName: "magnifyingglass")) + Text("Search")
-				HStack{
-					TextField("Search..." , text: $searchText)
-					Picker("View", selection: $viewStyle){
-						Image(systemName: "list.dash").tag(0)
-						Image(systemName: "square.grid.2x2.fill").tag(1)
-						
-					}
-						.pickerStyle(SegmentedPickerStyle())
-				}
+				TextField("Search..." , text: $searchText)
             }
             
             ForEach(directory.subelements.filter{
@@ -203,6 +196,106 @@ struct DirectoryBrowser : View {
 		}
             .listStyle(GroupedListStyle())
             .navigationBarTitle(Text(directory.path), displayMode: .inline)
+	}
+}
+
+// MARK: Directory Grid Viewer
+// This is the directory browser, it shows files and subdirectories of a folder in grid style
+struct DirectoryGridBrowser : View {
+	@State private var searchText : String = ""
+	var directory : FSItem
+	var body: some View {
+		ScrollView {
+			VStack{
+				TextField("Search..." , text: $searchText)
+					.padding(.vertical, 10)
+					.background(Color.init(.displayP3, white: 0.25, opacity: 1.0))
+					.cornerRadius(10)
+				LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3) as [GridItem]){
+					ForEach(directory.subelements.filter{
+						// MARK: Search Function
+						// The entries will update automatically eveerytime searchText changes! 🤩
+						if searchText == ""{
+							return true // Every item will be shown
+						} else {
+							// Only the items containing the search term will be shown (fuzzy too 🤩)
+							return $0.lastComponent.lowercased().contains(searchText.lowercased())
+						}
+						
+					}) { subItem in
+						VStack{
+							// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+							HStack{
+								Group{
+									if subItem.isFolder {
+										Image(systemName: "folder.fill")
+									} else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+										Image(systemName: "photo.fill")
+									} else if listExtensions.contains(getExtension(subItem.lastComponent)){
+										Image(systemName: "list.bullet.indent")
+									} else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+										Image(systemName: "doc.text.fill")
+									} else {
+										Image(systemName: "doc.fill")
+									}
+								}
+								.foregroundColor((subItem.rootProtected) ? .orange : .green)
+								
+								
+								
+								
+								//Name of the file/directory
+								NavigationLink(destination: properView(for: subItem)){
+									Text(subItem.lastComponent)
+										.fontWeight(.semibold)
+										.lineLimit(1)
+										.foregroundColor(.blue)
+										.padding(.leading)
+										.contextMenu{
+											
+											VStack {
+												Button(action: {
+													setFavorite(name: subItem.lastComponent, path: subItem.path)
+													let newFavorite = UIMutableApplicationShortcutItem(type: "Favorite", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+													UIApplication.shared.shortcutItems?.append(newFavorite)
+													NSLog("Added to Favorites.")
+												}){
+													Image(systemName: "heart.circle.fill")
+													Text("Add to Favorites")
+												}
+												
+												Button(action: {
+													NSLog("Copy Path button pressed")
+													UIPasteboard.general.string = "file://" + self.directory.path + subItem.lastComponent
+												}){
+													Image(systemName: "doc.circle.fill")
+													Text("Copy Path")
+												}
+											}
+										}
+								}
+							}
+							
+							
+							
+							//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+							if subItem.isFolder {
+								Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
+									.foregroundColor(.secondary)
+							} else {
+								Text(subItem.fileSize)
+									.foregroundColor(.secondary)
+							}
+						}
+						.padding(.all, 10)
+						.background(Color.init(.displayP3, white: 0.25, opacity: 1.0))
+						.cornerRadius(10.0)
+					}
+				}
+				
+			}
+			.navigationBarTitle(Text(directory.path), displayMode: .inline)
+		}
 	}
 }
 
@@ -373,9 +466,18 @@ public func setFavorite(name : String, path : String) {
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
 func properView(for item: FSItem) -> AnyView {
 	if item.isFolder{
-		return AnyView(DirectoryBrowser(directory: item))
+		return properDirectoryBrowser(for: item)
 	} else {
         return AnyView(FileViewer(file: item))
+	}
+}
+
+func properDirectoryBrowser(for item: FSItem) -> AnyView {
+	let gridEnabled = UserDefaults.standard.bool(forKey: "gridStyleEnabled")
+	if gridEnabled{
+		return AnyView(DirectoryGridBrowser(directory: item))
+	} else {
+		return AnyView(DirectoryListBrowser(directory: item))
 	}
 }
 
