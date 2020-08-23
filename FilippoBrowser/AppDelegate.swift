@@ -37,6 +37,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		return true
 	}
+	
+	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+		let path = UserDefaults.standard.string(forKey: shortcutItem.type)
+		
+		if (path != nil) {
+			#warning("should launch the app with the path from the shortcut")
+			NSLog("Trying to open \(path!) folder")
+			
+			let contentView = Browser(path: path!)
+			
+		}
+	}
 
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
