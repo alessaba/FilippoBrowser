@@ -111,8 +111,10 @@ struct DirectoryListBrowser : View {
 	var body: some View {
         List{
             Section{
-				//Text(.init(systemName: "magnifyingglass")) + Text("Search")
-				TextField("Search..." , text: $searchText)
+				HStack{
+					Image(systemName: "magnifyingglass")
+					TextField("Search..." , text: $searchText)
+				}
             }
             
             ForEach(directory.subelements.filter{
@@ -218,11 +220,14 @@ struct DirectoryGridBrowser : View {
 	var body: some View {
 		ScrollView {
 			VStack{
-				TextField("Search..." , text: $searchText)
-					.padding(.all, 15)
-					.background(Color.init(.displayP3, white: 0.10, opacity: 1.0))
-					//.cornerRadius(10)
-					.padding(.vertical, 30)
+				HStack{
+					Image(systemName: "magnifyingglass")
+					TextField("Search..." , text: $searchText)
+				}
+				.padding(.all, 15)
+				.background(Color.init(.displayP3, white: 0.10, opacity: 1.0))
+				.padding(.vertical, 30)
+				
 				LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3) as [GridItem]){
 					ForEach(directory.subelements.filter{
 						// MARK: Search Function
