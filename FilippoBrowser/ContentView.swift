@@ -229,7 +229,7 @@ struct DirectoryGridBrowser : View {
 				.background(Color.init(.displayP3, white: 0.10, opacity: 1.0))
 				.padding(.vertical, 30)
 				
-				LazyVGrid(columns: Array(repeating: .init(.fixed(), count: 3) as [GridItem]){
+				LazyVGrid(columns: Array(repeating: .init(.adaptive(minimum: 150, maximum: 150)), count: 3) as [GridItem]){
 					ForEach(directory.subelements.filter{
 						// MARK: Search Function
 						// The entries will update automatically eveerytime searchText changes! 🤩
