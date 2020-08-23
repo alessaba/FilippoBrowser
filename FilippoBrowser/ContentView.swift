@@ -43,6 +43,7 @@ struct Browser : View {
                         .onTapGesture {
 								#if os(iOS)
 							FLEXManager.shared.showExplorer()
+								//UIApplication.shared.shortcutItems?.removeAll()
 								#endif
 								NSLog("FLEX activated!")
                             //UIPasteboard.general.string = "file//" + self.path
@@ -156,11 +157,11 @@ struct DirectoryListBrowser : View {
                             .foregroundColor(.blue)
                             .padding(.leading)
                             .contextMenu{
-								
 								VStack {
+									Text(subItem.lastComponent)
 									Button(action: {
 										setFavorite(name: subItem.lastComponent, path: subItem.path)
-										let newFavorite = UIMutableApplicationShortcutItem(type: "Favorite", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+										let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
 										UIApplication.shared.shortcutItems?.append(newFavorite)
 										NSLog("Added to Favorites.")
 									}){
@@ -228,7 +229,7 @@ struct DirectoryGridBrowser : View {
 				.background(Color.init(.displayP3, white: 0.10, opacity: 1.0))
 				.padding(.vertical, 30)
 				
-				LazyVGrid(columns: Array(repeating: .init(.flexible()), count: 3) as [GridItem]){
+				LazyVGrid(columns: Array(repeating: .init(.adaptive(minimum: 150, maximum: 150)), count: 3) as [GridItem]){
 					ForEach(directory.subelements.filter{
 						// MARK: Search Function
 						// The entries will update automatically eveerytime searchText changes! 🤩
@@ -283,9 +284,10 @@ struct DirectoryGridBrowser : View {
 						.cornerRadius(10.0)
 						.contextMenu{
 							VStack {
+								Text(subItem.lastComponent)
 								Button(action: {
 									setFavorite(name: subItem.lastComponent, path: subItem.path)
-									let newFavorite = UIMutableApplicationShortcutItem(type: "Favorite", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+									let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
 									UIApplication.shared.shortcutItems?.append(newFavorite)
 									NSLog("Added to Favorites.")
 								}){
@@ -420,7 +422,11 @@ struct FavoriteItem: View {
 				.contextMenu{
 					Button(action: {
 						userDefaults.removeObject(forKey: self.key)
-						#warning("Must add removal of shortcut Items")
+						
+						UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
+							return shortcut.type == self.key
+						})
+						
 					}){
 						Image(systemName: "bin.xmark.fill")
 						Text("Delete")
