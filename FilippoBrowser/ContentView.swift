@@ -106,6 +106,7 @@ struct FileViewer : View {
 // This is the directory browser, it shows files and subdirectories of a folder in list style
 struct DirectoryListBrowser : View {
     @State private var searchText : String = ""
+	@State private var popoverPresented : Bool = false
 	var directory : FSItem
 	var body: some View {
         List{
@@ -172,9 +173,18 @@ struct DirectoryListBrowser : View {
 										Image(systemName: "doc.circle.fill")
 										Text("Copy Path")
 									}
+									
+									Button(action: {
+										self.popoverPresented = true
+									}){
+										Image(systemName: "square.and.arrow.up.on.square.fill")
+										Text("Share")
+									}
 								}
                             }
-                    }
+					}.sheet(isPresented: $popoverPresented, onDismiss: nil) {
+						ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
+					}
                     
                     
                     //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
@@ -194,8 +204,8 @@ struct DirectoryListBrowser : View {
                         }
                     }
 		}
-            .listStyle(GroupedListStyle())
-            .navigationBarTitle(Text(directory.path), displayMode: .inline)
+		.listStyle(GroupedListStyle())
+		.navigationBarTitle(Text(directory.path), displayMode: .inline)
 	}
 }
 
@@ -203,6 +213,7 @@ struct DirectoryListBrowser : View {
 // This is the directory browser, it shows files and subdirectories of a folder in grid style
 struct DirectoryGridBrowser : View {
 	@State private var searchText : String = ""
+	@State private var popoverPresented : Bool = false
 	var directory : FSItem
 	var body: some View {
 		ScrollView {
@@ -226,58 +237,32 @@ struct DirectoryGridBrowser : View {
 					}) { subItem in
 						VStack{
 							// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-							HStack{
-								Group{
-									if subItem.isFolder {
-										Image(systemName: "folder.fill")
-									} else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-										Image(systemName: "photo.fill")
-									} else if listExtensions.contains(getExtension(subItem.lastComponent)){
-										Image(systemName: "list.bullet.indent")
-									} else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-										Image(systemName: "doc.text.fill")
-									} else {
-										Image(systemName: "doc.fill")
-									}
-								}
-								.foregroundColor((subItem.rootProtected) ? .orange : .green)
-								
-								
-								
-								
-								//Name of the file/directory
-								NavigationLink(destination: properView(for: subItem)){
-									Text(subItem.lastComponent)
-										.fontWeight(.semibold)
-										.lineLimit(1)
-										.foregroundColor(.blue)
-										.padding(.leading)
-										.contextMenu{
-											
-											VStack {
-												Button(action: {
-													setFavorite(name: subItem.lastComponent, path: subItem.path)
-													let newFavorite = UIMutableApplicationShortcutItem(type: "Favorite", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
-													UIApplication.shared.shortcutItems?.append(newFavorite)
-													NSLog("Added to Favorites.")
-												}){
-													Image(systemName: "heart.circle.fill")
-													Text("Add to Favorites")
-												}
-												
-												Button(action: {
-													NSLog("Copy Path button pressed")
-													UIPasteboard.general.string = "file://" + self.directory.path + subItem.lastComponent
-												}){
-													Image(systemName: "doc.circle.fill")
-													Text("Copy Path")
-												}
-											}
-										}
+							Group{
+								if subItem.isFolder {
+									Image(systemName: "folder.fill")
+								} else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
+									Image(systemName: "photo.fill")
+								} else if listExtensions.contains(getExtension(subItem.lastComponent)){
+									Image(systemName: "list.bullet.indent")
+								} else if textExtensions.contains(getExtension(subItem.lastComponent)) {
+									Image(systemName: "doc.text.fill")
+								} else {
+									Image(systemName: "doc.fill")
 								}
 							}
+							.foregroundColor((subItem.rootProtected) ? .orange : .green)
+							.padding(.vertical, 5)
 							
 							
+							
+							
+							//Name of the file/directory
+							NavigationLink(destination: properView(for: subItem)){
+								Text(subItem.lastComponent)
+									.fontWeight(.semibold)
+									.lineLimit(1)
+									.foregroundColor(.blue)
+							}
 							
 							//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
 							if subItem.isFolder {
@@ -291,9 +276,39 @@ struct DirectoryGridBrowser : View {
 						.padding(.all, 10)
 						.background(Color.init(.displayP3, white: 0.15, opacity: 1.0))
 						.cornerRadius(10.0)
+						.contextMenu{
+							VStack {
+								Button(action: {
+									setFavorite(name: subItem.lastComponent, path: subItem.path)
+									let newFavorite = UIMutableApplicationShortcutItem(type: "Favorite", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+									UIApplication.shared.shortcutItems?.append(newFavorite)
+									NSLog("Added to Favorites.")
+								}){
+									Image(systemName: "heart.circle.fill")
+									Text("Add to Favorites")
+								}
+								
+								Button(action: {
+									NSLog("Copy Path button pressed")
+									UIPasteboard.general.string = "file://" + self.directory.path + subItem.lastComponent
+								}){
+									Image(systemName: "doc.circle.fill")
+									Text("Copy Path")
+								}
+							
+								Button(action: {
+									self.popoverPresented = true
+								}){
+									Image(systemName: "square.and.arrow.up.on.square.fill")
+									Text("Share")
+								}
+							}
+						}
+						.sheet(isPresented: $popoverPresented, onDismiss: nil) {
+							ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
+						}
 					}
 				}
-				
 			}
 			.navigationBarTitle(Text(directory.path), displayMode: .inline)
 		}
