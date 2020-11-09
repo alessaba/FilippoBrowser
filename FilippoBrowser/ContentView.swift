@@ -15,6 +15,7 @@ import FLEX
 
 let userDefaults = UserDefaults.standard
 let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
+let documents_directory = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]).path + "/"
 
 let textExtensions = ["txt/", "strings/"]
 let listExtensions = ["plist/", "json/"]
@@ -25,7 +26,7 @@ let imageExtensions = ["jpg/", "jpeg/", "png/" , "tiff/"]
 // Starting point
 struct Browser : View {
 	
-	var path : String
+	@State var path : String
 	@State var gridStyleEnabled : Bool = UserDefaults.standard.bool(forKey: "gridStyleEnabled")
     @State private var watchFilesPresented : Bool = false // We need it for presenting the popover 🙄
 	var body: some View {
@@ -325,6 +326,7 @@ struct DirectoryGridBrowser : View {
 // MARK: Go To View
 struct gotoView : View {
 	@State var path : String = "/"
+	#warning("Must set a @State Property on the keys variable so when the variable is modified, the list is redrawn")
 	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys.filter{
 		$0.starts(with: "FB_")
 	}
@@ -366,8 +368,21 @@ struct gotoView : View {
 				}
 				#if os(iOS) || os(watchOS)
 				Spacer()
+				
 				NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
 					Text("Media 🖥")
+						.foregroundColor(.primary)
+						.bold()
+						.padding()
+						.background(Color.blue)
+						.cornerRadius(15)
+						.padding(.horizontal, 10)
+						.safeHover()
+				}
+				Spacer()
+				
+				NavigationLink(destination: properView(for: FSItem(path: documents_directory))){
+					Text("Documents 🗂")
 						.foregroundColor(.primary)
 						.bold()
 						.padding()
