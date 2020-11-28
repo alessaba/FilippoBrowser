@@ -53,7 +53,8 @@ struct Browser : View {
                 trailing:
 					HStack{
 						Image(systemName: gridStyleEnabled ? "list.dash" :  "square.grid.2x2.fill").onTapGesture {
-							UserDefaults.standard.toggleBool(forKey: "gridStyleEnabled")
+							UserDefaults.standard.flex_toggleBool(forKey: "gridStyleEnabled")
+							//UserDefaults.standard.toggleBool(forKey: "gridStyleEnabled")
 							gridStyleEnabled.toggle()
 							//NSLog("Grid: \(gridStyleEnabled)")
 						}
