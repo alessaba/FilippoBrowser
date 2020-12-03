@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			#warning("should launch the app with the path from the shortcut")
 			NSLog("Trying to open \(path!) folder")
 			
-			let contentView = Browser(path: path!)
+			//let contentView = Browser(path: path!)
 			
 		}
 	}

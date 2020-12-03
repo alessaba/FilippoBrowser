@@ -338,9 +338,10 @@ struct gotoView : View {
             
 			TextField("Path", text: $path)
                 .padding(.all)
-                .background(Color.gray)
-                .cornerRadius(15)
-                .padding(.all)
+				.border(Color.secondary, width: 4)
+				.cornerRadius(5)
+				.padding(.all)
+				
 			
 			NavigationLink(destination: properView(for: FSItem(path: path))){
 				Text("Go")
