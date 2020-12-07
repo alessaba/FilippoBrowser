@@ -8,8 +8,8 @@
 
 import SwiftUI
 import WatchKit
-import WatchConnectivity
 import Foundation
+import WatchConnectivity
 //import FBrowserWatch
 
 let userDefaults = UserDefaults.standard
@@ -19,11 +19,7 @@ let listExtensions = ["plist", "json"]
 let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 
 
-class SessionDelegate : NSObject, WCSessionDelegate{
-	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		NSLog("Session:\nReachable:\(session.isReachable)\nActivation State:\(activationState.rawValue)")
-	}
-}
+
 
 
 // MARK: File Viewer
@@ -54,21 +50,8 @@ struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
     var directory : FSItem
-	
-	func activateSession() -> Bool {
-		if WCSession.isSupported(){
-			let del = SessionDelegate()
-			session.delegate = del
-			session.activate()
-			NSLog("Session Activated")
-			return true
-		} else {
-			return false
-		}
-	}
-   
+
 	var body: some View {
-		activateSession()
         return List{
             Section{
 				if (directory.path == "/"){

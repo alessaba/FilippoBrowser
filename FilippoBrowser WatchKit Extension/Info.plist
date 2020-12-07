@@ -48,7 +48,9 @@
 	</dict>
 	<key>WKExtensionDelegateClassName</key>
 	<string>$(PRODUCT_MODULE_NAME).ExtensionDelegate</string>
-	<key>WKWatchOnly</key>
+	<key>WKRunsIndependentlyOfCompanionApp</key>
 	<true/>
+	<key>WKWatchOnly</key>
+	<false/>
 </dict>
 </plist>

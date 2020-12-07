@@ -27,5 +27,7 @@
 	</array>
 	<key>WKWatchKitApp</key>
 	<true/>
+	<key>WKCompanionAppBundleIdentifier</key>
+	<string>claudi.filippo.FilippoBrowser</string>
 </dict>
 </plist>

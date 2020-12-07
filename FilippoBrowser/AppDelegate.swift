@@ -13,9 +13,44 @@ import UserNotifications
 public let un = UNUserNotificationCenter.current()
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
-
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+		NSLog("WatchConnectivity session completed with status: \(activationState.rawValue)")
+	}
+	
+	func sessionDidBecomeInactive(_ session: WCSession) {
+		// Session Inactive
+		NSLog("Session Became inactive")
+	}
+	
+	func sessionDidDeactivate(_ session: WCSession) {
+		// Session deactivated
+		NSLog("Session deactivated")
+	}
+	
+	func session(_ session: WCSession, didReceive file: WCSessionFile) {
+		let fm = FileManager.default
+		let docsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]
+		
+		do{
+			try fm.copyItem(at: file.fileURL, to: URL(string: "file://\(docsDirectory)")!)
+			
+			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
+			
+			let notificationContent = UNMutableNotificationContent()
+			notificationContent.badge = 1
+			notificationContent.title = "Watch File"
+			notificationContent.body = "Your Apple Watch just shared \(filename) with you 😃"
+			
+			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
+			let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
+			
+			un.add(request, withCompletionHandler: nil)
+		} catch {
+			NSLog("WatchConnectivity file transfer failed :-(")
+		}
+	}
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
@@ -28,8 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		NSLog("Session supported: \(WCSession.isSupported())")
 		if WCSession.isSupported(){
 			let watchSession = WCSession.default
-			let watch_delegate = WatchDelegate()
-			watchSession.delegate = watch_delegate
+			watchSession.delegate = self
 			watchSession.activate()
 		} else {
 			NSLog("Device not supported or Apple Watch is not paired.")
@@ -70,42 +104,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 }
-
-class WatchDelegate : NSObject, WCSessionDelegate {
-	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		NSLog("WatchConnectivity session completed with status: \(activationState.rawValue)")
-	}
-	
-	func sessionDidBecomeInactive(_ session: WCSession) {
-		// Session Inactive
-		NSLog("Session Became inactive")
-	}
-	
-	func sessionDidDeactivate(_ session: WCSession) {
-		// Session deactivated
-		NSLog("Session deactivated")
-	}
-	
-	func session(_ session: WCSession, didReceive file: WCSessionFile) {
-		let fm = FileManager.default
-		let docsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]
-		do{
-			try fm.copyItem(at: file.fileURL, to: URL(string: "file://\(docsDirectory)")!)
-			
-			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
-			
-			let notificationContent = UNMutableNotificationContent()
-			notificationContent.badge = 1
-			notificationContent.title = "Watch File"
-			notificationContent.body = "Your Apple Watch just shared \(filename) with you 😃"
-			
-			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
-			let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
-			
-			un.add(request, withCompletionHandler: nil)
-		}catch{
-			NSLog("WatchConnectivity file transfer failed :-(")
-		}
-	}
-}
-
