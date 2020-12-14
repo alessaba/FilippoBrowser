@@ -16,7 +16,7 @@ public let un = UNUserNotificationCenter.current()
 class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		NSLog("WatchConnectivity session completed with status: \(activationState.rawValue)")
+		NSLog("Session Reachable:\(session.isReachable)\nActivation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
 	}
 	
 	func sessionDidBecomeInactive(_ session: WCSession) {

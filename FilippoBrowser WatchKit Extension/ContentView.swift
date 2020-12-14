@@ -18,10 +18,6 @@ let textExtensions = ["txt"]
 let listExtensions = ["plist", "json"]
 let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 
-
-
-
-
 // MARK: File Viewer
 // This shows the contents of most types of common files
 struct FileViewer : View {

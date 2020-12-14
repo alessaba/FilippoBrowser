@@ -11,7 +11,6 @@ import UIKit
 import Foundation
 import FBrowser
 import FLEX
-//import NotificationCenter
 
 let userDefaults = UserDefaults.standard
 let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
@@ -20,7 +19,6 @@ let documents_directory = (FileManager.default.urls(for: .documentDirectory, in:
 let textExtensions = ["txt/", "strings/"]
 let listExtensions = ["plist/", "json/"]
 let imageExtensions = ["jpg/", "jpeg/", "png/" , "tiff/"]
-
 
 // MARK: Starting View
 // Starting point

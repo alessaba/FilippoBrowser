@@ -28,6 +28,6 @@ class HostingController: WKHostingController<DirectoryBrowser>, WCSessionDelegat
     }
 	
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		NSLog("Session:\nReachable:\(session.isReachable)\nActivation State:\(activationState.rawValue)")
+		NSLog("Session Reachable:\(session.isReachable)\nActivation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
 	}
 }
