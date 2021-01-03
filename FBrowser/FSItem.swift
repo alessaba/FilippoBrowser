@@ -10,7 +10,17 @@ import Foundation
 
 let runningInXcode = (ProcessInfo.processInfo.arguments.count > 1)
 
+public enum ItemType : String {
+	case Image = "photo.fill"
+	case List = "list.bullet.indent"
+	case Text = "doc.text.fill"
+	case GenericDocument = "doc.fill"
+	case Folder = "folder.fill"
+}
+
 public class FSItem : Identifiable, Equatable{
+	
+	
 	
 	public static func == (lhs: FSItem, rhs: FSItem) -> Bool {
 		return lhs.path == rhs.path
@@ -28,10 +38,31 @@ public class FSItem : Identifiable, Equatable{
 		String(self.path.split(separator: "/").last ?? "")
 	}
 	
-	public var isFolder : Bool {
+	
+	
+	public var itemType : ItemType {
+		let textExtensions = ["txt/", "strings/"]
+		let listExtensions = ["plist/", "json/"]
+		let imageExtensions = ["jpg/", "jpeg/", "png/" , "tiff/"]
+		
 		var isFoldr : ObjCBool = false
 		fileManager.fileExists(atPath: path, isDirectory: &isFoldr)
-		return isFoldr.boolValue
+		
+		if isFoldr.boolValue {
+			return .Folder
+		} else if imageExtensions.contains(getExtension(self.lastComponent)) {
+			return .Image
+		} else if listExtensions.contains(getExtension(self.lastComponent)){
+			return .List
+		} else if textExtensions.contains(getExtension(self.lastComponent)) {
+			return .Text
+		} else {
+			return .GenericDocument
+		}
+	}
+	
+	public var isFolder : Bool {
+		return (itemType == .Folder)
 	}
 	
 	public var fileSize : String {
@@ -96,6 +127,7 @@ public class FSItem : Identifiable, Equatable{
 		}
 	}
 }
+
 
 
 

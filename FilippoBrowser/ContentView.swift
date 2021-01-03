@@ -16,10 +16,6 @@ let userDefaults = UserDefaults.standard
 let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
 let documents_directory = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]).path + "/"
 
-let textExtensions = ["txt/", "strings/"]
-let listExtensions = ["plist/", "json/"]
-let imageExtensions = ["jpg/", "jpeg/", "png/" , "tiff/"]
-
 // MARK: Starting View
 // Starting point
 struct Browser : View {
@@ -82,8 +78,7 @@ struct FileViewer : View {
 	
 	var body: some View {
 		VStack {
-			#warning("Forse dovrei creare una enum per stabilire di partenza il tipo di file, invece di fare controlli con le estensioni")
-			if (imageExtensions.contains(getExtension(self.file.path))){
+			if (self.file.itemType == .Image ){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
@@ -104,20 +99,6 @@ struct FileViewer : View {
 	}
 }
 
-func itemImage(for item: FSItem) -> String {
-	
-	if item.isFolder {
-		return "folder.fill"
-	} else if imageExtensions.contains(getExtension(item.lastComponent)) {
-		return "photo.fill"
-	} else if listExtensions.contains(getExtension(item.lastComponent)){
-		return "list.bullet.indent"
-	} else if textExtensions.contains(getExtension(item.lastComponent)) {
-		return "doc.text.fill"
-	} else {
-		return "doc.fill"
-	}
-}
 
 // MARK: Directory List Viewer
 // This is the directory browser, it shows files and subdirectories of a folder in list style
@@ -147,7 +128,7 @@ struct DirectoryListBrowser : View {
             }) { subItem in
                 HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-					Image(systemName: itemImage(for: subItem))
+					Image(systemName: subItem.itemType.rawValue)
 						.foregroundColor((subItem.rootProtected) ? .orange : .green)
                     
                     
@@ -247,7 +228,7 @@ struct DirectoryGridBrowser : View {
 					}) { subItem in
 						VStack{
 							// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-							Image(systemName: itemImage(for: subItem))
+							Image(systemName: subItem.itemType.rawValue)
 								.foregroundColor((subItem.rootProtected) ? .orange : .green)
 								.padding(.vertical, 5)
 							
@@ -279,7 +260,7 @@ struct DirectoryGridBrowser : View {
 								Text(subItem.lastComponent)
 								Button(action: {
 									setFavorite(name: subItem.lastComponent, path: subItem.path)
-									let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: itemImage(for: subItem))) //subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+									let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.itemType.rawValue)) //subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
 									UIApplication.shared.shortcutItems?.append(newFavorite)
 									NSLog("Added to Favorites.")
 								}){

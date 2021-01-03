@@ -14,9 +14,6 @@ import WatchConnectivity
 
 let userDefaults = UserDefaults.standard
 let session = WCSession.default
-let textExtensions = ["txt"]
-let listExtensions = ["plist", "json"]
-let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 
 // MARK: File Viewer
 // This shows the contents of most types of common files
@@ -25,7 +22,7 @@ struct FileViewer : View {
 	
 	var body: some View {
 		VStack {
-			if (imageExtensions.contains(getExtension(self.file.path)+"/")){
+			if (self.file.itemType == .Image){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 					.resizable()
 					.aspectRatio(contentMode: .fit)
@@ -71,19 +68,7 @@ struct DirectoryBrowser : View {
             }) { subItem in
                 HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-                    Group{
-                        if subItem.isFolder {
-                            Image(systemName: "folder.fill")
-                        } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-                            Image(systemName: "photo.fill")
-                        } else if listExtensions.contains(getExtension(subItem.lastComponent)){
-                            Image(systemName: "list.bullet.indent")
-                        } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-                            Image(systemName: "doc.text.fill")
-                        } else {
-                            Image(systemName: "doc.fill")
-                        }
-                    }
+					Image(systemName: subItem.itemType.rawValue)
                     .foregroundColor((subItem.rootProtected) ? .orange : .green)
 
                     VStack(alignment: .leading) {
@@ -226,8 +211,19 @@ struct ContentView_Previews : PreviewProvider {
 #endif
 
 // MARK: FSItem
+let runningInXcode = (ProcessInfo.processInfo.arguments.count > 1)
+
+public enum ItemType : String {
+	case Image = "photo.fill"
+	case List = "list.bullet.indent"
+	case Text = "doc.text.fill"
+	case GenericDocument = "doc.fill"
+	case Folder = "folder.fill"
+}
 
 public class FSItem : Identifiable, Equatable{
+	
+	
 	
 	public static func == (lhs: FSItem, rhs: FSItem) -> Bool {
 		return lhs.path == rhs.path
@@ -245,10 +241,31 @@ public class FSItem : Identifiable, Equatable{
 		String(self.path.split(separator: "/").last ?? "")
 	}
 	
-	public var isFolder : Bool {
+	
+	
+	public var itemType : ItemType {
+		let textExtensions = ["txt/", "strings/"]
+		let listExtensions = ["plist/", "json/"]
+		let imageExtensions = ["jpg/", "jpeg/", "png/" , "tiff/"]
+		
 		var isFoldr : ObjCBool = false
 		fileManager.fileExists(atPath: path, isDirectory: &isFoldr)
-		return isFoldr.boolValue
+		
+		if isFoldr.boolValue {
+			return .Folder
+		} else if imageExtensions.contains(getExtension(self.lastComponent)) {
+			return .Image
+		} else if listExtensions.contains(getExtension(self.lastComponent)){
+			return .List
+		} else if textExtensions.contains(getExtension(self.lastComponent)) {
+			return .Text
+		} else {
+			return .GenericDocument
+		}
+	}
+	
+	public var isFolder : Bool {
+		return (itemType == .Folder)
 	}
 	
 	public var fileSize : String {
@@ -306,11 +323,10 @@ public class FSItem : Identifiable, Equatable{
 				return subDirs
 			}
 		} catch {
-			//NSLog("\(path) probably has root permissions")
+			if (runningInXcode) {
+				NSLog("\(path) probably has root permissions")
+			}
 			return []
 		}
 	}
 }
-
-
-
