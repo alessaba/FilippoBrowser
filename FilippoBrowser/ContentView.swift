@@ -82,6 +82,7 @@ struct FileViewer : View {
 	
 	var body: some View {
 		VStack {
+			#warning("Forse dovrei creare una enum per stabilire di partenza il tipo di file, invece di fare controlli con le estensioni")
 			if (imageExtensions.contains(getExtension(self.file.path))){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 				.resizable()
@@ -100,6 +101,21 @@ struct FileViewer : View {
 				}
 			}
 		}
+	}
+}
+
+func itemImage(for item: FSItem) -> String {
+	
+	if item.isFolder {
+		return "folder.fill"
+	} else if imageExtensions.contains(getExtension(item.lastComponent)) {
+		return "photo.fill"
+	} else if listExtensions.contains(getExtension(item.lastComponent)){
+		return "list.bullet.indent"
+	} else if textExtensions.contains(getExtension(item.lastComponent)) {
+		return "doc.text.fill"
+	} else {
+		return "doc.fill"
 	}
 }
 
@@ -131,20 +147,8 @@ struct DirectoryListBrowser : View {
             }) { subItem in
                 HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-                    Group{
-                        if subItem.isFolder {
-                            Image(systemName: "folder.fill")
-                        } else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-                            Image(systemName: "photo.fill")
-                        } else if listExtensions.contains(getExtension(subItem.lastComponent)){
-                            Image(systemName: "list.bullet.indent")
-                        } else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-                            Image(systemName: "doc.text.fill")
-                        } else {
-                            Image(systemName: "doc.fill")
-                        }
-                    }
-                    .foregroundColor((subItem.rootProtected) ? .orange : .green)
+					Image(systemName: itemImage(for: subItem))
+						.foregroundColor((subItem.rootProtected) ? .orange : .green)
                     
                     
                         
@@ -243,21 +247,9 @@ struct DirectoryGridBrowser : View {
 					}) { subItem in
 						VStack{
 							// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-							Group{
-								if subItem.isFolder {
-									Image(systemName: "folder.fill")
-								} else if imageExtensions.contains(getExtension(subItem.lastComponent)) {
-									Image(systemName: "photo.fill")
-								} else if listExtensions.contains(getExtension(subItem.lastComponent)){
-									Image(systemName: "list.bullet.indent")
-								} else if textExtensions.contains(getExtension(subItem.lastComponent)) {
-									Image(systemName: "doc.text.fill")
-								} else {
-									Image(systemName: "doc.fill")
-								}
-							}
-							.foregroundColor((subItem.rootProtected) ? .orange : .green)
-							.padding(.vertical, 5)
+							Image(systemName: itemImage(for: subItem))
+								.foregroundColor((subItem.rootProtected) ? .orange : .green)
+								.padding(.vertical, 5)
 							
 							
 							
@@ -287,7 +279,7 @@ struct DirectoryGridBrowser : View {
 								Text(subItem.lastComponent)
 								Button(action: {
 									setFavorite(name: subItem.lastComponent, path: subItem.path)
-									let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+									let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: itemImage(for: subItem))) //subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
 									UIApplication.shared.shortcutItems?.append(newFavorite)
 									NSLog("Added to Favorites.")
 								}){
