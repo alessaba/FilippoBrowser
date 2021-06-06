@@ -80,8 +80,10 @@ struct DirectoryBrowser : View {
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
                     .foregroundColor((subItem.rootProtected) ? .orange : .green)
-
-                    VStack(alignment: .leading) {
+					
+					Spacer().frame(width:10)
+                    
+					VStack(alignment: .leading) {
                         //Name of the file/directory
                         NavigationLink(destination: properView(for: subItem)){
                             Text(subItem.lastComponent)
