@@ -19,8 +19,7 @@ public enum ItemType : String {
 }
 
 public class FSItem : Identifiable, Equatable{
-	
-	
+
 	
 	public static func == (lhs: FSItem, rhs: FSItem) -> Bool {
 		return lhs.path == rhs.path
@@ -37,7 +36,6 @@ public class FSItem : Identifiable, Equatable{
 	public var lastComponent : String {
 		String(self.path.split(separator: "/").last ?? "")
 	}
-	
 	
 	
 	public var itemType : ItemType {
@@ -96,7 +94,7 @@ public class FSItem : Identifiable, Equatable{
 		}
 	}
 	
-	// this is a dumb assumption
+	#warning("this is a dumb assumption")
 	public var rootProtected : Bool {
 		if isFolder && subelements.count == 0 {
 			return true

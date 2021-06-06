@@ -364,6 +364,18 @@ struct gotoView : View {
 						.padding(.horizontal, 10)
 						.safeHover()
 				}
+				/*Spacer()
+				
+				NavigationLink(destination: properView(for: FSItem(path: "/private/var/mobile/Containers/Shared/AppGroup/DE73A02D-20C5-4420-B376-711B5778576F/"))){
+					Text("AppGroup 🗂")
+						.foregroundColor(.primary)
+						.bold()
+						.padding()
+						.background(Color.blue)
+						.cornerRadius(15)
+						.padding(.horizontal, 10)
+						.safeHover()
+				}*/
 				#endif
 				
 				Spacer()

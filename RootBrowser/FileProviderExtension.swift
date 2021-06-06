@@ -8,9 +8,12 @@
 
 import FileProvider
 
+let docPath = NSFileProviderManager.default.documentStorageURL
+
 class FileProviderExtension: NSFileProviderExtension {
     
     var fileManager = FileManager()
+	
     
     override init() {
         super.init()
@@ -20,7 +23,7 @@ class FileProviderExtension: NSFileProviderExtension {
         // resolve the given identifier to a record in the model
         
         // TODO: implement the actual lookup
-        return FileProviderItem()
+		return FileProviderItem(path: "/")
     }
     
     override func urlForItem(withPersistentIdentifier identifier: NSFileProviderItemIdentifier) -> URL? {
@@ -92,7 +95,6 @@ class FileProviderExtension: NSFileProviderExtension {
         
         completionHandler(NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
     }
-    
     
     override func itemChanged(at url: URL) {
         // Called at some point after the file has changed; the provider may then trigger an upload

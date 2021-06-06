@@ -34,6 +34,22 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer about the items returned by the server (possibly multiple times)
          - inform the observer that you are finished with this page
          */
+		let fm = FileManager.default
+		let subItems = try? fm.contentsOfDirectory(atPath: "/")
+		var listing = [FileProviderItem]()
+		
+		for item in subItems ?? [] {
+			let fileProviderItem = FileProviderItem(path: "/\(item)")
+			listing.append(fileProviderItem)
+		}
+		print("Trying to enumerate")
+		observer.didEnumerate(listing)
+		
+		// We're returning everything as a single page here (upToPAge: nil)
+		// TOOD: Since the extension is given a very small amount of memory,
+		// paginating the results may be necessary for directories with lots
+		// of files.
+		observer.finishEnumerating(upTo: nil)
     }
     
     func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
