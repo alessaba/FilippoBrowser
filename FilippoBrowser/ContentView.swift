@@ -10,6 +10,10 @@ import SwiftUI
 import UIKit
 import Foundation
 import FBrowser
+
+import QuickLook
+import SceneKit
+
 import FLEX
 
 let userDefaults = UserDefaults.standard
@@ -89,17 +93,7 @@ struct FileViewer : View {
 			} else if (self.file.itemType == .threeD){
 				SceneView(filePath: self.file.path)
 			} else {
-				Image(systemName: "square.and.arrow.up.fill")//self.file.path)
-					.resizable()
-					.scaledToFit()
-					.frame(width: 75, height: 75)
-					.onTapGesture { self.sheetPresented = true }
-					.sheet(isPresented: $sheetPresented){
-						ActivityView(activityItems: [URL(string: "file://" + self.file.path)!], applicationActivities: nil)
-				}.onDisappear{
-					self.sheetPresented = false
-					NSLog("Share Sheet dismissed.")
-				}
+				QuickLookView(filePath: self.file.path)
 			}
 		}
 	}
@@ -477,23 +471,19 @@ struct ActivityView: UIViewControllerRepresentable {
     let applicationActivities: [UIActivity]?
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
-        return UIActivityViewController(activityItems: activityItems,
-                                        applicationActivities: applicationActivities)
+        return UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
     }
 
-    func updateUIViewController(_ uiViewController: UIActivityViewController,
-                                context: UIViewControllerRepresentableContext<ActivityView>) {
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {
         NSLog("ActivityVC called. whatever.")
     }
 }
 
-import SceneKit
 struct SceneView: UIViewControllerRepresentable {
-	
 	let filePath: String
 	
 	func makeUIViewController(context: UIViewControllerRepresentableContext<SceneView>) -> UIViewController {
-		let scene = SCNScene(named: filePath)
+		let scene = SCNScene(named: String(filePath.dropLast()))
 		let sceneView = SCNView()
 		sceneView.allowsCameraControl = true
 		sceneView.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
@@ -518,9 +508,42 @@ struct SceneView: UIViewControllerRepresentable {
 		return sceneVC
 	}
 	
-	func updateUIViewController(_ uiViewController: UIViewController,
-								context: UIViewControllerRepresentableContext<SceneView>) {
-		NSLog("ActivityVC called. whatever.")
+	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<SceneView>) {
+		NSLog("SceneVC called.")
+	}
+}
+
+struct QuickLookView: UIViewControllerRepresentable {
+	let filePath: String
+	
+	func makeUIViewController(context: UIViewControllerRepresentableContext<QuickLookView>) -> UIViewController {
+		let qv = QLPreviewController()
+		qv.dataSource = context.coordinator
+		return qv
+	}
+	
+	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLookView>) {
+		NSLog("QuickLook called.")
+	}
+	
+	func makeCoordinator() -> QuickLookDataSource {
+		return QuickLookDataSource(parent: self)
+	}
+	
+	class QuickLookDataSource : NSObject, QLPreviewControllerDataSource{
+		let parent: QuickLookView
+		
+		init(parent: QuickLookView) {
+			self.parent = parent
+		}
+		
+		func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+			return 1
+		}
+		
+		func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+			return URL(string: "file://\(parent.filePath)")! as NSURL
+		}
 	}
 }
 
