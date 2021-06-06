@@ -540,7 +540,16 @@ struct QuickLookView: UIViewControllerRepresentable {
 		}
 		
 		func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-			return URL(string: "file://\(parent.filePath)")! as NSURL
+			let fm = FileManager.default
+			let tempPath = (fm.temporaryDirectory.appendingPathComponent(String(parent.filePath.split(separator: "/").last ?? "")))
+			
+			do{
+				try fm.copyItem(at: URL(string: "file://\(parent.filePath)")!, to: tempPath)
+			} catch {
+				print("Failed to copy")
+			}
+
+			return tempPath as NSURL
 		}
 	}
 }
