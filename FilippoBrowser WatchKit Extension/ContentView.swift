@@ -51,7 +51,17 @@ struct DirectoryBrowser : View {
 					NavigationLink(destination: gotoView()){
 						Text("Go To...")
 					}
-                }
+				} else {
+					Button(action: {
+						setFavorite(name: self.directory.lastComponent, path: self.directory.path)
+						NSLog("Added favourite!")
+					}){
+						HStack{
+							Image(systemName: "heart.fill").foregroundColor(.red)
+							Text("  Add to Favorites")
+						}
+					}
+				}
                 TextField("Search...", text: $searchText)
             }
             
@@ -94,21 +104,6 @@ struct DirectoryBrowser : View {
                     }
                 }
             }
-        }
-        .contextMenu {
-           /* Button("Go To..."){
-                self.gotoView_presented = true
-            }.sheet(isPresented: $gotoView_presented, content: {gotoView()})
-			*/
-			Button(action: {
-				setFavorite(name: self.directory.lastComponent, path: self.directory.path)
-				NSLog("Added favourite!")
-			}){
-				VStack{
-					Image(systemName: "heart.fill")
-					Text("Add to Favorites ")
-				}
-			}
 		}
     }
 }
