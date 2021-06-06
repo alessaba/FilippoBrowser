@@ -515,7 +515,9 @@ struct QuickLookView: UIViewControllerRepresentable {
 	func makeUIViewController(context: UIViewControllerRepresentableContext<QuickLookView>) -> UIViewController {
 		let qv = QLPreviewController()
 		qv.dataSource = context.coordinator
-		return qv
+		
+		let navigationController = UINavigationController(rootViewController: qv)
+		return navigationController
 	}
 	
 	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLookView>) {
