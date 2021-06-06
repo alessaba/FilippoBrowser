@@ -39,9 +39,9 @@ public class FSItem : Identifiable, Equatable{
 	
 	
 	public var itemType : ItemType {
-		let textExtensions = ["txt/", "strings/"]
-		let listExtensions = ["plist/", "json/"]
-		let imageExtensions = ["jpg/", "jpeg/", "png/" , "tiff/"]
+		let textExtensions = ["txt", "strings"]
+		let listExtensions = ["plist", "json"]
+		let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
 		
 		var isFoldr : ObjCBool = false
 		fileManager.fileExists(atPath: path, isDirectory: &isFoldr)

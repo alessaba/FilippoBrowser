@@ -78,14 +78,15 @@ struct FileViewer : View {
 	
 	var body: some View {
 		VStack {
-			if (self.file.itemType == .Image ){
+			#warning("Could add STL viewer with code from playground. would need to bridge a S")
+			if (self.file.itemType == .Image){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
-			/*} else if (textExtensions.contains(getExtension(self.file.path))){
+			} else if (self.file.itemType == .Text){
 				ScrollView{
 					Text(contentsOfFile(self.file.path))
-				}*/
+				}
 			} else {
 				Text(self.file.path)
 					.onAppear { self.popoverPresented = true }
@@ -115,17 +116,19 @@ struct DirectoryListBrowser : View {
 				}
             }
             
-            ForEach(directory.subelements.filter{
-                // MARK: Search Function
-                // The entries will update automatically eveerytime searchText changes! 🤩
-                if searchText == ""{
-                    return true // Every item will be shown
-                } else {
-                    // Only the items containing the search term will be shown (fuzzy too 🤩)
+			let subelements = directory.subelements.filter{
+				// MARK: Search Function
+				// The entries will update automatically eveerytime searchText changes! 🤩
+				if searchText == ""{
+					return true // Every item will be shown
+				} else {
+					// Only the items containing the search term will be shown (fuzzy too 🤩)
 					return $0.lastComponent.lowercased().contains(searchText.lowercased())
-                }
-                
-            }) { subItem in
+				}
+				
+			}
+			
+			ForEach(subelements) { subItem in
                 HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
@@ -477,12 +480,6 @@ struct ActivityView: UIViewControllerRepresentable {
                                 context: UIViewControllerRepresentableContext<ActivityView>) {
         NSLog("ActivityVC called. whatever.")
     }
-}
-
-
-// Gets the file extension for later use
-func getExtension(_ path: String) -> String {
-	return String(path.split(separator: ".").last ?? "")
 }
 
 public func setFavorite(name : String, path : String) {
