@@ -86,10 +86,6 @@ struct FileViewer : View {
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
-			} else if (self.file.itemType == .Text){
-				ScrollView{
-					Text(contentsOfFile(self.file.path))
-				}
 			} else if (self.file.itemType == .threeD){
 				SceneView(filePath: self.file.path)
 			} else {
@@ -569,18 +565,6 @@ func properDirectoryBrowser(for item: FSItem) -> AnyView {
 		return AnyView(DirectoryListBrowser(directory: item))
 	}
 }
-
-func contentsOfFile(_ path: String) -> String{
-	var p = path
-	do{
-		let contents = try String(contentsOfFile: String(p.removeLast()), encoding: .utf8)
-		return contents
-	} catch {
-		return "Unable to read file (\(p))"
-	}
-}
-
-
 
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
