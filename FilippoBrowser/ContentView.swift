@@ -74,11 +74,10 @@ struct Browser : View {
 // This shows the contents of most types of common files
 struct FileViewer : View {
 	var file : FSItem
-	@State private var popoverPresented : Bool = false
+	@State private var sheetPresented : Bool = false
 	
 	var body: some View {
-		VStack {
-			#warning("Could add STL viewer with code from playground. would need to bridge a S")
+		Group {
 			if (self.file.itemType == .Image){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 				.resizable()
@@ -87,12 +86,18 @@ struct FileViewer : View {
 				ScrollView{
 					Text(contentsOfFile(self.file.path))
 				}
+			} else if (self.file.itemType == .threeD){
+				SceneView(filePath: self.file.path)
 			} else {
-				Text(self.file.path)
-					.onAppear { self.popoverPresented = true }
-					.sheet(isPresented: $popoverPresented){
+				Image(systemName: "square.and.arrow.up.fill")//self.file.path)
+					.resizable()
+					.scaledToFit()
+					.frame(width: 75, height: 75)
+					.onTapGesture { self.sheetPresented = true }
+					.sheet(isPresented: $sheetPresented){
 						ActivityView(activityItems: [URL(string: "file://" + self.file.path)!], applicationActivities: nil)
 				}.onDisappear{
+					self.sheetPresented = false
 					NSLog("Share Sheet dismissed.")
 				}
 			}
@@ -480,6 +485,43 @@ struct ActivityView: UIViewControllerRepresentable {
                                 context: UIViewControllerRepresentableContext<ActivityView>) {
         NSLog("ActivityVC called. whatever.")
     }
+}
+
+import SceneKit
+struct SceneView: UIViewControllerRepresentable {
+	
+	let filePath: String
+	
+	func makeUIViewController(context: UIViewControllerRepresentableContext<SceneView>) -> UIViewController {
+		let scene = SCNScene(named: filePath)
+		let sceneView = SCNView()
+		sceneView.allowsCameraControl = true
+		sceneView.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+		sceneView.scene = scene!
+		sceneView.isJitteringEnabled = true //Smooth the movement
+		sceneView.antialiasingMode = .multisampling2X // Lotta power needed but lil bit smoothr
+		sceneView.debugOptions = [.showCreases]
+		sceneView.preferredFramesPerSecond = 60
+		sceneView.showsStatistics = true
+		
+		//scene?.rootNode.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 10, z: 0, duration: 5)))
+		
+		let camera = SCNCamera()
+		let camera_node = SCNNode()
+		camera_node.camera = camera
+		camera_node.position = SCNVector3(-3,3,3)
+		
+		sceneView.scene?.rootNode.addChildNode(camera_node)
+		
+		let sceneVC = UIViewController()
+		sceneVC.view = sceneView
+		return sceneVC
+	}
+	
+	func updateUIViewController(_ uiViewController: UIViewController,
+								context: UIViewControllerRepresentableContext<SceneView>) {
+		NSLog("ActivityVC called. whatever.")
+	}
 }
 
 public func setFavorite(name : String, path : String) {

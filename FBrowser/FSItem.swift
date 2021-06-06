@@ -16,6 +16,7 @@ public enum ItemType : String {
 	case Text = "doc.text.fill"
 	case GenericDocument = "doc.fill"
 	case Folder = "folder.fill"
+	case threeD = "cube.transparent"
 }
 
 public class FSItem : Identifiable, Equatable{
@@ -42,6 +43,7 @@ public class FSItem : Identifiable, Equatable{
 		let textExtensions = ["txt", "strings"]
 		let listExtensions = ["plist", "json"]
 		let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
+		let threeDExtensions = ["stl", "scn", "scnz"]
 		
 		var isFoldr : ObjCBool = false
 		fileManager.fileExists(atPath: path, isDirectory: &isFoldr)
@@ -54,6 +56,8 @@ public class FSItem : Identifiable, Equatable{
 			return .List
 		} else if textExtensions.contains(getExtension(self.lastComponent)) {
 			return .Text
+		} else if threeDExtensions.contains(getExtension(self.lastComponent)) {
+			return .threeD
 		} else {
 			return .GenericDocument
 		}
