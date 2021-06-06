@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		0B1E54F7245B2EDD00419AB7 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 0B1E54F6245B2EDD00419AB7 /* TODO.md */; };
+		0B45B55E266CDB0B007E0DCA /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B55D266CDB0B007E0DCA /* FileProviderExtension.swift */; };
+		0B45B560266CDB0B007E0DCA /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B55F266CDB0B007E0DCA /* FileProviderItem.swift */; };
+		0B45B562266CDB0B007E0DCA /* FileProviderEnumerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B561266CDB0B007E0DCA /* FileProviderEnumerator.swift */; };
+		0B45B56C266CDB0C007E0DCA /* DocumentActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B56B266CDB0C007E0DCA /* DocumentActionViewController.swift */; };
+		0B45B56F266CDB0C007E0DCA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B45B56D266CDB0C007E0DCA /* MainInterface.storyboard */; };
+		0B45B573266CDB0C007E0DCA /* RootBrowserUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0B45B569266CDB0C007E0DCA /* RootBrowserUI.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0B45B576266CDB0C007E0DCA /* RootBrowser.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0B45B55B266CDB0B007E0DCA /* RootBrowser.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0B4AE26C237F23E400D6733D /* FSItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBC8B6F2349D40B007A6EFB /* FSItem.swift */; };
 		0B4BED8A233531D9005E5BB1 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED88233531D9005E5BB1 /* Interface.storyboard */; };
 		0B4BED8C233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED8B233531DA005E5BB1 /* Assets.xcassets */; };
@@ -32,6 +39,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0B45B571266CDB0C007E0DCA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B45B568266CDB0C007E0DCA;
+			remoteInfo = RootBrowserUI;
+		};
+		0B45B574266CDB0C007E0DCA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0B45B55A266CDB0B007E0DCA;
+			remoteInfo = RootBrowser;
+		};
 		0B4BED94233531DA005E5BB1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
@@ -78,6 +99,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				0B45B573266CDB0C007E0DCA /* RootBrowserUI.appex in Embed App Extensions */,
+				0B45B576266CDB0C007E0DCA /* RootBrowser.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +119,16 @@
 
 /* Begin PBXFileReference section */
 		0B1E54F6245B2EDD00419AB7 /* TODO.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
+		0B45B55B266CDB0B007E0DCA /* RootBrowser.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RootBrowser.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B45B55D266CDB0B007E0DCA /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
+		0B45B55F266CDB0B007E0DCA /* FileProviderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderItem.swift; sourceTree = "<group>"; };
+		0B45B561266CDB0B007E0DCA /* FileProviderEnumerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderEnumerator.swift; sourceTree = "<group>"; };
+		0B45B563266CDB0B007E0DCA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0B45B564266CDB0B007E0DCA /* RootBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RootBrowser.entitlements; sourceTree = "<group>"; };
+		0B45B569266CDB0C007E0DCA /* RootBrowserUI.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RootBrowserUI.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B45B56B266CDB0C007E0DCA /* DocumentActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentActionViewController.swift; sourceTree = "<group>"; };
+		0B45B56E266CDB0C007E0DCA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		0B45B570266CDB0C007E0DCA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0B4BED83233531D9005E5BB1 /* FilippoBrowser WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FilippoBrowser WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B4BED89233531D9005E5BB1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		0B4BED8B233531DA005E5BB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -127,6 +160,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		0B45B558266CDB0B007E0DCA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0B45B566266CDB0C007E0DCA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0B4BED8F233531DA005E5BB1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -160,6 +207,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B45B55C266CDB0B007E0DCA /* RootBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				0B45B55D266CDB0B007E0DCA /* FileProviderExtension.swift */,
+				0B45B55F266CDB0B007E0DCA /* FileProviderItem.swift */,
+				0B45B561266CDB0B007E0DCA /* FileProviderEnumerator.swift */,
+				0B45B563266CDB0B007E0DCA /* Info.plist */,
+				0B45B564266CDB0B007E0DCA /* RootBrowser.entitlements */,
+			);
+			path = RootBrowser;
+			sourceTree = "<group>";
+		};
+		0B45B56A266CDB0C007E0DCA /* RootBrowserUI */ = {
+			isa = PBXGroup;
+			children = (
+				0B45B56B266CDB0C007E0DCA /* DocumentActionViewController.swift */,
+				0B45B56D266CDB0C007E0DCA /* MainInterface.storyboard */,
+				0B45B570266CDB0C007E0DCA /* Info.plist */,
+			);
+			path = RootBrowserUI;
+			sourceTree = "<group>";
+		};
 		0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */ = {
 			isa = PBXGroup;
 			children = (
@@ -219,6 +288,8 @@
 				0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
 				0BBC8B622349D3AF007A6EFB /* FBrowser */,
+				0B45B55C266CDB0B007E0DCA /* RootBrowser */,
+				0B45B56A266CDB0C007E0DCA /* RootBrowserUI */,
 				0BD2431C22AD5296006A4929 /* Products */,
 				0BBC8B752349D7FF007A6EFB /* Frameworks */,
 			);
@@ -231,6 +302,8 @@
 				0B4BED83233531D9005E5BB1 /* FilippoBrowser WatchKit App.app */,
 				0B4BED92233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex */,
 				0BBC8B612349D3AF007A6EFB /* FBrowser.framework */,
+				0B45B55B266CDB0B007E0DCA /* RootBrowser.appex */,
+				0B45B569266CDB0C007E0DCA /* RootBrowserUI.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -273,6 +346,40 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		0B45B55A266CDB0B007E0DCA /* RootBrowser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0B45B57C266CDB0C007E0DCA /* Build configuration list for PBXNativeTarget "RootBrowser" */;
+			buildPhases = (
+				0B45B557266CDB0B007E0DCA /* Sources */,
+				0B45B558266CDB0B007E0DCA /* Frameworks */,
+				0B45B559266CDB0B007E0DCA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RootBrowser;
+			productName = RootBrowser;
+			productReference = 0B45B55B266CDB0B007E0DCA /* RootBrowser.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		0B45B568266CDB0C007E0DCA /* RootBrowserUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0B45B57B266CDB0C007E0DCA /* Build configuration list for PBXNativeTarget "RootBrowserUI" */;
+			buildPhases = (
+				0B45B565266CDB0C007E0DCA /* Sources */,
+				0B45B566266CDB0C007E0DCA /* Frameworks */,
+				0B45B567266CDB0C007E0DCA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RootBrowserUI;
+			productName = RootBrowserUI;
+			productReference = 0B45B569266CDB0C007E0DCA /* RootBrowserUI.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		0B4BED82233531D9005E5BB1 /* FilippoBrowser WatchKit App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0B4BEDAE233531DA005E5BB1 /* Build configuration list for PBXNativeTarget "FilippoBrowser WatchKit App" */;
@@ -341,6 +448,8 @@
 			);
 			dependencies = (
 				0BBC8B672349D3AF007A6EFB /* PBXTargetDependency */,
+				0B45B572266CDB0C007E0DCA /* PBXTargetDependency */,
+				0B45B575266CDB0C007E0DCA /* PBXTargetDependency */,
 			);
 			name = FilippoBrowser;
 			productName = ShortcutParamTest;
@@ -353,10 +462,16 @@
 		0BD2431322AD5296006A4929 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1100;
+				LastSwiftUpdateCheck = 1250;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Filippo Claudi";
 				TargetAttributes = {
+					0B45B55A266CDB0B007E0DCA = {
+						CreatedOnToolsVersion = 12.5;
+					};
+					0B45B568266CDB0C007E0DCA = {
+						CreatedOnToolsVersion = 12.5;
+					};
 					0B4BED82233531D9005E5BB1 = {
 						CreatedOnToolsVersion = 11.0;
 					};
@@ -389,11 +504,28 @@
 				0B4BED82233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED91233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
 				0BBC8B602349D3AF007A6EFB /* FBrowser */,
+				0B45B55A266CDB0B007E0DCA /* RootBrowser */,
+				0B45B568266CDB0C007E0DCA /* RootBrowserUI */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		0B45B559266CDB0B007E0DCA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0B45B567266CDB0C007E0DCA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B45B56F266CDB0C007E0DCA /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0B4BED81233531D9005E5BB1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -433,6 +565,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		0B45B557266CDB0B007E0DCA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B45B55E266CDB0B007E0DCA /* FileProviderExtension.swift in Sources */,
+				0B45B560266CDB0B007E0DCA /* FileProviderItem.swift in Sources */,
+				0B45B562266CDB0B007E0DCA /* FileProviderEnumerator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0B45B565266CDB0C007E0DCA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B45B56C266CDB0C007E0DCA /* DocumentActionViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0B4BED8E233531DA005E5BB1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -465,6 +615,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0B45B572266CDB0C007E0DCA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B45B568266CDB0C007E0DCA /* RootBrowserUI */;
+			targetProxy = 0B45B571266CDB0C007E0DCA /* PBXContainerItemProxy */;
+		};
+		0B45B575266CDB0C007E0DCA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0B45B55A266CDB0B007E0DCA /* RootBrowser */;
+			targetProxy = 0B45B574266CDB0C007E0DCA /* PBXContainerItemProxy */;
+		};
 		0B4BED95233531DA005E5BB1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0B4BED91233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */;
@@ -478,6 +638,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		0B45B56D266CDB0C007E0DCA /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0B45B56E266CDB0C007E0DCA /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		0B4BED88233531D9005E5BB1 /* Interface.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -497,6 +665,88 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		0B45B577266CDB0C007E0DCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RootBrowser/RootBrowser.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				INFOPLIST_FILE = RootBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.RootBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0B45B578266CDB0C007E0DCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RootBrowser/RootBrowser.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				INFOPLIST_FILE = RootBrowser/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.RootBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0B45B579266CDB0C007E0DCA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				INFOPLIST_FILE = RootBrowserUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.RootBrowserUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0B45B57A266CDB0C007E0DCA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 974TR9G2UN;
+				INFOPLIST_FILE = RootBrowserUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.RootBrowserUI;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		0B4BEDA8233531DA005E5BB1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -841,6 +1091,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0B45B57B266CDB0C007E0DCA /* Build configuration list for PBXNativeTarget "RootBrowserUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B45B579266CDB0C007E0DCA /* Debug */,
+				0B45B57A266CDB0C007E0DCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0B45B57C266CDB0C007E0DCA /* Build configuration list for PBXNativeTarget "RootBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0B45B577266CDB0C007E0DCA /* Debug */,
+				0B45B578266CDB0C007E0DCA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0B4BEDAD233531DA005E5BB1 /* Build configuration list for PBXNativeTarget "FilippoBrowser WatchKit Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -51,10 +51,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			NSLog("WatchConnectivity file transfer failed :-(")
 		}
 	}
+	
+	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+		#warning("should launch the app with the path from the shortcut")
+		#warning("This function never gets called...")
+		
+		let path = UserDefaults.standard.string(forKey: shortcutItem.type)
+		if (path != nil) {
+			NSLog("Trying to open \(path!) folder")
+			UserDefaults.standard.setValue(path ?? "/", forKey: "pathToLaunch")
+		}
+	}
+	
+	func lancia(shortcutItem: UIApplicationShortcutItem){
+		
+		NSLog("Lancia Shortcut Chiamato!")
+		
+		let path = UserDefaults.standard.string(forKey: shortcutItem.type)
+		if (path != nil) {
+			NSLog("Trying to open \(path!) folder")
+			UserDefaults.standard.setValue(path ?? "/", forKey: "pathToLaunch")
+		}
+	}
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
-		
 		
 		un.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
 			NSLog("Notification Authorization Granted.")
@@ -69,20 +90,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			NSLog("Device not supported or Apple Watch is not paired.")
 		}
 		
+		if let shortcutsItems = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
+			lancia(shortcutItem: shortcutsItems)
+		}
+		
 		return true
 	}
 	
-	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-		let path = UserDefaults.standard.string(forKey: shortcutItem.type)
-		
-		if (path != nil) {
-			#warning("should launch the app with the path from the shortcut")
-			NSLog("Trying to open \(path!) folder")
-			
-			//let contentView = Browser(path: path!)
-			
-		}
-	}
+	
 
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
