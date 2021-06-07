@@ -365,7 +365,7 @@ struct gotoView : View {
 				}
 				Spacer()
 				
-				NavigationLink(destination: properView(for: FSItem(path: tmp_directory.deletingLastPathComponent().path + "/"))){
+				NavigationLink(destination: properView(for: FSItem(path: parentDirectory(tmp_directory.path)))){
 					Text("App Container 💾")
 						.foregroundColor(.primary)
 						.bold()

@@ -130,7 +130,9 @@ public class FSItem : Identifiable, Equatable{
 	}
 }
 
-
+public func parentDirectory(_ path: String) -> String {
+	return URL(string: "file://\(path)")!.deletingLastPathComponent().path + "/"
+}
 
 
 // Gets the file extension for later use
