@@ -19,6 +19,7 @@ import FLEX
 let userDefaults = UserDefaults.standard
 let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
 let documents_directory = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]).path + "/"
+let tmp_directory = FileManager.default.temporaryDirectory
 
 // MARK: Starting View
 // Starting point
@@ -362,10 +363,10 @@ struct gotoView : View {
 						.padding(.horizontal, 10)
 						.safeHover()
 				}
-				/*Spacer()
+				Spacer()
 				
-				NavigationLink(destination: properView(for: FSItem(path: "/private/var/mobile/Containers/Shared/AppGroup/DE73A02D-20C5-4420-B376-711B5778576F/"))){
-					Text("AppGroup 🗂")
+				NavigationLink(destination: properView(for: FSItem(path: tmp_directory.deletingLastPathComponent().path + "/"))){
+					Text("App Container 💾")
 						.foregroundColor(.primary)
 						.bold()
 						.padding()
@@ -373,12 +374,12 @@ struct gotoView : View {
 						.cornerRadius(15)
 						.padding(.horizontal, 10)
 						.safeHover()
-				}*/
+				}
 				#endif
 				
 				Spacer()
 				
-				
+				#warning("Should find a way to update deletion and adding of elements in realtime")
 				ForEach(userDefaultsKeys){ key in
 					FavoriteItem(key: key, type: .userAdded)
 					Spacer()
@@ -540,11 +541,10 @@ struct QuickLookView: UIViewControllerRepresentable {
 		}
 		
 		func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-			let fm = FileManager.default
-			let tempPath = (fm.temporaryDirectory.appendingPathComponent(String(parent.filePath.split(separator: "/").last ?? "")))
+			let tempPath = (tmp_directory.appendingPathComponent(String(parent.filePath.split(separator: "/").last ?? "")))
 			
 			do{
-				try fm.copyItem(at: URL(string: "file://\(parent.filePath)")!, to: tempPath)
+				try FileManager.default.copyItem(at: URL(string: "file://\(parent.filePath)")!, to: tempPath)
 			} catch {
 				print("Failed to copy")
 			}
