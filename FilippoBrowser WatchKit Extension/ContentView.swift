@@ -149,12 +149,39 @@ struct gotoView : View {
 						.bold()
 				}
 			}
+			Spacer()
 			
-			
+			HStack{
+				Gauge(value: availableCapacity(),
+					  in: 0...16,
+					  label: {Text("GB")},
+					  currentValueLabel: {Text(String(format: "%.2f", availableCapacity())).foregroundColor(.blue)},
+					  minimumValueLabel: {Text("0")},
+					  maximumValueLabel: {Text("16")}
+				)
+					.gaugeStyle(CircularGaugeStyle(tint: .blue))
+			}
 		}
 	}
 }
 
+let resvalues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeTotalCapacityKey, .volumeAvailableCapacityKey])
+
+func totalCapacity() -> Double {
+	if let resvalues = resvalues{
+		return Double(0 - (resvalues.volumeTotalCapacity ?? 0)) / 1000000000
+	} else {
+		return 0
+	}
+}
+
+func availableCapacity() -> Double {
+	if let resvalues = resvalues{
+		return (Double(resvalues.volumeAvailableCapacity ?? 0) / 1000000000) * 16
+	} else {
+		return 0
+	}
+}
 
 
 extension String : Identifiable{
