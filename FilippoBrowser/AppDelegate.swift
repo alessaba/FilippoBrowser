@@ -94,6 +94,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			lancia(shortcutItem: shortcutsItems)
 		}
 		
+		// Cleaning tmp directory
+		let fm = FileManager.default
+		let tempDir = fm.temporaryDirectory
+		let tempDirContents = try? fm.contentsOfDirectory(atPath: tempDir.path)
+		if let tempDirContents = tempDirContents{
+			for tempFile in tempDirContents{
+				try? fm.removeItem(atPath: tempDir.appendingPathComponent(tempFile).path)
+			}
+		}
+		
+		
 		return true
 	}
 	
