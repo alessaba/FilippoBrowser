@@ -45,7 +45,7 @@ struct DirectoryBrowser : View {
     var directory : FSItem
 
 	var body: some View {
-        return List{
+		List{
             Section{
 				if (directory.path == "/"){
 					NavigationLink(destination: gotoView()){
@@ -62,20 +62,21 @@ struct DirectoryBrowser : View {
 						}
 					}
 				}
-                TextField("Search...", text: $searchText)
             }
             
-            ForEach(directory.subelements.filter{
-                // MARK: Search Function
-                // The entries will update automatically eveerytime searchText changes! 🤩
-                if searchText == ""{
-                    return true // Every item will be shown
-                } else {
-                    // Only the items containing the search term will be shown (fuzzy too 🤩)
+			let subelements = directory.subelements.filter{
+				// MARK: Search Function
+				// The entries will update automatically eveerytime searchText changes! 🤩
+				if searchText == ""{
+					return true // Every item will be shown
+				} else {
+					// Only the items containing the search term will be shown (fuzzy too 🤩)
 					return $0.lastComponent.lowercased().contains(searchText.lowercased())
-                }
-                
-            }) { subItem in
+				}
+				
+			}
+			
+            ForEach(subelements) { subItem in
                 HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
@@ -105,8 +106,8 @@ struct DirectoryBrowser : View {
                         }
                     }
                 }
-            }
-		}
+			}
+		}.searchable(text: $searchText)
     }
 }
 
@@ -129,7 +130,7 @@ struct gotoView : View {
 					.bold()
 			}
 			
-			Spacer()
+			Spacer(minLength: 20)
 			
 			NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
 				Text("Media 🖥")
@@ -149,18 +150,21 @@ struct gotoView : View {
 						.bold()
 				}
 			}
-			Spacer()
+			Spacer(minLength: 30)
 			
+			Text("Free Space")
+			Spacer()
 			HStack{
 				Gauge(value: availableCapacity(),
 					  in: 0...16,
 					  label: {Text("GB")},
-					  currentValueLabel: {Text(String(format: "%.2f", availableCapacity())).foregroundColor(.blue)},
+					  currentValueLabel: {Text(String(format: "%.2f", availableCapacity())).foregroundColor(.teal)},
 					  minimumValueLabel: {Text("0")},
 					  maximumValueLabel: {Text("16")}
 				)
-					.gaugeStyle(CircularGaugeStyle(tint: .blue))
+					.gaugeStyle(CircularGaugeStyle(tint: .teal))
 			}
+			
 		}
 	}
 }
