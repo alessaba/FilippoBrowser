@@ -158,9 +158,7 @@ struct gotoView : View {
 				Gauge(value: availableCapacity(),
 					  in: 0...16,
 					  label: {Text("GB")},
-					  currentValueLabel: {Text(String(format: "%.2f", availableCapacity())).foregroundColor(.teal)},
-					  minimumValueLabel: {Text("0")},
-					  maximumValueLabel: {Text("16")}
+					  currentValueLabel: {Text(String(format: "%.2f", availableCapacity())).foregroundColor(.teal)}
 				)
 					.gaugeStyle(CircularGaugeStyle(tint: .teal))
 			}
