@@ -104,35 +104,22 @@ struct DirectoryListBrowser : View {
 	@State private var popoverPresented : Bool = false
 	var directory : FSItem
 	var body: some View {
-        List{
-            Section{
-				HStack{
-					Image(systemName: "magnifyingglass")
-					TextField("Search..." , text: $searchText)
-				}
-            }
-            
-			let subelements = directory.subelements.filter{
-				// MARK: Search Function
-				// The entries will update automatically eveerytime searchText changes! 🤩
-				if searchText == ""{
-					return true // Every item will be shown
-				} else {
-					// Only the items containing the search term will be shown (fuzzy too 🤩)
-					return $0.lastComponent.lowercased().contains(searchText.lowercased())
-				}
-				
+		let subelements = directory.subelements.filter{
+			// MARK: Search Function
+			// The entries will update automatically eveerytime searchText changes! 🤩
+			if searchText == ""{
+				return true // Every item will be shown
+			} else {
+				// Only the items containing the search term will be shown (fuzzy too 🤩)
+				return $0.lastComponent.lowercased().contains(searchText.lowercased())
 			}
-			
-			ForEach(subelements) { subItem in
+		}
+        List(subelements) { subItem in
                 HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
 						.foregroundColor((subItem.rootProtected) ? .orange : .green)
-                    
-                    
-                        
-                    
+                     
                     //Name of the file/directory
                     NavigationLink(destination: properView(for: subItem)){
                         Text(subItem.lastComponent)
@@ -176,25 +163,23 @@ struct DirectoryListBrowser : View {
                     
                     //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
                     if subItem.isFolder {
-                      
                         Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
                           .foregroundColor(.secondary)
                             .padding(.leading)
-                      
                         } else {
-                      
                             Text(subItem.fileSize)
                                 .foregroundColor(.secondary)
                                 .padding(.leading)
-                      
                             }
                         }
-                    }
-		}
+			}
+		.searchable(text: $searchText)
 		.listStyle(GroupedListStyle())
 		.navigationBarTitle(Text(directory.path), displayMode: .inline)
 	}
+		
 }
+
 
 // MARK: Directory Grid Viewer
 // This is the directory browser, it shows files and subdirectories of a folder in grid style
@@ -202,19 +187,21 @@ struct DirectoryGridBrowser : View {
 	@State private var searchText : String = ""
 	@State private var popoverPresented : Bool = false
 	var directory : FSItem
+	
 	var body: some View {
 		ScrollView {
 			VStack{
-				HStack{
+				/*HStack{
 					Image(systemName: "magnifyingglass")
 					TextField("Search..." , text: $searchText)
 				}
 				.padding(.all, 15)
 				.background(Color.init(.displayP3, white: 0.10, opacity: 1.0))
-				.padding(.vertical, 30)
+				.padding(.vertical, 30)*/
 				
 				LazyVGrid(columns: Array(repeating: .init(.adaptive(minimum: 150, maximum: 150)), count: 3) as [GridItem]){
-					ForEach(directory.subelements.filter{
+					
+					let subelements = directory.subelements.filter{
 						// MARK: Search Function
 						// The entries will update automatically eveerytime searchText changes! 🤩
 						if searchText == ""{
@@ -223,17 +210,15 @@ struct DirectoryGridBrowser : View {
 							// Only the items containing the search term will be shown (fuzzy too 🤩)
 							return $0.lastComponent.lowercased().contains(searchText.lowercased())
 						}
-						
-					}) { subItem in
+					}
+					
+					ForEach(subelements) { subItem in
 						VStack{
 							// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 							Image(systemName: subItem.itemType.rawValue)
 								.foregroundColor((subItem.rootProtected) ? .orange : .green)
 								.padding(.vertical, 5)
-							
-							
-							
-							
+
 							//Name of the file/directory
 							NavigationLink(destination: properView(for: subItem)){
 								Text(subItem.lastComponent)
@@ -287,7 +272,7 @@ struct DirectoryGridBrowser : View {
 							ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
 						}
 					}
-				}
+				}.searchable(text: $searchText)
 			}
 			.navigationBarTitle(Text(directory.path), displayMode: .inline)
 		}
