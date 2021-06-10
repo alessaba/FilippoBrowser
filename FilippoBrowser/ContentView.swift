@@ -269,11 +269,10 @@ struct DirectoryGridBrowser : View {
 	}
 }
 
-#warning("Must set a @State Property on the keys variable so when the variable is modified, the list is redrawn")
 // MARK: Go To View
 struct gotoView : View {
 	@State var path : String = "/"
-	
+	#warning("Must set a @State Property on the keys variable so when the variable is modified, the list is redrawn")
 	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys.filter{
 		$0.starts(with: "FB_")
 	}
@@ -282,19 +281,14 @@ struct gotoView : View {
 		VStack{
             Text("Go To...").bold()
             
-			TextField("Path", text: $path)
-                .padding(.all)
-				.textFieldStyle(.roundedBorder)
-				
-			NavigationLink(destination: properView(for: FSItem(path: path))){
-				Text("Go")
-					.foregroundColor(.primary)
-					.bold()
-					.padding()
-					.background(Color.green)
-					.cornerRadius(25)
-					.safeHover()
+			HStack{
+				TextField("Path", text: $path)
+					.padding(.all)
+					.textFieldStyle(.roundedBorder)
+				#warning("Could add / at the end if not already present")
+				BookmarkItem(name: "Go", path: path)
 			}
+			
 			
 			Spacer(minLength: 25)
 			
