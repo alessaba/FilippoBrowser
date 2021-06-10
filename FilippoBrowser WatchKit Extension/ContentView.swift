@@ -42,6 +42,9 @@ struct FileViewer : View {
 struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
+	@State private var bookmarked : Bool = false
+	#warning("Could add logic to determine if the folder was previously bookmarked")
+	
     var directory : FSItem
 
 	var body: some View {
@@ -54,11 +57,12 @@ struct DirectoryBrowser : View {
 				} else {
 					Button(action: {
 						setFavorite(name: self.directory.lastComponent, path: self.directory.path)
+						bookmarked.toggle()
 						NSLog("Added favourite!")
 					}){
 						HStack{
 							Image(systemName: "heart.fill").foregroundColor(.red)
-							Text("  Add to Favorites")
+							Text(bookmarked ? " Added!" : "  Add to Favorites")
 						}
 					}
 				}
@@ -124,31 +128,14 @@ struct gotoView : View {
 			
 			TextField("Path", text: $path)
 			
-			NavigationLink(destination: properView(for: FSItem(path: path))){
-				Text("Go")
-					.foregroundColor(.green)
-					.bold()
-			}
+			BookmarkItem(name: "Go", path: path, isButton: true)
 			
 			Spacer(minLength: 20)
 			
-			NavigationLink(destination: properView(for: FSItem(path: "/var/mobile/Media/"))){
-				Text("Media 🖥")
-					.foregroundColor(.blue)
-					.bold()
-				
-			}
-			
-			Spacer()
+			BookmarkItem(name: "Media 🖥", path: "/var/mobile/Media/")
 			
 			ForEach(userDefaultsKeys){ key in
-				NavigationLink(destination:
-					properView(for: FSItem(path: userDefaults.string(forKey: key) ?? "/"))
-				){
-					Text(String(key.split(separator: "_").last!))
-						.foregroundColor(.red)
-						.bold()
-				}
+				BookmarkItem(key: key)
 			}
 			Spacer(minLength: 30)
 			
@@ -164,6 +151,69 @@ struct gotoView : View {
 			}
 			
 		}
+	}
+}
+
+struct BookmarkItem: View {
+	
+	enum BookmarkItemType{
+		case system, userAdded, button
+	}
+	
+	var key : String
+	var name : String
+	var path : String
+	var type : BookmarkItemType
+	
+	var color : Color{
+		switch self.type{
+		case .system:
+			return .blue
+		case .userAdded:
+			return .red
+		case .button:
+			return .teal
+		}
+	}
+	
+	init(name: String, path: String, isButton: Bool = false){
+		self.key = ""
+		self.name = name
+		self.path = path
+		self.type = isButton ? .button : .system
+	}
+	
+	init(key: String){
+		self.key = key
+		self.name = String(key.split(separator: "_").last!)
+		self.path = String(userDefaults.string(forKey: key) ?? "/")
+		self.type = .userAdded
+	}
+	
+	var body: some View {
+		NavigationLink(destination: properView(for: FSItem(path: self.path))){
+			Text(name)
+			#if os(iOS)
+				.contextMenu{
+					Button(action: {
+						userDefaults.removeObject(forKey: self.key)
+							UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
+								return shortcut.type == self.key
+							})
+					}){
+						Image(systemName: "bin.xmark.fill")
+						Text("Delete")
+					}
+					.foregroundColor(.red)
+				}
+			#endif
+				.padding((self.type == .button) ? 0 : 10)
+				.foregroundColor(self.color)
+				.font(.system(size: 15).bold())
+		}
+		.buttonStyle(BorderedButtonStyle(tint: self.color))
+		.padding(.horizontal, (self.type == .button) ? 0 : 10)
+		Spacer()
 	}
 }
 

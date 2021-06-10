@@ -350,19 +350,22 @@ struct BookmarkItem: View {
 	var body: some View {
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
+			#warning("ContextMenu does not seem to work now")
+			#if os(iOS)
 				.contextMenu{
 					Button(action: {
 						userDefaults.removeObject(forKey: self.key)
 						
-						UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
-							return shortcut.type == self.key
-						})
+							UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
+								return shortcut.type == self.key
+							})
 					}){
 						Image(systemName: "bin.xmark.fill")
 						Text("Delete")
 					}
 					.foregroundColor(.red)
 				}
+			#endif
 				.padding((self.type == .button) ? 0 : 10)
 				.foregroundColor(self.color)
 				.font(.system(size: 15).bold())
