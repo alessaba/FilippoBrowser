@@ -363,12 +363,12 @@ struct BookmarkItem: View {
 					}
 					.foregroundColor(.red)
 				}
-				.padding()
+				.padding((self.type == .button) ? 0 : 10)
 				.foregroundColor(self.color)
 				.font(.system(size: 15).bold())
 		}
 		.buttonStyle(BorderedButtonStyle(tint: self.color))
-		.padding(.horizontal, 10)
+		.padding(.horizontal, (self.type == .button) ? 0 : 10)
 		.safeHover()
 		Spacer()
 	}
