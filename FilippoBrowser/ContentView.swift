@@ -310,6 +310,7 @@ struct gotoView : View {
 	}
 }
 
+// MARK: BookmarkItem
 
 struct BookmarkItem: View {
 	
@@ -348,17 +349,17 @@ struct BookmarkItem: View {
 	}
 	
 	var body: some View {
+		#warning("ContextMenu does not seem to work now")
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
-			#warning("ContextMenu does not seem to work now")
 			#if os(iOS)
 				.contextMenu{
 					Button(action: {
 						userDefaults.removeObject(forKey: self.key)
 						
-							UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
-								return shortcut.type == self.key
-							})
+						UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
+							return shortcut.type == self.key
+						})
 					}){
 						Image(systemName: "bin.xmark.fill")
 						Text("Delete")
@@ -378,27 +379,8 @@ struct BookmarkItem: View {
 	
 }
 
-extension View {
-	
-	// This is really ugly but it's the only way i could find to not require iOS 13.4 just for the hover function
-	func safeHover() -> AnyView {
-		if #available(iOS 13.4, *){
-			return AnyView(hoverEffect(.lift))
-		} else {
-			return AnyView(_fromValue: Self.self)!
-		}
-	}
-}
 
-extension String : Identifiable{
-	public var id : UUID {
-		return UUID()
-	}
-}
-
-
-// MARK: – Helper Functions
-
+// MARK: UIKit Views
 
 struct ActivityView: UIViewControllerRepresentable {
     // Port of the UIActivityViewController to SwiftUI. basically we proxy the arguments then conform to the protocol.
@@ -409,9 +391,7 @@ struct ActivityView: UIViewControllerRepresentable {
         return UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
     }
 
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) {
-        NSLog("ActivityVC called. whatever.")
-    }
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) { NSLog("ActivityVC called") }
 }
 
 struct SceneView: UIViewControllerRepresentable {
@@ -421,11 +401,10 @@ struct SceneView: UIViewControllerRepresentable {
 		let scene = SCNScene(named: String(filePath.dropLast()))
 		let sceneView = SCNView()
 		sceneView.allowsCameraControl = true
-		sceneView.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
+		//sceneView.frame = CGRect(x: 0, y: 0, width: 300, height: 300)
 		sceneView.scene = scene!
 		sceneView.isJitteringEnabled = true //Smooth the movement
 		sceneView.antialiasingMode = .multisampling2X // Lotta power needed but lil bit smoothr
-		sceneView.debugOptions = [.showCreases]
 		sceneView.preferredFramesPerSecond = 60
 		sceneView.showsStatistics = true
 		
@@ -443,13 +422,35 @@ struct SceneView: UIViewControllerRepresentable {
 		return sceneVC
 	}
 	
-	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<SceneView>) {
-		NSLog("SceneVC called.")
-	}
+	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<SceneView>) { NSLog("SceneVC called.") }
 }
 
 struct QuickLookView: UIViewControllerRepresentable {
 	let filePath: String
+	
+	class QuickLookDataSource : NSObject, QLPreviewControllerDataSource{
+		let parent: QuickLookView
+		
+		init(parent: QuickLookView) { self.parent = parent }
+		
+		func numberOfPreviewItems(in controller: QLPreviewController) -> Int { return 1 }
+		
+		func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+			let tempPath = (tmp_directory.appendingPathComponent(String(parent.filePath.split(separator: "/").last ?? "")))
+			
+			do{
+				try FileManager.default.copyItem(at: URL(string: "file://\(parent.filePath)")!, to: tempPath)
+			} catch {
+				print("Failed to copy to tmp")
+			}
+			
+			return tempPath as NSURL
+		}
+	}
+	
+	func makeCoordinator() -> QuickLookDataSource {
+		return QuickLookDataSource(parent: self)
+	}
 	
 	func makeUIViewController(context: UIViewControllerRepresentableContext<QuickLookView>) -> UIViewController {
 		let qv = QLPreviewController()
@@ -458,39 +459,13 @@ struct QuickLookView: UIViewControllerRepresentable {
 		let navigationController = UINavigationController(rootViewController: qv)
 		return navigationController
 	}
-	
-	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLookView>) {
-		NSLog("QuickLook called.")
-	}
-	
-	func makeCoordinator() -> QuickLookDataSource {
-		return QuickLookDataSource(parent: self)
-	}
-	
-	class QuickLookDataSource : NSObject, QLPreviewControllerDataSource{
-		let parent: QuickLookView
-		
-		init(parent: QuickLookView) {
-			self.parent = parent
-		}
-		
-		func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-			return 1
-		}
-		
-		func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-			let tempPath = (tmp_directory.appendingPathComponent(String(parent.filePath.split(separator: "/").last ?? "")))
-			
-			do{
-				try FileManager.default.copyItem(at: URL(string: "file://\(parent.filePath)")!, to: tempPath)
-			} catch {
-				print("Failed to copy")
-			}
 
-			return tempPath as NSURL
-		}
-	}
+	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLookView>) { NSLog("QuickLook called.") }
 }
+
+
+
+// MARK: – Helper Functions
 
 public func setFavorite(name : String, path : String) {
 	userDefaults.set(path, forKey: "FB_\(name)")
@@ -514,6 +489,25 @@ func properDirectoryBrowser(for item: FSItem) -> AnyView {
 		return AnyView(DirectoryListBrowser(directory: item))
 	}
 }
+
+
+extension View {
+	// This is really ugly but it's the only way i could find to not require iOS 13.4 just for the hover function
+	func safeHover() -> AnyView {
+		if #available(iOS 13.4, *){
+			return AnyView(hoverEffect(.lift))
+		} else {
+			return AnyView(_fromValue: Self.self)!
+		}
+	}
+}
+
+extension String : Identifiable{
+	public var id : UUID {
+		return UUID()
+	}
+}
+
 
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
