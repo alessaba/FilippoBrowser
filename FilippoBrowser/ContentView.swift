@@ -9,17 +9,12 @@
 import SwiftUI
 import UIKit
 import Foundation
-import FBrowser
+import FBrowserPackage
 
 import QuickLook
 import SceneKit
 
 import FLEX
-
-let userDefaults = UserDefaults.standard
-let appGroup_directory = (FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
-let documents_directory = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]).path + "/"
-let tmp_directory = FileManager.default.temporaryDirectory
 
 // MARK: Starting View
 // Starting point
@@ -464,20 +459,14 @@ struct QuickLookView: UIViewControllerRepresentable {
 }
 
 
-
-// MARK: – Helper Functions
-
-public func setFavorite(name : String, path : String) {
-	userDefaults.set(path, forKey: "FB_\(name)")
-	userDefaults.synchronize()
-}
+// MARK: Helper Functions
 
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
 func properView(for item: FSItem) -> AnyView {
 	if item.isFolder{
 		return properDirectoryBrowser(for: item)
 	} else {
-        return AnyView(FileViewer(file: item))
+		return AnyView(FileViewer(file: item))
 	}
 }
 
@@ -489,25 +478,6 @@ func properDirectoryBrowser(for item: FSItem) -> AnyView {
 		return AnyView(DirectoryListBrowser(directory: item))
 	}
 }
-
-
-extension View {
-	// This is really ugly but it's the only way i could find to not require iOS 13.4 just for the hover function
-	func safeHover() -> AnyView {
-		if #available(iOS 13.4, *){
-			return AnyView(hoverEffect(.lift))
-		} else {
-			return AnyView(_fromValue: Self.self)!
-		}
-	}
-}
-
-extension String : Identifiable{
-	public var id : UUID {
-		return UUID()
-	}
-}
-
 
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {

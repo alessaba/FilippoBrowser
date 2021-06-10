@@ -10,7 +10,7 @@ import WatchKit
 import Foundation
 import SwiftUI
 import WatchConnectivity
-//import FBrowserWatch
+import FBrowserPackage
 
 class HostingController: WKHostingController<DirectoryBrowser>, WCSessionDelegate {
     override var body: DirectoryBrowser {
