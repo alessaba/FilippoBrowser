@@ -286,7 +286,7 @@ struct gotoView : View {
 					.padding(.all)
 					.textFieldStyle(.roundedBorder)
 				#warning("Could add / at the end if not already present")
-				BookmarkItem(name: "Go", path: path)
+				BookmarkItem(name: "Go", path: path, isButton: true)
 			}
 			
 			
@@ -311,11 +311,10 @@ struct gotoView : View {
 }
 
 
-#warning("Try colored background and primaryColor text on GoTo buttons")
 struct BookmarkItem: View {
 	
 	enum BookmarkItemType{
-		case system, userAdded
+		case system, userAdded, button
 	}
 	
 	var key : String
@@ -329,14 +328,16 @@ struct BookmarkItem: View {
 				return .blue
 			case .userAdded:
 				return .red
+			case .button:
+				return .teal
 		}
 	}
 	
-	init(name: String, path: String){
+	init(name: String, path: String, isButton: Bool = false){
 		self.key = ""
 		self.name = name
 		self.path = path
-		self.type = .system
+		self.type = isButton ? .button : .system
 	}
 	
 	init(key: String){
@@ -366,7 +367,7 @@ struct BookmarkItem: View {
 				.foregroundColor(self.color)
 				.font(.system(size: 15).bold())
 		}
-		.buttonStyle(.bordered)
+		.buttonStyle(BorderedButtonStyle(tint: self.color))
 		.padding(.horizontal, 10)
 		.safeHover()
 		Spacer()
