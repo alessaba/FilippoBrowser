@@ -12,7 +12,6 @@ import Foundation
 import WatchConnectivity
 import FBrowserPackage
 
-let userDefaults = UserDefaults.standard
 let session = WCSession.default
 
 // MARK: File Viewer
@@ -133,6 +132,7 @@ struct gotoView : View {
 			Spacer(minLength: 20)
 			
 			BookmarkItem(name: "Media 🖥", path: "/var/mobile/Media/")
+			BookmarkItem(name: "App Container 💾", path: parentDirectory(tmp_directory.path))
 			
 			ForEach(userDefaultsKeys){ key in
 				BookmarkItem(key: key)

@@ -21,7 +21,7 @@ import FLEX
 struct Browser : View {
 	
 	@State var path : String
-	@State var gridStyleEnabled : Bool = UserDefaults.standard.bool(forKey: "gridStyleEnabled")
+	@State var gridStyleEnabled : Bool = userDefaults.bool(forKey: "gridStyleEnabled")
     @State private var watchFilesPresented : Bool = false // We need it for presenting the popover 🙄
 	var body: some View {
 		NavigationView {
@@ -45,8 +45,8 @@ struct Browser : View {
                 trailing:
 					HStack{
 						Image(systemName: gridStyleEnabled ? "list.dash" :  "square.grid.2x2.fill").onTapGesture {
-							UserDefaults.standard.flex_toggleBool(forKey: "gridStyleEnabled")
-							//UserDefaults.standard.toggleBool(forKey: "gridStyleEnabled")
+							userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
+							//userDefaults.toggleBool(forKey: "gridStyleEnabled")
 							gridStyleEnabled.toggle()
 							//NSLog("Grid: \(gridStyleEnabled)")
 						}
@@ -268,7 +268,7 @@ struct DirectoryGridBrowser : View {
 struct gotoView : View {
 	@State var path : String = "/"
 	#warning("Must set a @State Property on the keys variable so when the variable is modified, the list is redrawn")
-	let userDefaultsKeys = UserDefaults.standard.dictionaryRepresentation().keys.filter{
+	let userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
 		$0.starts(with: "FB_")
 	}
 	
@@ -471,7 +471,7 @@ func properView(for item: FSItem) -> AnyView {
 }
 
 func properDirectoryBrowser(for item: FSItem) -> AnyView {
-	let gridEnabled = UserDefaults.standard.bool(forKey: "gridStyleEnabled")
+	let gridEnabled = userDefaults.bool(forKey: "gridStyleEnabled")
 	if gridEnabled{
 		return AnyView(DirectoryGridBrowser(directory: item))
 	} else {
