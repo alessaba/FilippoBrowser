@@ -8,6 +8,48 @@
 import Foundation
 import SwiftUI
 
+// MARK: ContextMenu
+
+public struct ItemContextMenu : View {
+	var subItem : FSItem
+	@State var popoverPresented = false
+	
+	public init(_ subItem: FSItem){
+		self.subItem = subItem
+	}
+	
+	public var body: some View{
+		VStack {
+			Text(subItem.lastComponent)
+			Button(action: {
+				subItem.isBookmarked.toggle()
+				let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+				UIApplication.shared.shortcutItems?.append(newFavorite)
+				
+			}){
+				Image(systemName: subItem.isBookmarked ? "heart.slash.circle.fill" : "heart.circle.fill")
+				Text(subItem.isBookmarked ? "Remove from Favorites" : "Add to Favorites")
+			}
+			
+			Button(action: {
+				NSLog("Copy Path button pressed")
+				UIPasteboard.general.string = "file://" + subItem.path
+			}){
+				Image(systemName: "doc.circle.fill")
+				Text("Copy Path")
+			}
+			
+			Button(action: {
+				self.popoverPresented = true
+			}){
+				Image(systemName: "square.and.arrow.up.on.square.fill")
+				Text("Share")
+			}
+		}
+	}
+}
+
+
 // MARK: BookmarkItem
 /*
 @available(iOS 15.0, watchOS 8.0, *)

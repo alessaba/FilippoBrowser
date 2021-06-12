@@ -47,24 +47,7 @@ struct DirectoryBrowser : View {
     var directory : FSItem
 
 	var body: some View {
-		
-		var isBookmarked : Bool {
-			get{
-				return (UserDefaults.standard.value(forKey: "FB_\(self.directory.lastComponent)") != nil)
-			}
-			set{
-				let name = self.directory.lastComponent
-				if (newValue == true){
-					print("Adding favourite \"\(name)\"")
-					setFavorite(name: name, path: self.directory.path)
-				} else {
-					print("Removing favourite \"\(name)\"")
-					UserDefaults.standard.removeObject(forKey: "FB_\(name)")
-				}
-			}
-		}
-		
-		return List{
+		List{
             Section{
 				if (directory.path == "/"){
 					NavigationLink(destination: gotoView()){
@@ -72,11 +55,11 @@ struct DirectoryBrowser : View {
 					}
 				} else {
 					Button(action: {
-						isBookmarked.toggle()
+						directory.isBookmarked.toggle()
 					}){
 						HStack{
 							Image(systemName: "heart.fill").foregroundColor(.red)
-							Text(isBookmarked ? " Added!" : "  Add to Favorites")
+							Text(directory.isBookmarked ? " Added!" : "  Add to Favorites")
 						}
 					}
 				}

@@ -38,7 +38,6 @@ public class FSItem : Identifiable, Equatable{
 		String(self.path.split(separator: "/").last ?? "")
 	}
 	
-	
 	public var itemType : ItemType {
 		let textExtensions = ["txt", "strings"]
 		let listExtensions = ["plist", "json"]
@@ -126,6 +125,22 @@ public class FSItem : Identifiable, Equatable{
 				NSLog("\(path) probably has root permissions")
 			}
 			return []
+		}
+	}
+	
+	public var isBookmarked : Bool {
+		get{
+			return (UserDefaults.standard.value(forKey: "FB_\(self.lastComponent)") != nil)
+		}
+		set{
+			let name = self.lastComponent
+			if (newValue == true){
+				print("Adding favourite \"\(name)\"")
+				setFavorite(name: name, path: self.path)
+			} else {
+				print("Removing favourite \"\(name)\"")
+				UserDefaults.standard.removeObject(forKey: "FB_\(name)")
+			}
 		}
 	}
 }

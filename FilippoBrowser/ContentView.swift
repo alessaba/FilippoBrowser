@@ -32,11 +32,10 @@ struct Browser : View {
 						.safeHover()
                         .onTapGesture {
 								#if os(iOS)
-							FLEXManager.shared.showExplorer()
+								FLEXManager.shared.showExplorer()
 								//UIApplication.shared.shortcutItems?.removeAll()
 								#endif
 								NSLog("FLEX activated!")
-                            //UIPasteboard.general.string = "file//" + self.path
                     }
                 ,
                 trailing:
@@ -91,8 +90,9 @@ struct FileViewer : View {
 // This is the directory browser, it shows files and subdirectories of a folder in list style
 struct DirectoryListBrowser : View {
     @State private var searchText : String = ""
-	@State private var popoverPresented : Bool = false
+	@State private var sharePresented : Bool = false
 	var directory : FSItem
+	
 	var body: some View {
 		let subelements = directory.subelements.filter{
 			// MARK: Search Function
@@ -105,7 +105,7 @@ struct DirectoryListBrowser : View {
 			}
 		}
         List(subelements) { subItem in
-                HStack{
+			HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
 						.foregroundColor((subItem.rootProtected) ? .orange : .green)
@@ -118,35 +118,9 @@ struct DirectoryListBrowser : View {
                             .foregroundColor(.blue)
                             .padding(.leading)
                             .contextMenu{
-								VStack {
-									Text(subItem.lastComponent)
-									Button(action: {
-										setFavorite(name: subItem.lastComponent, path: subItem.path)
-										let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
-										UIApplication.shared.shortcutItems?.append(newFavorite)
-										NSLog("Added to Favorites.")
-									}){
-										Image(systemName: "heart.circle.fill")
-										Text("Add to Favorites")
-									}
-									
-									Button(action: {
-										NSLog("Copy Path button pressed")
-										UIPasteboard.general.string = "file://" + self.directory.path + subItem.lastComponent
-									}){
-										Image(systemName: "doc.circle.fill")
-										Text("Copy Path")
-									}
-									
-									Button(action: {
-										self.popoverPresented = true
-									}){
-										Image(systemName: "square.and.arrow.up.on.square.fill")
-										Text("Share")
-									}
-								}
+								ItemContextMenu(subItem)
                             }
-					}.sheet(isPresented: $popoverPresented, onDismiss: nil) {
+					}.sheet(isPresented: $sharePresented, onDismiss: nil) {
 						ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
 					}
                     
@@ -167,7 +141,6 @@ struct DirectoryListBrowser : View {
 		.listStyle(GroupedListStyle())
 		.navigationBarTitle(Text(directory.path), displayMode: .inline)
 	}
-		
 }
 
 #warning("Fix Dark cells in Light mode (gridView)")
@@ -222,33 +195,7 @@ struct DirectoryGridBrowser : View {
 						.background(Color.init(.displayP3, white: 0.15, opacity: 1.0))
 						.cornerRadius(10.0)
 						.contextMenu{
-							VStack {
-								Text(subItem.lastComponent)
-								Button(action: {
-									setFavorite(name: subItem.lastComponent, path: subItem.path)
-									let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.itemType.rawValue)) //subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
-									UIApplication.shared.shortcutItems?.append(newFavorite)
-									NSLog("Added to Favorites.")
-								}){
-									Image(systemName: "heart.circle.fill")
-									Text("Add to Favorites")
-								}
-								
-								Button(action: {
-									NSLog("Copy Path button pressed")
-									UIPasteboard.general.string = "file://" + self.directory.path + subItem.lastComponent
-								}){
-									Image(systemName: "doc.circle.fill")
-									Text("Copy Path")
-								}
-							
-								Button(action: {
-									self.popoverPresented = true
-								}){
-									Image(systemName: "square.and.arrow.up.on.square.fill")
-									Text("Share")
-								}
-							}
+							ItemContextMenu(subItem)
 						}
 						.sheet(isPresented: $popoverPresented, onDismiss: nil) {
 							ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
