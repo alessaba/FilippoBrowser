@@ -41,13 +41,30 @@ struct FileViewer : View {
 struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
-	@State private var bookmarked : Bool = false
-	#warning("Could add logic to determine if the folder was previously bookmarked")
+	//@State private var bookmarked : Bool = false
+	#warning("Button title can't update without a @State")
 	
     var directory : FSItem
 
 	var body: some View {
-		List{
+		
+		var isBookmarked : Bool {
+			get{
+				return (UserDefaults.standard.value(forKey: "FB_\(self.directory.lastComponent)") != nil)
+			}
+			set{
+				let name = self.directory.lastComponent
+				if (newValue == true){
+					print("Adding favourite \"\(name)\"")
+					setFavorite(name: name, path: self.directory.path)
+				} else {
+					print("Removing favourite \"\(name)\"")
+					UserDefaults.standard.removeObject(forKey: "FB_\(name)")
+				}
+			}
+		}
+		
+		return List{
             Section{
 				if (directory.path == "/"){
 					NavigationLink(destination: gotoView()){
@@ -55,13 +72,11 @@ struct DirectoryBrowser : View {
 					}
 				} else {
 					Button(action: {
-						setFavorite(name: self.directory.lastComponent, path: self.directory.path)
-						bookmarked.toggle()
-						NSLog("Added favourite!")
+						isBookmarked.toggle()
 					}){
 						HStack{
 							Image(systemName: "heart.fill").foregroundColor(.red)
-							Text(bookmarked ? " Added!" : "  Add to Favorites")
+							Text(isBookmarked ? " Added!" : "  Add to Favorites")
 						}
 					}
 				}
@@ -145,9 +160,9 @@ struct gotoView : View {
 				Gauge(value: availableCapacity(),
 					  in: 0...16,
 					  label: {Text("GB")},
-					  currentValueLabel: {Text(String(format: "%.2f", availableCapacity())).foregroundColor(.teal)}
+					  currentValueLabel: {Text(String(format: "%.2f", availableCapacity())).foregroundColor(.indigo)}
 				)
-					.gaugeStyle(CircularGaugeStyle(tint: .teal))
+					.gaugeStyle(CircularGaugeStyle(tint: .indigo))
 			}
 			
 		}
