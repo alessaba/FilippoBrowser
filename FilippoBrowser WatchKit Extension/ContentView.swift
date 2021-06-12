@@ -154,6 +154,9 @@ struct gotoView : View {
 	}
 }
 
+
+// MARK: BookmarkItem
+
 struct BookmarkItem: View {
 	
 	enum BookmarkItemType{
@@ -197,9 +200,10 @@ struct BookmarkItem: View {
 				.contextMenu{
 					Button(action: {
 						userDefaults.removeObject(forKey: self.key)
-							UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
-								return shortcut.type == self.key
-							})
+						
+						UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
+							return shortcut.type == self.key
+						})
 					}){
 						Image(systemName: "bin.xmark.fill")
 						Text("Delete")
@@ -213,6 +217,9 @@ struct BookmarkItem: View {
 		}
 		.buttonStyle(BorderedButtonStyle(tint: self.color))
 		.padding(.horizontal, (self.type == .button) ? 0 : 10)
+		#if os(iOS)
+		.safeHover()
+		#endif
 		Spacer()
 	}
 }

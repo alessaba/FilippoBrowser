@@ -14,10 +14,16 @@ public let documents_directory = (FileManager.default.urls(for: .documentDirecto
 public let tmp_directory = FileManager.default.temporaryDirectory
 
 
-public func setFavorite(name : String, path : String) {
+public func setFavorite(name: String, path: String) {
 	userDefaults.set(path, forKey: "FB_\(name)")
 	userDefaults.synchronize()
 }
+
+/*
+public func properView(for item: FSItem) -> AnyView {
+	return AnyView(Text("Stub"))
+}
+*/
 
 #if os(iOS)
 extension View {
