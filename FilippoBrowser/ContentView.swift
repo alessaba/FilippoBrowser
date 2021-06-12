@@ -93,6 +93,8 @@ struct DirectoryListBrowser : View {
 	@State private var sharePresented : Bool = false
 	var directory : FSItem
 	
+	#warning("Must reenable sharesheet by linking ItemContextView's isSharePresented to self.sharePresented")
+	
 	var body: some View {
 		let subelements = directory.subelements.filter{
 			// MARK: Search Function
@@ -143,13 +145,25 @@ struct DirectoryListBrowser : View {
 	}
 }
 
-#warning("Fix Dark cells in Light mode (gridView)")
 // MARK: Directory Grid Viewer
 // This is the directory browser, it shows files and subdirectories of a folder in grid style
 struct DirectoryGridBrowser : View {
 	@State private var searchText : String = ""
-	@State private var popoverPresented : Bool = false
+	@State private var sharePresented : Bool = false
 	var directory : FSItem
+	@Environment(\.colorScheme) var colorScheme
+	#warning("Must reenable sharesheet by linking ItemContextView's isSharePresented to self.sharePresented")
+	
+	var cellColor : Color{
+		get{
+			if colorScheme == .dark{
+				return Color(.displayP3, white: 0.15, opacity: 1.0)
+			} else if colorScheme == .light{
+				return Color(.displayP3, white: 0.85, opacity: 1.0)
+			}
+			return .black
+		}
+	}
 	
 	var body: some View {
 		ScrollView {
@@ -192,12 +206,12 @@ struct DirectoryGridBrowser : View {
 							}
 						}
 						.padding(.all, 10)
-						.background(Color.init(.displayP3, white: 0.15, opacity: 1.0))
+						.background(cellColor)
 						.cornerRadius(10.0)
 						.contextMenu{
 							ItemContextMenu(subItem)
 						}
-						.sheet(isPresented: $popoverPresented, onDismiss: nil) {
+						.sheet(isPresented: $sharePresented, onDismiss: nil) {
 							ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
 						}
 					}
@@ -288,24 +302,8 @@ struct BookmarkItem: View {
 	}
 	
 	var body: some View {
-		#warning("ContextMenu does not seem to work now")
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
-			#if os(iOS)
-				.contextMenu{
-					Button(action: {
-						userDefaults.removeObject(forKey: self.key)
-						
-						UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
-							return shortcut.type == self.key
-						})
-					}){
-						Image(systemName: "bin.xmark.fill")
-						Text("Delete")
-					}
-					.foregroundColor(.red)
-				}
-			#endif
 				.padding((self.type == .button) ? 0 : 10)
 				.foregroundColor(self.color)
 				.font(.system(size: 15).bold())
@@ -313,6 +311,21 @@ struct BookmarkItem: View {
 		.buttonStyle(BorderedButtonStyle(tint: self.color))
 		.padding(.horizontal, (self.type == .button) ? 0 : 10)
 		#if os(iOS)
+		.contextMenu{
+			Button(role: .destructive,
+				   action: {
+							userDefaults.removeObject(forKey: self.key)
+							
+							UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
+								return shortcut.type == self.key
+							})
+					},
+					label: {
+							Image(systemName: "bin.xmark.fill")
+							Text("Delete")
+					}
+			)
+		}
 		.safeHover()
 		#endif
 		Spacer()

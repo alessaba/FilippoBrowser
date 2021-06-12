@@ -194,30 +194,30 @@ struct BookmarkItem: View {
 	var body: some View {
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
-			#if os(iOS)
-				.contextMenu{
-					Button(action: {
-						userDefaults.removeObject(forKey: self.key)
-						
-						UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
-							return shortcut.type == self.key
-						})
-					}){
-						Image(systemName: "bin.xmark.fill")
-						Text("Delete")
-					}
-					.foregroundColor(.red)
-				}
-			#endif
 				.padding((self.type == .button) ? 0 : 10)
 				.foregroundColor(self.color)
 				.font(.system(size: 15).bold())
 		}
 		.buttonStyle(BorderedButtonStyle(tint: self.color))
 		.padding(.horizontal, (self.type == .button) ? 0 : 10)
-		#if os(iOS)
+#if os(iOS)
+		.contextMenu{
+			Button(role: .destructive,
+				   action: {
+				userDefaults.removeObject(forKey: self.key)
+				
+				UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
+					return shortcut.type == self.key
+				})
+			},
+				   label: {
+				Image(systemName: "bin.xmark.fill")
+				Text("Delete")
+			}
+			)
+		}
 		.safeHover()
-		#endif
+#endif
 		Spacer()
 	}
 }
