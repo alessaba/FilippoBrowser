@@ -151,12 +151,12 @@ struct DirectoryGridBrowser : View {
 	var directory : FSItem
 	@Environment(\.colorScheme) var colorScheme
 	
-	var cellColor : Color{
+	var cellColor : Color {
 		get{
 			if colorScheme == .dark{
-				return Color(.displayP3, white: 0.15, opacity: 1.0)
+				return Color(white: 0.15)
 			} else if colorScheme == .light{
-				return Color(.displayP3, white: 0.85, opacity: 1.0)
+				return .white
 			}
 			return .black
 		}
@@ -205,6 +205,8 @@ struct DirectoryGridBrowser : View {
 						.padding(.all, 10)
 						.background(cellColor)
 						.cornerRadius(10.0)
+						//.shadow(radius: (colorScheme == .light) ? 3 : 0)
+						
 						.contextMenu{
 							ItemContextMenu(subItem, sharePresented: $sharePresented)
 						}
@@ -216,6 +218,7 @@ struct DirectoryGridBrowser : View {
 			}
 			.navigationBarTitle(Text(directory.path), displayMode: .inline)
 		}
+		.background((colorScheme == .light) ? Color.init(white: 0.95) : Color.black)
 	}
 }
 
