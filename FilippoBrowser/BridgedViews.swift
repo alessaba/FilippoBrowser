@@ -2,8 +2,8 @@
 //  BridgedViews.swift
 //  FilippoBrowser
 //
-//  Created by Filippo Claudi on 10/06/21.
-//  Copyright © 2021 Filippo Claudi. All rights reserved.
+//  Created by Alessandro Saba on 10/06/21.
+//  Copyright © 2021 Alessandro Saba. All rights reserved.
 //
 
 import Foundation

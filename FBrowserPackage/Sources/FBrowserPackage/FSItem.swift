@@ -2,8 +2,8 @@
 //  FSItem.swift
 //  FBrowser
 //
-//  Created by Filippo Claudi on 06/10/2019.
-//  Copyright © 2019 Filippo Claudi. All rights reserved.
+//  Created by Alessandro Saba on 06/10/2019.
+//  Copyright © 2019 Alessandro Saba. All rights reserved.
 //
 
 import Foundation

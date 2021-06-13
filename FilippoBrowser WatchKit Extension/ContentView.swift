@@ -41,7 +41,7 @@ struct FileViewer : View {
 struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
-	//@State private var bookmarked : Bool = false
+	@State private var bookmarkButtonPressed : Bool = false
 	#warning("Button title can't update without a @State")
 	
     var directory : FSItem
@@ -56,10 +56,11 @@ struct DirectoryBrowser : View {
 				} else {
 					Button(action: {
 						directory.isBookmarked.toggle()
+						bookmarkButtonPressed.toggle()
 					}){
 						HStack{
 							Image(systemName: "heart.fill").foregroundColor(.red)
-							Text(directory.isBookmarked ? " Added!" : "  Add to Favorites")
+							Text((directory.isBookmarked || bookmarkButtonPressed) ? " Added!" : "  Add to Favorites")
 						}
 					}
 				}

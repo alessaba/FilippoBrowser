@@ -2,8 +2,8 @@
 //  ExtensionDelegate.swift
 //  FilippoBrowser WatchKit Extension
 //
-//  Created by Filippo Claudi on 20/09/2019.
-//  Copyright © 2019 Filippo Claudi. All rights reserved.
+//  Created by Alessandro Saba on 20/09/2019.
+//  Copyright © 2019 Alessandro Saba. All rights reserved.
 //
 
 import WatchKit
