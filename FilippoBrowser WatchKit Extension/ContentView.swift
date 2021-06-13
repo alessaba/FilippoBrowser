@@ -42,8 +42,7 @@ struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
 	@State private var bookmarkButtonPressed : Bool = false
-	#warning("Button title can't update without a @State")
-	
+
     var directory : FSItem
 
 	var body: some View {
