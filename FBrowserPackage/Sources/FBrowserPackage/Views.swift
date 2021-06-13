@@ -2,7 +2,7 @@
 //  File.swift
 //  
 //
-//  Created by Filippo Claudi on 10/06/21.
+//  Created by Alessandro Saba on 10/06/21.
 //
 
 import Foundation
@@ -10,6 +10,7 @@ import SwiftUI
 
 // MARK: ContextMenu
 
+#if os(iOS)
 public struct ItemContextMenu : View {
 	var subItem : FSItem
 	@Binding var isSharePresented : Bool
@@ -49,7 +50,7 @@ public struct ItemContextMenu : View {
 		}
 	}
 }
-
+#endif
 
 // MARK: BookmarkItem
 /*
