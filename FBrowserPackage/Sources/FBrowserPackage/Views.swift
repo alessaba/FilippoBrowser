@@ -12,10 +12,11 @@ import SwiftUI
 
 public struct ItemContextMenu : View {
 	var subItem : FSItem
-	@State var isSharePresented = false
+	@Binding var isSharePresented : Bool
 	
-	public init(_ subItem: FSItem){
+	public init(_ subItem: FSItem, sharePresented: Binding<Bool>){
 		self.subItem = subItem
+		self._isSharePresented = sharePresented
 	}
 	
 	public var body: some View{
@@ -40,7 +41,7 @@ public struct ItemContextMenu : View {
 			}
 			
 			Button(action: {
-				self.isSharePresented = true
+				isSharePresented = true
 			}){
 				Image(systemName: "square.and.arrow.up.on.square.fill")
 				Text("Share")

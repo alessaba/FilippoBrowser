@@ -93,8 +93,6 @@ struct DirectoryListBrowser : View {
 	@State private var sharePresented : Bool = false
 	var directory : FSItem
 	
-	#warning("Must reenable sharesheet by linking ItemContextView's isSharePresented to self.sharePresented")
-	
 	var body: some View {
 		let subelements = directory.subelements.filter{
 			// MARK: Search Function
@@ -120,7 +118,7 @@ struct DirectoryListBrowser : View {
                             .foregroundColor(.blue)
                             .padding(.leading)
                             .contextMenu{
-								ItemContextMenu(subItem)
+								ItemContextMenu(subItem, sharePresented: $sharePresented)
                             }
 					}.sheet(isPresented: $sharePresented, onDismiss: nil) {
 						ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
@@ -152,7 +150,6 @@ struct DirectoryGridBrowser : View {
 	@State private var sharePresented : Bool = false
 	var directory : FSItem
 	@Environment(\.colorScheme) var colorScheme
-	#warning("Must reenable sharesheet by linking ItemContextView's isSharePresented to self.sharePresented")
 	
 	var cellColor : Color{
 		get{
@@ -209,7 +206,7 @@ struct DirectoryGridBrowser : View {
 						.background(cellColor)
 						.cornerRadius(10.0)
 						.contextMenu{
-							ItemContextMenu(subItem)
+							ItemContextMenu(subItem, sharePresented: $sharePresented)
 						}
 						.sheet(isPresented: $sharePresented, onDismiss: nil) {
 							ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
