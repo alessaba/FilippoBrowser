@@ -184,6 +184,7 @@ struct DirectoryGridBrowser : View {
 							Image(systemName: subItem.itemType.rawValue)
 								.foregroundColor((subItem.rootProtected) ? .orange : .green)
 								.padding(.vertical, 5)
+								.padding(.horizontal, 30)
 
 							//Name of the file/directory
 							NavigationLink(destination: properView(for: subItem)){
@@ -206,7 +207,6 @@ struct DirectoryGridBrowser : View {
 						.background(cellColor)
 						.cornerRadius(10.0)
 						//.shadow(radius: (colorScheme == .light) ? 3 : 0)
-						
 						.contextMenu{
 							ItemContextMenu(subItem, sharePresented: $sharePresented)
 						}
