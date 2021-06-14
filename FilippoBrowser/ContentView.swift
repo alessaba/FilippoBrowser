@@ -238,8 +238,7 @@ struct gotoView : View {
 				TextField("Path", text: $path)
 					.padding(.all)
 					.textFieldStyle(.roundedBorder)
-				#warning("Could add / at the end if not already present")
-				BookmarkItem(name: "Go", path: path, isButton: true)
+				BookmarkItem(name: "Go", path: ((path.last! == "/") ? path : (path + "/")), isButton: true)
 			}
 			
 			
