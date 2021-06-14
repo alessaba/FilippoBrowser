@@ -56,11 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		#warning("should launch the app with the path from the shortcut")
 		#warning("This function never gets called...")
 		
-		let path = UserDefaults.standard.string(forKey: shortcutItem.type)
-		if (path != nil) {
-			NSLog("Trying to open \(path!) folder")
-			UserDefaults.standard.setValue(path ?? "/", forKey: "pathToLaunch")
-		}
+		lancia(shortcutItem: shortcutItem)
 	}
 	
 	func lancia(shortcutItem: UIApplicationShortcutItem){
