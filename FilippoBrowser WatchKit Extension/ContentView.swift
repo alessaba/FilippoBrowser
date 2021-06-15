@@ -124,7 +124,6 @@ struct gotoView : View {
 		ScrollView{
 			
 			TextField("Path", text: $path)
-			
 			BookmarkItem(name: "Go", path: path, isButton: true)
 			
 			Spacer(minLength: 20)
@@ -137,15 +136,19 @@ struct gotoView : View {
 			}
 			Spacer(minLength: 30)
 			
-			Text("Free Space")
+			Text("Used Space")
+			
 			Spacer()
+			
 			HStack{
-				Gauge(value: availableCapacity(),
-					  in: 0...16,
+				Gauge(value: usedSpace(),
+					  in: 0...totalCapacity(),
 					  label: {Text("GB")},
-					  currentValueLabel: {Text(String(format: "%.2f", availableCapacity())).foregroundColor(.indigo)}
+					  currentValueLabel: {Text(String(format: "%.2f", usedSpace())).foregroundColor(.indigo)}
 				)
 					.gaugeStyle(CircularGaugeStyle(tint: .indigo))
+			}.onTapGesture {
+				print("Total Space: \(totalCapacity())")
 			}
 			
 		}
@@ -226,13 +229,13 @@ let resvalues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeT
 
 func totalCapacity() -> Double {
 	if let resvalues = resvalues{
-		return Double(0 - (resvalues.volumeTotalCapacity ?? 0)) / 1000000000
+		return round(Double(0 - (resvalues.volumeTotalCapacity ?? 0)) * 0.000000011835758)
 	} else {
 		return 0
 	}
 }
 
-func availableCapacity() -> Double {
+func usedSpace() -> Double {
 	if let resvalues = resvalues{
 		return (Double(resvalues.volumeAvailableCapacity ?? 0) / 1000000000) * 16
 	} else {
