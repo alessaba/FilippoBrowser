@@ -225,10 +225,7 @@ struct DirectoryGridBrowser : View {
 // MARK: Go To View
 struct gotoView : View {
 	@State var path : String = "/"
-	#warning("Must set a @State Property on the keys variable so when the variable is modified, the list is redrawn")
-	let userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
-		$0.starts(with: "FB_")
-	}
+	@State var userDefaultsKeys : [String] = []
 	
 	var body : some View {
 		VStack{
@@ -252,12 +249,16 @@ struct gotoView : View {
 					BookmarkItem(name: "Documents 🗂", path: documents_directory)
 					BookmarkItem(name: "App Container 💾", path: parentDirectory(tmp_directory.path))
 				#endif
-				
-				#warning("Should find a way to update deletion and adding of elements in realtime")
+
 				ForEach(userDefaultsKeys){ key in
-					BookmarkItem(key: key)
+					BookmarkItem(key: key, defaultsArray: $userDefaultsKeys)
 				}
+				
 			}.padding(.horizontal)
+		}.onAppear{
+			userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
+				$0.starts(with: "FB_")
+			}
 		}
 	}
 }
@@ -275,6 +276,8 @@ struct BookmarkItem: View {
 	var path : String
 	var type : BookmarkItemType
 	
+	@Binding var defaultsList : [String]
+	
 	var color : Color{
 		switch self.type{
 			case .system:
@@ -291,13 +294,15 @@ struct BookmarkItem: View {
 		self.name = name
 		self.path = path
 		self.type = isButton ? .button : .system
+		self._defaultsList = .constant([])
 	}
 	
-	init(key: String){
+	init(key: String, defaultsArray : Binding<Array<String>>){
 		self.key = key
 		self.name = String(key.split(separator: "_").last!)
 		self.path = String(userDefaults.string(forKey: key) ?? "/")
 		self.type = .userAdded
+		self._defaultsList = defaultsArray
 	}
 	
 	var body: some View {
@@ -311,19 +316,27 @@ struct BookmarkItem: View {
 		.padding(.horizontal, (self.type == .button) ? 0 : 10)
 		#if os(iOS)
 		.contextMenu{
-			Button(role: .destructive,
-				   action: {
-							userDefaults.removeObject(forKey: self.key)
-							
-							UIApplication.shared.shortcutItems?.removeAll(where: { shortcut in
-								return shortcut.type == self.key
-							})
-					},
-					label: {
-							Image(systemName: "bin.xmark.fill")
-							Text("Delete")
+			if type == .userAdded {
+				Button(role: .destructive,
+					   action: {
+					userDefaults.removeObject(forKey: key)
+					
+					defaultsList.removeAll{ k in
+						k == key
 					}
-			)
+					
+					UIApplication.shared.shortcutItems?.removeAll{ shortcut in
+						return shortcut.type == key
+					}
+					
+					NSLog("Removed \"\(key)\"")
+				},
+					   label: {
+					Image(systemName: "bin.xmark.fill")
+					Text("Delete")
+				}
+				)
+			}
 		}
 		.safeHover()
 		#endif
