@@ -97,7 +97,7 @@ public class FSItem : Identifiable, Equatable{
 		}
 	}
 	
-	#warning("this is a dumb assumption")
+	#warning("this is a inaccurate assumption")
 	public var rootProtected : Bool {
 		if isFolder && subelements.count == 0 {
 			return true
