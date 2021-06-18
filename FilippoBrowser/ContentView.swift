@@ -20,6 +20,9 @@ struct Browser : View {
 	@State var path : String
 	@State var gridStyleEnabled : Bool = userDefaults.bool(forKey: "gridStyleEnabled")
     @State private var watchFilesPresented : Bool = false // We need it for presenting the popover 🙄
+	
+	@Environment(\.dynamicTypeSize) var dtSize
+	
 	var body: some View {
 		NavigationView {
 			properDirectoryBrowser(for: FSItem(path: path))
@@ -40,11 +43,12 @@ struct Browser : View {
                 ,
                 trailing:
 					HStack{
-						Image(systemName: gridStyleEnabled ? "list.dash" :  "square.grid.2x2.fill").onTapGesture {
-							userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
-							//userDefaults.toggleBool(forKey: "gridStyleEnabled")
-							gridStyleEnabled.toggle()
-							//NSLog("Grid: \(gridStyleEnabled)")
+						if dtSize < .accessibility2{
+							Image(systemName: gridStyleEnabled ? "list.dash" :  "square.grid.2x2.fill").onTapGesture {
+								userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
+								gridStyleEnabled.toggle()
+								//NSLog("Grid: \(gridStyleEnabled)")
+							}
 						}
 						
 						NavigationLink(destination: gotoView()){
@@ -93,6 +97,8 @@ struct DirectoryListBrowser : View {
 	@State private var sharePresented : Bool = false
 	var directory : FSItem
 	
+	@Environment(\.dynamicTypeSize) var dtSize
+	
 	var body: some View {
 		let subelements = directory.subelements.filter{
 			// MARK: Search Function
@@ -123,19 +129,20 @@ struct DirectoryListBrowser : View {
 					}.sheet(isPresented: $sharePresented, onDismiss: nil) {
 						ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
 					}
-                    
-                    
-                    //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
-                    if subItem.isFolder {
-                        Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
-                          .foregroundColor(.secondary)
-                            .padding(.leading)
-                        } else {
-                            Text(subItem.fileSize)
-                                .foregroundColor(.secondary)
-                                .padding(.leading)
-                            }
-                        }
+					
+					if dtSize < .xxxLarge {
+						//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+						if subItem.isFolder {
+							Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
+								.foregroundColor(.secondary)
+								.padding(.leading)
+						} else {
+							Text(subItem.fileSize)
+								.foregroundColor(.secondary)
+								.padding(.leading)
+						}
+					}
+				}
 			}
 		.searchable(text: $searchText)
 		.listStyle(GroupedListStyle())
@@ -149,6 +156,8 @@ struct DirectoryGridBrowser : View {
 	@State private var searchText : String = ""
 	@State private var sharePresented : Bool = false
 	var directory : FSItem
+	
+	@Environment(\.dynamicTypeSize) var dtSize
 	@Environment(\.colorScheme) var colorScheme
 	
 	var cellColor : Color {
@@ -190,17 +199,19 @@ struct DirectoryGridBrowser : View {
 							NavigationLink(destination: properView(for: subItem)){
 								Text(subItem.lastComponent)
 									.fontWeight(.semibold)
-									.lineLimit(1)
+									.lineLimit((dtSize < .xxLarge) ? 1 : 2)
 									.foregroundColor(.blue)
 							}
 							
-							//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
-							if subItem.isFolder {
-								Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
-									.foregroundColor(.secondary)
-							} else {
-								Text(subItem.fileSize)
-									.foregroundColor(.secondary)
+							if dtSize < .xxLarge{
+								//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+								if subItem.isFolder {
+									Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
+										.foregroundColor(.secondary)
+								} else {
+									Text(subItem.fileSize)
+										.foregroundColor(.secondary)
+								}
 							}
 						}
 						.padding(.all, 10)
@@ -310,7 +321,7 @@ struct BookmarkItem: View {
 			Text(name)
 				.padding((self.type == .button) ? 0 : 10)
 				.foregroundColor(self.color)
-				.font(.system(size: 15).bold())
+				.font(.body.bold())
 		}
 		.buttonStyle(BorderedButtonStyle(tint: self.color))
 		.padding(.horizontal, (self.type == .button) ? 0 : 10)
@@ -319,22 +330,22 @@ struct BookmarkItem: View {
 			if type == .userAdded {
 				Button(role: .destructive,
 					   action: {
-					userDefaults.removeObject(forKey: key)
-					
-					defaultsList.removeAll{ k in
-						k == key
-					}
-					
-					UIApplication.shared.shortcutItems?.removeAll{ shortcut in
-						return shortcut.type == key
-					}
-					
-					NSLog("Removed \"\(key)\"")
-				},
+							userDefaults.removeObject(forKey: key)
+							
+							defaultsList.removeAll{
+								$0 == key
+							}
+							
+							UIApplication.shared.shortcutItems?.removeAll{ shortcut in
+								return shortcut.type == key
+							}
+							
+							NSLog("Removed \"\(key)\"")
+						},
 					   label: {
-					Image(systemName: "bin.xmark.fill")
-					Text("Delete")
-				}
+							Image(systemName: "bin.xmark.fill")
+							Text("Delete")
+						}
 				)
 			}
 		}
