@@ -42,11 +42,7 @@ public class FSItem : Identifiable, Equatable{
 	
 	// Gets the file extension for later use
 	private var fileExtension : String {
-		if !(self.isFolder){
-			return String(self.lastComponent.split(separator: ".").last ?? "")
-		} else {
-			return ""
-		}
+		String(self.lastComponent.split(separator: ".").last ?? "")
 	}
 	
 	// Associate a list of extensions to their respective Item Types
