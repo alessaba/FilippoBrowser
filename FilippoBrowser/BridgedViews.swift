@@ -94,7 +94,7 @@ struct QuickLookView: UIViewControllerRepresentable {
 			let tempPath = (tmp_directory.appendingPathComponent(String(parent.filePath.split(separator: "/").last ?? "")))
 			
 			do{
-				try FileManager.default.copyItem(at: URL(string: "file://\(parent.filePath)")!, to: tempPath)
+				try FBrowserPackage.fileManager.copyItem(at: URL(string: "file://\(parent.filePath)")!, to: tempPath)
 			} catch {
 				print("Failed to copy to tmp")
 			}

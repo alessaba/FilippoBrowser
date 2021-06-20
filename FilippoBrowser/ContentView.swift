@@ -142,6 +142,12 @@ struct DirectoryListBrowser : View {
 								.padding(.leading)
 						}
 					}
+				}.swipeActions(edge: .leading, allowsFullSwipe: true){
+					Button{
+						subItem.isBookmarked.toggle()
+					} label: {
+						Image(systemName: subItem.isBookmarked ? "heart.slash" : "heart")
+					}
 				}
 			}
 		.searchable(text: $searchText)
@@ -199,7 +205,7 @@ struct DirectoryGridBrowser : View {
 							NavigationLink(destination: properView(for: subItem)){
 								Text(subItem.lastComponent)
 									.fontWeight(.semibold)
-									.lineLimit((dtSize < .xxLarge) ? 1 : 2)
+									.lineLimit((dtSize < .xxLarge) ? 2 : 3)
 									.foregroundColor(.blue)
 							}
 							

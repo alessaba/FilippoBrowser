@@ -10,10 +10,12 @@ import UIKit
 import WatchConnectivity
 import UserNotifications
 
-public let un = UNUserNotificationCenter.current()
+let un = UNUserNotificationCenter.current()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
+	
+	let fileManager = FileManager.default
 
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
 		// Print info related to the watch session
@@ -32,12 +34,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	
 	func session(_ session: WCSession, didReceive file: WCSessionFile) {
 		// Function that runs when the iPhone receives a file from the Watch
-		let fm = FileManager.default
 		let docsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]
 		
 		// Tries to copy the item to the documents folder, and notify the user
 		do{
-			try fm.copyItem(at: file.fileURL, to: URL(string: "file://\(docsDirectory)")!)
+			try fileManager.copyItem(at: file.fileURL, to: URL(string: "file://\(docsDirectory)")!)
 			
 			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
 			
@@ -56,7 +57,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	}
 	
 	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-		#warning("should launch the app with the path from the shortcut")
 		#warning("This function never gets called...")
 		
 		lancia(shortcutItem: shortcutItem)
@@ -97,12 +97,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		}
 		
 		// Cleaning tmp directory (not sure it's really necessary for every launch but ok)
-		let fm = FileManager.default
-		let tempDir = fm.temporaryDirectory
-		let tempDirContents = try? fm.contentsOfDirectory(atPath: tempDir.path)
+		let tempDir = fileManager.temporaryDirectory
+		let tempDirContents = try? fileManager.contentsOfDirectory(atPath: tempDir.path)
 		if let tempDirContents = tempDirContents{
 			for tempFile in tempDirContents{
-				try? fm.removeItem(atPath: tempDir.appendingPathComponent(tempFile).path)
+				try? fileManager.removeItem(atPath: tempDir.appendingPathComponent(tempFile).path)
 			}
 		}
 		

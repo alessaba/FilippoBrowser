@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 // MARK: ContextMenu
-
+// Unified View for every FSItem context menu in the iOS app
 #if os(iOS)
 public struct ItemContextMenu : View {
 	var subItem : FSItem
@@ -22,7 +22,10 @@ public struct ItemContextMenu : View {
 	
 	public var body: some View{
 		VStack {
+			// Item Name
 			Text(subItem.lastComponent)
+			
+			// Add/Remove Favourite button
 			Button(action: {
 				subItem.isBookmarked.toggle()
 				let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
@@ -33,6 +36,7 @@ public struct ItemContextMenu : View {
 				Text(subItem.isBookmarked ? "Remove from Favorites" : "Add to Favorites")
 			}
 			
+			// Copy path button
 			Button(action: {
 				NSLog("Copy Path button pressed")
 				UIPasteboard.general.string = "file://" + subItem.path
@@ -41,6 +45,7 @@ public struct ItemContextMenu : View {
 				Text("Copy Path")
 			}
 			
+			// Share Button
 			Button(action: {
 				isSharePresented = true
 			}){
