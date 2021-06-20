@@ -19,8 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
-        // Create the SwiftUI view that provides the window contents.
-		
+		// Set the content to a Directory View (grid or list style) for the chosen path.
+		// The path is "/" by default, or the one chosen by 3D Touch shortcut
 		let contentView = Browser(path: self.pathToLaunch)
 
         // Use a UIHostingController as window root view controller.
@@ -42,7 +42,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func sceneDidBecomeActive(_ scene: UIScene) {
 		// Called when the scene has moved from an inactive state to an active state.
 		// Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-		NSLog("Scene Did Become Active\nPathToLaunch:\(pathToLaunch)")
+		
+		NSLog("Scene Did Become Active")
+		NSLog("PathToLaunch:\(pathToLaunch)")
+		
+		// Reload a browser instance if a 3D Touch shortcut is used
 		if self.pathToLaunch != "/"{
 			// Use a UIHostingController as window root view controller.
 			if let windowScene = scene as? UIWindowScene {

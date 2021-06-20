@@ -16,23 +16,26 @@ public let un = UNUserNotificationCenter.current()
 class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+		// Print info related to the watch session
 		NSLog("Session Reachable:\(session.isReachable)\nActivation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
 	}
 	
 	func sessionDidBecomeInactive(_ session: WCSession) {
-		// Session Inactive
+		// Watch Session Inactive
 		NSLog("Session Became inactive")
 	}
 	
 	func sessionDidDeactivate(_ session: WCSession) {
-		// Session deactivated
+		// Watch Session deactivated
 		NSLog("Session deactivated")
 	}
 	
 	func session(_ session: WCSession, didReceive file: WCSessionFile) {
+		// Function that runs when the iPhone receives a file from the Watch
 		let fm = FileManager.default
 		let docsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]
 		
+		// Tries to copy the item to the documents folder, and notify the user
 		do{
 			try fm.copyItem(at: file.fileURL, to: URL(string: "file://\(docsDirectory)")!)
 			
@@ -73,10 +76,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 		
+		// Notification Permission request
 		un.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
 			NSLog("Notification Authorization Granted.")
 		}
 		
+		// Apple Watch Session activation
 		NSLog("Session supported: \(WCSession.isSupported())")
 		if WCSession.isSupported(){
 			let watchSession = WCSession.default
@@ -86,11 +91,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			NSLog("Device not supported or Apple Watch is not paired.")
 		}
 		
+		// Launch from 3D Touch shortcuts
 		if let shortcutsItems = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
 			lancia(shortcutItem: shortcutsItems)
 		}
 		
-		// Cleaning tmp directory
+		// Cleaning tmp directory (not sure it's really necessary for every launch but ok)
 		let fm = FileManager.default
 		let tempDir = fm.temporaryDirectory
 		let tempDirContents = try? fm.contentsOfDirectory(atPath: tempDir.path)
