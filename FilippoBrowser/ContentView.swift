@@ -265,9 +265,9 @@ struct gotoView : View {
 	var body : some View {
 		
 		var subpaths : [FSItem] {
-			if (path.split(separator: "/").last?.count ?? 0) > 2 {
-				return FSItem(path: parentDirectory(path)).subelements.filter{ subPath in
-					return subPath.path.contains(path)
+			if (path.split(separator: "/").last?.count ?? 0) > 1 {
+				return FSItem(path: parentDirectory(path)).subelements.filter{ subElement in
+					return subElement.path.lowercased().contains(path.lowercased())
 				}
 			} else {
 				return []
@@ -276,14 +276,16 @@ struct gotoView : View {
 		
 		return VStack{
 			NavigationLink(destination: properView(for: FSItem(path: self.path))){
-				Text("Go")
-					.padding(10)
-					.foregroundColor(.green)
-					.font(.body.bold())
+				HStack{
+					Spacer()
+					Text("Go")
+						.padding(10)
+						.foregroundColor(.green)
+						.font(.body.bold())
+					Spacer()
+				}
 			}
-			.buttonStyle(BorderedButtonStyle(shape: .roundedRectangle))
-			.foregroundColor(.green)
-			.padding(.horizontal)
+			.buttonStyle(BorderedButtonStyle(tint: .green))
 			
 			Spacer(minLength: 25)
 			
