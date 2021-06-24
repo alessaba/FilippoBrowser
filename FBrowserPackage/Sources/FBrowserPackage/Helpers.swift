@@ -27,6 +27,13 @@ public func properView(for item: FSItem) -> AnyView {
 }
 */
 
+private struct LazyView<Content : View> : View {
+	var content : () -> Content
+	var body: some View {
+		self.content()
+	}
+}
+
 #if os(iOS)
 // How to add SwiftUI properties not supported by every version of your build target
 extension View {
@@ -37,6 +44,10 @@ extension View {
 		} else {
 			return AnyView(_fromValue: Self.self)!
 		}
+	}
+	
+	public func lazy() -> AnyView {
+		return AnyView(LazyView{self})
 	}
 }
 #endif

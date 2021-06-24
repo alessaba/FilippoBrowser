@@ -26,7 +26,7 @@ struct Browser : View {
 	
 	var body: some View {
 		NavigationView {
-			properDirectoryBrowser(for: FSItem(path: path))
+			properView(for: FSItem(path: path))
 			.navigationBarTitle(Text("File Browser"), displayMode: .inline)
             .navigationBarItems(
                 leading:
@@ -90,7 +90,7 @@ struct FileViewer : View {
 				SceneView(filePath: self.file.path)
 			} else {
 				// For every other file type, show QuickLook
-				QuickLook(filePath: self.file.path)
+				QuickLook(filePath: self.file.path).lazy()
 			}
 		}
 	}
@@ -419,21 +419,17 @@ struct BookmarkItem: View {
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
 func properView(for item: FSItem) -> AnyView {
 	if item.isFolder{
-		return properDirectoryBrowser(for: item)
+		let gridEnabled = userDefaults.bool(forKey: "gridStyleEnabled")
+		if gridEnabled{
+			return DirectoryGridBrowser(directory: item).lazy()
+		} else {
+			return DirectoryListBrowser(directory: item).lazy()
+		}
 	} else {
-		return AnyView(FileViewer(file: item))
+		return FileViewer(file: item).lazy()
 	}
 }
 
-// Returns the selected viewing style (Grid or List) view
-func properDirectoryBrowser(for item: FSItem) -> AnyView {
-	let gridEnabled = userDefaults.bool(forKey: "gridStyleEnabled")
-	if gridEnabled{
-		return AnyView(DirectoryGridBrowser(directory: item))
-	} else {
-		return AnyView(DirectoryListBrowser(directory: item))
-	}
-}
 
 
 
