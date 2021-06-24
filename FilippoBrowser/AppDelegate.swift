@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		
 		// Tries to copy the item to the documents folder, and notify the user
 		do{
-			try fileManager.copyItem(at: file.fileURL, to: URL(string: "file://\(docsDirectory)")!)
+			try fileManager.copyItem(at: file.fileURL, to: URL(fileURLWithPath: docsDirectory))
 			
 			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
 			

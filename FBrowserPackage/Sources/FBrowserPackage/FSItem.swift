@@ -178,7 +178,7 @@ public class FSItem : Identifiable, Equatable{
 
 // Get the parent directory for a path. Not terribly useful
 public func parentDirectory(_ path: String) -> String {
-	return URL(string: "file://\(path)")!.deletingLastPathComponent().path + "/"
+	return URL(fileURLWithPath: path).deletingLastPathComponent().path + "/"
 }
 
 /*

@@ -245,7 +245,7 @@ struct DirectoryGridBrowser : View {
 							ItemContextMenu(subItem, sharePresented: $sharePresented)
 						}
 						.sheet(isPresented: $sharePresented, onDismiss: nil) {
-							ShareView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!])
+							ShareView(activityItems: [URL(fileURLWithPath: self.directory.path + subItem.lastComponent)])
 						}
 					}
 				}.searchable(text: $searchText) // Search Bar
@@ -263,21 +263,44 @@ struct gotoView : View {
 	@State var userDefaultsKeys : [String] = []
 	
 	var body : some View {
-		VStack{
-            Text("Go To...").bold()
-            
-			// Enter a custom path
-			HStack{
-				TextField("Path", text: $path)
-					.padding(.all)
-					.textFieldStyle(.roundedBorder)
-				BookmarkItem(name: "Go", path: ((path.last! == "/") ? path : (path + "/")), isButton: true)
+		
+		var subpaths : [FSItem] {
+			if (path.split(separator: "/").last?.count ?? 0) > 2 {
+				return FSItem(path: parentDirectory(path)).subelements.filter{ subPath in
+					return subPath.path.contains(path)
+				}
+			} else {
+				return []
 			}
-			
+		}
+		
+		return VStack{
+			NavigationLink(destination: properView(for: FSItem(path: self.path))){
+				Text("Go")
+					.padding(10)
+					.foregroundColor(.green)
+					.font(.body.bold())
+			}
+			.buttonStyle(BorderedButtonStyle(shape: .roundedRectangle))
+			.foregroundColor(.green)
+			.padding(.horizontal)
 			
 			Spacer(minLength: 25)
 			
 			ScrollView {
+				// Search Suggestions
+				ForEach(subpaths){ suggestion in
+					Button(action: {
+						path = parentDirectory(path) + suggestion.lastComponent + "/"
+					}, label: {
+						Text(suggestion.lastComponent)
+							.padding(10)
+							.foregroundColor(.teal)
+							.font(.body.bold())
+					})
+						.buttonStyle(BorderedButtonStyle(tint: .teal))
+				}
+				
 				// Pre-defined bookmarks
 				BookmarkItem(name: "App Group ⌚️", path: appGroup_directory)
 				#if os(iOS) || os(watchOS)
@@ -291,12 +314,14 @@ struct gotoView : View {
 					BookmarkItem(key: key, defaultsArray: $userDefaultsKeys)
 				}
 				
-			}.padding(.horizontal)
-		}.onAppear{
-			userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
-				$0.starts(with: "FB_")
 			}
-		}
+			.padding(.horizontal)
+			.searchable(text: $path)
+			}.onAppear{
+				userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
+					$0.starts(with: "FB_")
+				}
+			}.navigationTitle("Go To")
 	}
 }
 
@@ -305,7 +330,7 @@ struct gotoView : View {
 struct BookmarkItem: View {
 	
 	enum BookmarkItemType{
-		case system, userAdded, button
+		case system, userAdded
 	}
 	
 	var key : String
@@ -321,17 +346,15 @@ struct BookmarkItem: View {
 				return .blue
 			case .userAdded:
 				return .red
-			case .button:
-				return .teal
 		}
 	}
 	
 	// Used for System defined buttons or bookmarks
-	init(name: String, path: String, isButton: Bool = false){
+	init(name: String, path: String){
 		self.key = ""
 		self.name = name
 		self.path = path
-		self.type = isButton ? .button : .system
+		self.type = .system
 		self._defaultsList = .constant([])
 	}
 	
@@ -348,12 +371,12 @@ struct BookmarkItem: View {
 		// Style the button based on the type
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
-				.padding((self.type == .button) ? 0 : 10)
+				.padding(10)
 				.foregroundColor(self.color)
 				.font(.body.bold())
 		}
 		.buttonStyle(BorderedButtonStyle(tint: self.color))
-		.padding(.horizontal, (self.type == .button) ? 0 : 10)
+		.padding(.horizontal, 10)
 		#if os(iOS)
 		.contextMenu{
 			// Only show the context menu if the user created the bookmark.

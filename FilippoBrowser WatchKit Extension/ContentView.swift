@@ -30,7 +30,7 @@ struct FileViewer : View {
 				// If the file is not a image, try to transfer it to the iPhone
 				Text(self.file.path)
 					.onAppear{
-						session.transferFile(URL(string: "file://\(self.file.path)")!, metadata: nil)
+						session.transferFile(URL(fileURLWithPath: self.file.path), metadata: nil)
 				}
 			}
 		}
