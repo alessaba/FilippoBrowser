@@ -18,19 +18,19 @@ import SceneKit
 
 
 // MARK: Share Sheet
-struct ActivityView: UIViewControllerRepresentable {
+struct ShareView: UIViewControllerRepresentable {
 	// We proxy the arguments of the UIKit version
 	let activityItems: [Any]
-	let applicationActivities: [UIActivity]?
+	let applicationActivities: [UIActivity]? = nil
 	
 	// Then conform to the SwiftUI bridging protocol with the 2 functions below.
 	// We return the ViewController we want to bridge to SwiftUI
-	func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIActivityViewController {
+	func makeUIViewController(context: UIViewControllerRepresentableContext<ShareView>) -> UIActivityViewController {
 		return UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
 	}
 	
 	// In case we want to update something when the Bridged View is used
-	func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ActivityView>) { NSLog("ActivityVC used") }
+	func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ShareView>) { NSLog("ActivityVC used") }
 }
 
 
@@ -76,7 +76,7 @@ struct SceneView: UIViewControllerRepresentable {
 
 
 // MARK: QuickLook View
-struct QuickLookView: UIViewControllerRepresentable {
+struct QuickLook: UIViewControllerRepresentable {
 	let filePath: String // We do everything starting from a simple file path
 	
 	
@@ -84,8 +84,8 @@ struct QuickLookView: UIViewControllerRepresentable {
 	class QuickLookDataSource : NSObject, QLPreviewControllerDataSource{
 		// We need this parameter to link the DataSource to the PreviewController properly.
 		// (https://quickbirdstudios.com/blog/coordinator-pattern-in-swiftui/)
-		let parent: QuickLookView
-		init(parent: QuickLookView) { self.parent = parent }
+		let parent: QuickLook
+		init(parent: QuickLook) { self.parent = parent }
 		
 		// We are only going to preview 1 file at a time, but if we want we can just count the items in a array of filePaths
 		func numberOfPreviewItems(in controller: QLPreviewController) -> Int { return 1 }
@@ -108,7 +108,7 @@ struct QuickLookView: UIViewControllerRepresentable {
 		return QuickLookDataSource(parent: self)
 	}
 	
-	func makeUIViewController(context: UIViewControllerRepresentableContext<QuickLookView>) -> UIViewController {
+	func makeUIViewController(context: UIViewControllerRepresentableContext<QuickLook>) -> UIViewController {
 		let qv = QLPreviewController()
 		qv.dataSource = context.coordinator // The coordinator is in fact the dataSource we need
 		
@@ -117,5 +117,5 @@ struct QuickLookView: UIViewControllerRepresentable {
 		return navigationController
 	}
 	
-	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLookView>) { NSLog("QuickLook used.") }
+	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLook>) { NSLog("QuickLook used.") }
 }

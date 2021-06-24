@@ -21,6 +21,7 @@ struct Browser : View {
 	@State var gridStyleEnabled : Bool = userDefaults.bool(forKey: "gridStyleEnabled")
     @State private var watchFilesPresented : Bool = false // We need it for presenting the popover 🙄
 	
+	// We can make different layouts for different Accessibility Text Sizes
 	@Environment(\.dynamicTypeSize) var dtSize
 	
 	var body: some View {
@@ -28,13 +29,13 @@ struct Browser : View {
 			properDirectoryBrowser(for: FSItem(path: path))
 			.navigationBarTitle(Text("File Browser"), displayMode: .inline)
             .navigationBarItems(
-                
                 leading:
                     Image(systemName: "f.circle.fill")
 						.padding(.vertical, 10)
 						.safeHover()
                         .onTapGesture {
 								#if os(iOS)
+								// FLEX is only available in iOS
 								FLEXManager.shared.showExplorer()
 								//UIApplication.shared.shortcutItems?.removeAll()
 								#endif
@@ -43,14 +44,16 @@ struct Browser : View {
                 ,
                 trailing:
 					HStack{
-						if dtSize < .accessibility2{
+						// If the text size is small enough for the grid view, let the user enable it
+						if (dtSize < .accessibility2) {
+							// The icon changes to reflect the outcome of the button
 							Image(systemName: gridStyleEnabled ? "list.dash" :  "square.grid.2x2.fill").onTapGesture {
 								userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
 								gridStyleEnabled.toggle()
-								//NSLog("Grid: \(gridStyleEnabled)")
 							}
 						}
 						
+						// Button Linked to the GoTo launchpad view
 						NavigationLink(destination: gotoView()){
 							Image(systemName: "arrow.right.circle.fill")
 								.padding(.vertical, 10)
@@ -62,7 +65,8 @@ struct Browser : View {
 		}.onAppear{
 			//NotificationCenter.default.addObserver(self, selector: #selector("watchFileReceived"), name: Notification.Name("watchFileReceived"), object: nil)
 		}.sheet(isPresented: $watchFilesPresented){
-			properView(for: FSItem(path: NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]))
+			// If the iPhone receives a file from the Watch, open the folder that contains that file
+			properView(for: FSItem(path: documents_directory))
 		}
 	}
 }
@@ -77,13 +81,16 @@ struct FileViewer : View {
 	var body: some View {
 		Group {
 			if (self.file.itemType == .Image){
+				// Show a Image View if the file is a Image. More efficient than QuickLook
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 				.resizable()
 				.aspectRatio(contentMode: .fit)
 			} else if (self.file.itemType == .threeD){
+				// Show a 3D Viewer if the file is 3D Representable
 				SceneView(filePath: self.file.path)
 			} else {
-				QuickLookView(filePath: self.file.path)
+				// For every other file type, show QuickLook
+				QuickLook(filePath: self.file.path)
 			}
 		}
 	}
@@ -97,19 +104,23 @@ struct DirectoryListBrowser : View {
 	@State private var sharePresented : Bool = false
 	var directory : FSItem
 	
+	// We can make different layouts for different Accessibility Text Sizes
 	@Environment(\.dynamicTypeSize) var dtSize
 	
 	var body: some View {
+		// MARK: Search Function
+		// The entries will update automatically eveerytime searchText changes! 🤩
+		
 		let subelements = directory.subelements.filter{
-			// MARK: Search Function
-			// The entries will update automatically eveerytime searchText changes! 🤩
 			if searchText == ""{
-				return true // Every item will be shown
+				// Every item will be shown
+				return true
 			} else {
 				// Only the items containing the search term will be shown (fuzzy too 🤩)
 				return $0.lastComponent.lowercased().contains(searchText.lowercased())
 			}
 		}
+		
         List(subelements) { subItem in
 			HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
@@ -124,14 +135,17 @@ struct DirectoryListBrowser : View {
                             .foregroundColor(.blue)
                             .padding(.leading)
                             .contextMenu{
+								// Unified ContextMenu view between grid and list view
 								ItemContextMenu(subItem, sharePresented: $sharePresented)
                             }
 					}.sheet(isPresented: $sharePresented, onDismiss: nil) {
-						ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
+						// Present the share sheet
+						ShareView(activityItems: [subItem.url])
 					}
 					
+					// Don't show a subtext if the text accessibility setting is set too large, it's not THAT important for a user with low eyesight anyway
 					if dtSize < .xxxLarge {
-						//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+						//Detail SubText: Number of subelements in case of folders. Size of the file in case of files
 						if subItem.isFolder {
 							Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
 								.foregroundColor(.secondary)
@@ -142,6 +156,7 @@ struct DirectoryListBrowser : View {
 								.padding(.leading)
 						}
 					}
+				
 				}.swipeActions(edge: .leading, allowsFullSwipe: true){
 					Button{
 						subItem.isBookmarked.toggle()
@@ -150,8 +165,7 @@ struct DirectoryListBrowser : View {
 					}
 				}
 			}
-		.searchable(text: $searchText)
-		.listStyle(GroupedListStyle())
+		.searchable(text: $searchText) // Search Bar
 		.navigationBarTitle(Text(directory.path), displayMode: .inline)
 	}
 }
@@ -163,9 +177,11 @@ struct DirectoryGridBrowser : View {
 	@State private var sharePresented : Bool = false
 	var directory : FSItem
 	
+	// React based on Light/Dark Mode and Text Size
 	@Environment(\.dynamicTypeSize) var dtSize
 	@Environment(\.colorScheme) var colorScheme
 	
+	// Compute the cell color depending on Light or Dark mode
 	var cellColor : Color {
 		get{
 			if colorScheme == .dark{
@@ -209,8 +225,9 @@ struct DirectoryGridBrowser : View {
 									.foregroundColor(.blue)
 							}
 							
+							// Don't show a subtext if the text accessibility setting is set too large, it's not THAT important for a user with low eyesight anyway
 							if dtSize < .xxLarge{
-								//Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+								//Detail SubText: Number of subelements in case of folders. Size of the file in case of files
 								if subItem.isFolder {
 									Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
 										.foregroundColor(.secondary)
@@ -223,15 +240,15 @@ struct DirectoryGridBrowser : View {
 						.padding(.all, 10)
 						.background(cellColor)
 						.cornerRadius(10.0)
-						//.shadow(radius: (colorScheme == .light) ? 3 : 0)
 						.contextMenu{
+							// Unified ContextMenu view between grid and list view
 							ItemContextMenu(subItem, sharePresented: $sharePresented)
 						}
 						.sheet(isPresented: $sharePresented, onDismiss: nil) {
-							ActivityView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!], applicationActivities: nil)
+							ShareView(activityItems: [URL(string: "file://" + self.directory.path + subItem.lastComponent)!])
 						}
 					}
-				}.searchable(text: $searchText)
+				}.searchable(text: $searchText) // Search Bar
 			}
 			.navigationBarTitle(Text(directory.path), displayMode: .inline)
 		}
@@ -240,6 +257,7 @@ struct DirectoryGridBrowser : View {
 }
 
 // MARK: Go To View
+// This view contains a launchpad to quickly jump to other directories
 struct gotoView : View {
 	@State var path : String = "/"
 	@State var userDefaultsKeys : [String] = []
@@ -248,6 +266,7 @@ struct gotoView : View {
 		VStack{
             Text("Go To...").bold()
             
+			// Enter a custom path
 			HStack{
 				TextField("Path", text: $path)
 					.padding(.all)
@@ -259,14 +278,15 @@ struct gotoView : View {
 			Spacer(minLength: 25)
 			
 			ScrollView {
+				// Pre-defined bookmarks
 				BookmarkItem(name: "App Group ⌚️", path: appGroup_directory)
-				
 				#if os(iOS) || os(watchOS)
 					BookmarkItem(name: "Media 🖥", path: "/var/mobile/Media/")
 					BookmarkItem(name: "Documents 🗂", path: documents_directory)
 					BookmarkItem(name: "App Container 💾", path: parentDirectory(tmp_directory.path))
 				#endif
-
+				
+				// User Added Bookmarks
 				ForEach(userDefaultsKeys){ key in
 					BookmarkItem(key: key, defaultsArray: $userDefaultsKeys)
 				}
@@ -306,6 +326,7 @@ struct BookmarkItem: View {
 		}
 	}
 	
+	// Used for System defined buttons or bookmarks
 	init(name: String, path: String, isButton: Bool = false){
 		self.key = ""
 		self.name = name
@@ -314,6 +335,7 @@ struct BookmarkItem: View {
 		self._defaultsList = .constant([])
 	}
 	
+	// Used for user added bookmarks
 	init(key: String, defaultsArray : Binding<Array<String>>){
 		self.key = key
 		self.name = String(key.split(separator: "_").last!)
@@ -323,6 +345,7 @@ struct BookmarkItem: View {
 	}
 	
 	var body: some View {
+		// Style the button based on the type
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
 				.padding((self.type == .button) ? 0 : 10)
@@ -333,15 +356,19 @@ struct BookmarkItem: View {
 		.padding(.horizontal, (self.type == .button) ? 0 : 10)
 		#if os(iOS)
 		.contextMenu{
+			// Only show the context menu if the user created the bookmark.
 			if type == .userAdded {
 				Button(role: .destructive,
 					   action: {
+							// Remove the bookmark
 							userDefaults.removeObject(forKey: key)
 							
+							// Make the Bookmarks list reload
 							defaultsList.removeAll{
 								$0 == key
 							}
 							
+							// Remove item from 3D Touch menu
 							UIApplication.shared.shortcutItems?.removeAll{ shortcut in
 								return shortcut.type == key
 							}
@@ -373,6 +400,7 @@ func properView(for item: FSItem) -> AnyView {
 	}
 }
 
+// Returns the selected viewing style (Grid or List) view
 func properDirectoryBrowser(for item: FSItem) -> AnyView {
 	let gridEnabled = userDefaults.bool(forKey: "gridStyleEnabled")
 	if gridEnabled{

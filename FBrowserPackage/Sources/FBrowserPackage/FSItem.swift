@@ -45,6 +45,10 @@ public class FSItem : Identifiable, Equatable{
 		String(self.lastComponent.split(separator: ".").last ?? "")
 	}
 	
+	public var url : URL {
+		URL(fileURLWithPath: self.path)
+	}
+	
 	// Associate a list of extensions to their respective Item Types
 	public var itemType : ItemType {
 		let textExtensions = ["txt", "strings"]

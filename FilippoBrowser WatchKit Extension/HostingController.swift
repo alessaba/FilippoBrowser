@@ -15,6 +15,7 @@ import FBrowserPackage
 class HostingController: WKHostingController<DirectoryBrowser>, WCSessionDelegate {
     override var body: DirectoryBrowser {
 		
+		// Apple Watch Session activation
 		if WCSession.isSupported(){
 			let session = WCSession.default
 			session.delegate = self
@@ -24,10 +25,12 @@ class HostingController: WKHostingController<DirectoryBrowser>, WCSessionDelegat
 			NSLog("Session not supported")
 		}
 		
+		// Show the Root of the Watch's File System as the starting view
         return DirectoryBrowser(directory: FSItem(path: "/"))
     }
 	
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+		// Print Watch - iPhone connection information when the session activates
 		NSLog("Session Reachable:\(session.isReachable)")
 		NSLog("Activation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
 	}

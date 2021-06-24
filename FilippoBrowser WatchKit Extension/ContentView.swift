@@ -21,11 +21,13 @@ struct FileViewer : View {
 	
 	var body: some View {
 		VStack {
+			// We can only view images for now
 			if (self.file.itemType == .Image){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
 					.resizable()
 					.aspectRatio(contentMode: .fit)
 			} else {
+				// If the file is not a image, try to transfer it to the iPhone
 				Text(self.file.path)
 					.onAppear{
 						session.transferFile(URL(string: "file://\(self.file.path)")!, metadata: nil)
@@ -58,8 +60,9 @@ struct DirectoryBrowser : View {
 						bookmarkButtonPressed.toggle()
 					}){
 						HStack{
-							Image(systemName: "heart.fill").foregroundColor(.red)
-							Text((directory.isBookmarked || bookmarkButtonPressed) ? " Added!" : "  Add to Favorites")
+							// Add/Remove from Favourites button
+							Image(systemName: (directory.isBookmarked || bookmarkButtonPressed) ? "heart.slash" : "heart.fill").foregroundColor(.red)
+							Text((directory.isBookmarked || bookmarkButtonPressed) ? " Remove from Favourites" : "  Add to Favorites")
 						}
 					}
 				}
@@ -95,12 +98,14 @@ struct DirectoryBrowser : View {
                                 .foregroundColor(.blue)
                         }
                         
-                        //Detail subtext: Number of subelements in case of folders. Size of the file in case of files
+                        //Detail Subtext
                         if subItem.isFolder {
+							// Number of subelements in case of folders.
                             Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
                         } else {
+							// Size of the file in case of files
                             Text(subItem.fileSize)
                                 .font(.subheadline)
                                 .foregroundColor(.secondary)
@@ -108,11 +113,12 @@ struct DirectoryBrowser : View {
                     }
                 }
 			}
-		}.searchable(text: $searchText)
+		}.searchable(text: $searchText) // Search Bar
     }
 }
 
 // MARK: Go To View
+// This view contains a launchpad to quickly jump to other directories
 struct gotoView : View {
     @State var path : String = "/"
 	@State var userDefaultsKeys : [String] = []
@@ -120,19 +126,24 @@ struct gotoView : View {
     var body : some View {
 		ScrollView{
 			
+			// Enter a custom path
 			TextField("Path", text: $path)
 			BookmarkItem(name: "Go", path: path, isButton: true)
 			
 			Spacer(minLength: 20)
 			
+			// Pre-defined bookmarks
 			BookmarkItem(name: "Media 🖥", path: "/var/mobile/Media/")
 			BookmarkItem(name: "App Container 💾", path: parentDirectory(tmp_directory.path))
 			
+			// User Added Bookmarks
 			ForEach(userDefaultsKeys){ key in
 				BookmarkItem(key: key, defaultsArray: $userDefaultsKeys)
 			}
+			
 			Spacer(minLength: 30)
 			
+			// Disk Space Section
 			Text("Used Space")
 			
 			Spacer()
@@ -183,6 +194,7 @@ struct BookmarkItem: View {
 		}
 	}
 	
+	// Used for System defined buttons or bookmarks
 	init(name: String, path: String, isButton: Bool = false){
 		self.key = ""
 		self.name = name
@@ -191,6 +203,7 @@ struct BookmarkItem: View {
 		self._defaultsList = .constant([])
 	}
 	
+	// Used for user added bookmarks
 	init(key: String, defaultsArray : Binding<Array<String>>){
 		self.key = key
 		self.name = String(key.split(separator: "_").last!)
@@ -200,6 +213,7 @@ struct BookmarkItem: View {
 	}
 	
 	var body: some View {
+		// Style the button based on the type
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
 				.padding((self.type == .button) ? 0 : 10)
@@ -210,15 +224,19 @@ struct BookmarkItem: View {
 		.padding(.horizontal, (self.type == .button) ? 0 : 10)
 		#if os(iOS)
 		.contextMenu{
+			// Only show the context menu if the user created the bookmark.
 			if type == .userAdded {
 				Button(role: .destructive,
 					   action: {
+					// Remove the bookmark
 					userDefaults.removeObject(forKey: key)
 					
-					defaultsList.removeAll{ k in
-						k == key
+					// Make the Bookmarks list reload
+					defaultsList.removeAll{
+						$0 == key
 					}
 					
+					// Remove item from 3D Touch menu
 					UIApplication.shared.shortcutItems?.removeAll{ shortcut in
 						return shortcut.type == key
 					}
@@ -237,6 +255,11 @@ struct BookmarkItem: View {
 		Spacer()
 	}
 }
+
+
+// MARK: Disk Space
+// This section tries (not so well) to get the used and free space on disk. Need to optimize this
+#warning("Improve disk space calculations")
 
 let resvalues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeTotalCapacityKey, .volumeAvailableCapacityKey])
 
