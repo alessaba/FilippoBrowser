@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 	
 	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
 		#warning("This function never gets called...")
-		
+		print("SHORTCUT SHORTCUT SHORTCUT")
 		lancia(shortcutItem: shortcutItem)
 	}
 	
@@ -108,8 +108,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		
 		return true
 	}
-	
-	
 
 	func applicationWillTerminate(_ application: UIApplication) {
 		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

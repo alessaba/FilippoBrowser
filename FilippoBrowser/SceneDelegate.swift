@@ -12,8 +12,17 @@ import SwiftUI
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
-	let pathToLaunch = UserDefaults.standard.string(forKey: "pathToLaunch") ?? "/"
-
+	
+	func launchBrowser(_ scene: UIScene, at path: String){
+		if let windowScene = scene as? UIWindowScene {
+			let contentView = Browser(path: path)
+			let window = UIWindow(windowScene: windowScene)
+			window.rootViewController = UIHostingController(rootView: contentView)
+			self.window = window
+			window.makeKeyAndVisible()
+		}
+	}
+	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
@@ -21,7 +30,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 		// Set the content to a Directory View (grid or list style) for the chosen path.
 		// The path is "/" by default, or the one chosen by 3D Touch shortcut
-		let contentView = Browser(path: self.pathToLaunch)
+		let pathToLaunch = UserDefaults.standard.string(forKey: "pathToLaunch") ?? "/"
+		let contentView = Browser(path: pathToLaunch)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
@@ -31,6 +41,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
         }
     }
+	
+	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+		if let url = URLContexts.first?.url {
+			print(url.path)
+			launchBrowser(scene, at: url.path + "/")
+		}
+	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
 		// Called as the scene is being released by the system.
@@ -42,20 +59,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func sceneDidBecomeActive(_ scene: UIScene) {
 		// Called when the scene has moved from an inactive state to an active state.
 		// Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+		let pathToLaunch = UserDefaults.standard.string(forKey: "pathToLaunch") ?? "/"
 		
 		NSLog("Scene Did Become Active")
 		NSLog("PathToLaunch:\(pathToLaunch)")
 		
 		// Reload a browser instance if a 3D Touch shortcut is used
-		if self.pathToLaunch != "/"{
+		if pathToLaunch != "/"{
 			// Use a UIHostingController as window root view controller.
-			if let windowScene = scene as? UIWindowScene {
-				let contentView = Browser(path: self.pathToLaunch)
-				let window = UIWindow(windowScene: windowScene)
-				window.rootViewController = UIHostingController(rootView: contentView)
-				self.window = window
-				window.makeKeyAndVisible()
-			}
+			launchBrowser(scene, at: pathToLaunch)
 		}
 	}
 
