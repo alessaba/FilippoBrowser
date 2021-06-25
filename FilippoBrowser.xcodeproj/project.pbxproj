@@ -216,13 +216,13 @@
 		0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				0B9F5407257FD5A6004365E5 /* FilippoBrowser WatchKit Extension.entitlements */,
 				0B4BED97233531DA005E5BB1 /* ContentView.swift */,
 				0B4BED99233531DA005E5BB1 /* HostingController.swift */,
 				0B4BED9B233531DA005E5BB1 /* ExtensionDelegate.swift */,
 				0B4BED9D233531DA005E5BB1 /* ComplicationController.swift */,
 				0B4BED9F233531DA005E5BB1 /* Assets.xcassets */,
 				0B4BEDA4233531DA005E5BB1 /* Info.plist */,
+				0B9F5407257FD5A6004365E5 /* FilippoBrowser WatchKit Extension.entitlements */,
 				0B4BEDA1233531DA005E5BB1 /* Preview Content */,
 			);
 			path = "FilippoBrowser WatchKit Extension";
