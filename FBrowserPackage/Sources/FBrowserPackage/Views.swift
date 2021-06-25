@@ -57,6 +57,25 @@ public struct ItemContextMenu : View {
 }
 #endif
 
+public struct CapsuleButtonStyle : ButtonStyle{
+	var tint : Color
+	var textColor : Color = .primary
+	
+	public init(tint: Color, textColor: Color = .white){
+		self.tint = tint
+		self.textColor = textColor
+	}
+	
+	public func makeBody(configuration: Configuration) -> some View {
+		configuration.label
+			.padding(10)
+			.font(.body.bold())
+			.background(tint.opacity(20))
+			.foregroundColor(textColor)
+			.clipShape(Capsule())
+	}
+}
+
 // MARK: BookmarkItem
 /*
 struct BookmarkItem: View {

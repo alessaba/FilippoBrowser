@@ -285,7 +285,7 @@ struct gotoView : View {
 					Spacer()
 				}
 			}
-			.buttonStyle(BorderedButtonStyle(tint: .green))
+			.buttonStyle(.bordered)
 			
 			Spacer(minLength: 25)
 			
@@ -297,10 +297,10 @@ struct gotoView : View {
 					}, label: {
 						Text(suggestion.lastComponent)
 							.padding(10)
-							.foregroundColor(.teal)
+							.foregroundColor(.primary)
 							.font(.body.bold())
 					})
-						.buttonStyle(BorderedButtonStyle(tint: .teal))
+						.buttonStyle(CapsuleButtonStyle(tint: .teal.opacity(20)))
 				}
 				
 				// Pre-defined bookmarks
@@ -374,10 +374,10 @@ struct BookmarkItem: View {
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
 				.padding(10)
-				.foregroundColor(self.color)
+				.foregroundColor(.primary)
 				.font(.body.bold())
 		}
-		.buttonStyle(BorderedButtonStyle(tint: self.color))
+		.buttonStyle(CapsuleButtonStyle(tint: self.color))
 		.padding(.horizontal, 10)
 		#if os(iOS)
 		.contextMenu{
