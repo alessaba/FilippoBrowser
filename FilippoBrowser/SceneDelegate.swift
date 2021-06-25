@@ -14,12 +14,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	var window: UIWindow?
 	
 	func launchBrowser(_ scene: UIScene, at path: String){
-		if let windowScene = scene as? UIWindowScene {
-			let contentView = Browser(path: path)
-			let window = UIWindow(windowScene: windowScene)
-			window.rootViewController = UIHostingController(rootView: contentView)
-			self.window = window
-			window.makeKeyAndVisible()
+		DispatchQueue.main.async {
+			if let windowScene = scene as? UIWindowScene {
+				let contentView = Browser(path: path)
+				let window = UIWindow(windowScene: windowScene)
+				window.rootViewController = UIHostingController(rootView: contentView)
+				self.window = window
+				window.makeKeyAndVisible()
+			}
 		}
 	}
 	
@@ -27,24 +29,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-
-		// Set the content to a Directory View (grid or list style) for the chosen path.
-		// The path is "/" by default, or the one chosen by 3D Touch shortcut
-		let pathToLaunch = UserDefaults.standard.string(forKey: "pathToLaunch") ?? "/"
-		let contentView = Browser(path: pathToLaunch)
-
-        // Use a UIHostingController as window root view controller.
-        if let windowScene = scene as? UIWindowScene {
-            let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
-            self.window = window
-            window.makeKeyAndVisible()
-        }
+		
+		/* Process the quick action if the user selected one to launch the app.
+		 Grab a reference to the shortcutItem to use in the scene.*/
+		
+		if let shortcutItem = connectionOptions.shortcutItem {
+			let path = UserDefaults.standard.string(forKey: shortcutItem.type) ?? "/" // We use the type to reference a path in the User Defaults
+			launchBrowser(scene, at: path)
+		} else {
+			// Set the content to a Directory View (grid or list style) for the chosen path.
+			// The path is "/" by default, or the one chosen by 3D Touch shortcut
+			let contentView = Browser(path: "/")
+			
+			// Use a UIHostingController as window root view controller.
+			if let windowScene = scene as? UIWindowScene {
+				let window = UIWindow(windowScene: windowScene)
+				window.rootViewController = UIHostingController(rootView: contentView)
+				self.window = window
+				window.makeKeyAndVisible()
+			}
+		}
     }
+	
+	func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem) async -> Bool {
+		let path = UserDefaults.standard.string(forKey: shortcutItem.type) ?? "/" // We use the type to reference a path in the User Defaults
+		launchBrowser(windowScene, at: path)
+		return true
+	}
 	
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		if let url = URLContexts.first?.url {
-			print(url.path)
+			//print(url.path)
 			launchBrowser(scene, at: url.path + "/")
 		}
 	}
@@ -59,16 +74,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func sceneDidBecomeActive(_ scene: UIScene) {
 		// Called when the scene has moved from an inactive state to an active state.
 		// Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-		let pathToLaunch = UserDefaults.standard.string(forKey: "pathToLaunch") ?? "/"
 		
 		NSLog("Scene Did Become Active")
-		NSLog("PathToLaunch:\(pathToLaunch)")
-		
-		// Reload a browser instance if a 3D Touch shortcut is used
-		if pathToLaunch != "/"{
-			// Use a UIHostingController as window root view controller.
-			launchBrowser(scene, at: pathToLaunch)
-		}
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {

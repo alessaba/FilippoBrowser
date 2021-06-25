@@ -55,23 +55,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			NSLog("WatchConnectivity file transfer failed :-(")
 		}
 	}
-	
-	func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-		#warning("This function never gets called...")
-		print("SHORTCUT SHORTCUT SHORTCUT")
-		lancia(shortcutItem: shortcutItem)
-	}
-	
-	func lancia(shortcutItem: UIApplicationShortcutItem){
-		
-		NSLog("Lancia Shortcut Chiamato!")
-		
-		let path = UserDefaults.standard.string(forKey: shortcutItem.type)
-		if (path != nil) {
-			NSLog("Trying to open \(path!) folder")
-			UserDefaults.standard.setValue(path ?? "/", forKey: "pathToLaunch")
-		}
-	}
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
@@ -91,11 +74,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 			NSLog("Device not supported or Apple Watch is not paired.")
 		}
 		
-		// Launch from 3D Touch shortcuts
-		if let shortcutsItems = launchOptions?[UIApplication.LaunchOptionsKey.shortcutItem] as? UIApplicationShortcutItem {
-			lancia(shortcutItem: shortcutsItems)
-		}
-		
 		// Cleaning tmp directory (not sure it's really necessary for every launch but ok)
 		let tempDir = fileManager.temporaryDirectory
 		let tempDirContents = try? fileManager.contentsOfDirectory(atPath: tempDir.path)
@@ -104,8 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 				try? fileManager.removeItem(atPath: tempDir.appendingPathComponent(tempFile).path)
 			}
 		}
-		
-		
+
 		return true
 	}
 
@@ -126,6 +103,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 		// If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
 		// Use this method to release any resources that were specific to the discarded scenes, as they will not return.
 	}
-
-
 }
