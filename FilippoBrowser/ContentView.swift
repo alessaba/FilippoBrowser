@@ -319,7 +319,7 @@ struct gotoView : View {
 				
 			}
 			.padding(.horizontal)
-			.searchable(text: $path, prompt: "Path")
+			.searchable(text: $path, prompt: "Path").keyboardType(.URL)
 			}.onAppear{
 				userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
 					$0.starts(with: "FB_")
