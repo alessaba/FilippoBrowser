@@ -297,7 +297,7 @@ struct gotoView : View {
 					}, label: {
 						Text(suggestion.lastComponent)
 							.padding(10)
-							.foregroundColor(.primary)
+							.foregroundColor(.teal)
 							.font(.body.bold())
 					})
 						.buttonStyle(.bordered)

@@ -46,6 +46,10 @@ extension View {
 		}
 	}
 	
+	public func any() -> AnyView {
+		return AnyView(self)
+	}
+	
 	public func lazy() -> AnyView {
 		return AnyView(LazyView{self})
 	}
