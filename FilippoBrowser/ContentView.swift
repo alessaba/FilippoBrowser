@@ -259,7 +259,7 @@ struct DirectoryGridBrowser : View {
 // MARK: Go To View
 // This view contains a launchpad to quickly jump to other directories
 struct gotoView : View {
-	@State var path : String = "/"
+	@State var path : String = ""
 	@State var userDefaultsKeys : [String] = []
 	
 	var body : some View {
@@ -300,7 +300,8 @@ struct gotoView : View {
 							.foregroundColor(.primary)
 							.font(.body.bold())
 					})
-						.buttonStyle(CapsuleButtonStyle(tint: .teal.opacity(20)))
+						.buttonStyle(.bordered)
+						.tint(.teal)
 				}
 				
 				// Pre-defined bookmarks
@@ -318,7 +319,7 @@ struct gotoView : View {
 				
 			}
 			.padding(.horizontal)
-			.searchable(text: $path)
+			.searchable(text: $path, prompt: "Path")
 			}.onAppear{
 				userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
 					$0.starts(with: "FB_")
@@ -374,10 +375,11 @@ struct BookmarkItem: View {
 		NavigationLink(destination: properView(for: FSItem(path: self.path))){
 			Text(name)
 				.padding(10)
-				.foregroundColor(.primary)
+				.foregroundColor(self.color)
 				.font(.body.bold())
 		}
-		.buttonStyle(CapsuleButtonStyle(tint: self.color))
+		.buttonStyle(.bordered)
+		.tint(self.color)
 		.padding(.horizontal, 10)
 		#if os(iOS)
 		.contextMenu{
