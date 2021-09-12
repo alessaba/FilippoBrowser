@@ -13,10 +13,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
 	
-	func launchBrowser(_ scene: UIScene, at path: String){
+	func isFolder(_ url : URL) -> Bool {
+		var isFoldr : ObjCBool = false
+		FileManager.default.fileExists(atPath: url.path, isDirectory: &isFoldr)
+		return isFoldr.boolValue
+	}
+	
+	func launchShortcut(_ shortcut : UIApplicationShortcutItem, with scene : UIScene){
+		let path = UserDefaults.standard.string(forKey: shortcut.type) ?? "/" // We use the type to reference a path in the User Defaults
+		let pathURL = URL(fileURLWithPath: path)
+		launchBrowser(scene, at: pathURL)
+	}
+	
+	func launchBrowser(_ scene: UIScene, at url: URL){
+		var launchPath : String = url.path + "/"
+		
+		// Se l'URL punta a un file, rimanda alla cartella che lo contiene
+		if !(isFolder(url)){
+			launchPath = url.deletingLastPathComponent().path + "/"
+		}
+		
 		DispatchQueue.main.async {
 			if let windowScene = scene as? UIWindowScene {
-				let contentView = Browser(path: path)
+				let contentView = Browser(path: launchPath)
 				let window = UIWindow(windowScene: windowScene)
 				window.rootViewController = UIHostingController(rootView: contentView)
 				self.window = window
@@ -24,6 +43,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			}
 		}
 	}
+	
 	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -34,8 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		 Grab a reference to the shortcutItem to use in the scene.*/
 		
 		if let shortcutItem = connectionOptions.shortcutItem {
-			let path = UserDefaults.standard.string(forKey: shortcutItem.type) ?? "/" // We use the type to reference a path in the User Defaults
-			launchBrowser(scene, at: path)
+			launchShortcut(shortcutItem, with: scene)
 		} else {
 			// Set the content to a Directory View (grid or list style) for the chosen path.
 			// The path is "/" by default, or the one chosen by 3D Touch shortcut
@@ -52,15 +71,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 	
 	func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem) async -> Bool {
-		let path = UserDefaults.standard.string(forKey: shortcutItem.type) ?? "/" // We use the type to reference a path in the User Defaults
-		launchBrowser(windowScene, at: path)
+		launchShortcut(shortcutItem, with: windowScene)
 		return true
 	}
 	
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		if let url = URLContexts.first?.url {
-			//print(url.path)
-			launchBrowser(scene, at: url.path + "/")
+			launchBrowser(scene, at: url)
 		}
 	}
 
