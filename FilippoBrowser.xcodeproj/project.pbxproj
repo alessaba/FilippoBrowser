@@ -180,6 +180,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B32342B26EDE714007683F4 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				0BD2432C22AD5298006A4929 /* Info.plist */,
+				0BD2431E22AD5296006A4929 /* AppDelegate.swift */,
+				0BD2432022AD5296006A4929 /* SceneDelegate.swift */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		0B32342D26EDE722007683F4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */,
+				0BD2432222AD5296006A4929 /* ContentView.swift */,
+				0B41F9AF2672643F0087EF41 /* BridgedViews.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		0B45B55C266CDB0B007E0DCA /* RootBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,13 +293,9 @@
 		0BD2431D22AD5296006A4929 /* FilippoBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				0BD2431E22AD5296006A4929 /* AppDelegate.swift */,
-				0BD2432022AD5296006A4929 /* SceneDelegate.swift */,
-				0BD2432222AD5296006A4929 /* ContentView.swift */,
-				0B41F9AF2672643F0087EF41 /* BridgedViews.swift */,
+				0B32342B26EDE714007683F4 /* Application */,
+				0B32342D26EDE722007683F4 /* Views */,
 				0BD2432422AD5297006A4929 /* Assets.xcassets */,
-				0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */,
-				0BD2432C22AD5298006A4929 /* Info.plist */,
 				0B1E54F6245B2EDD00419AB7 /* TODO.md */,
 				0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */,
 				0BD2432622AD5298006A4929 /* Preview Content */,
