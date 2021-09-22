@@ -79,22 +79,30 @@ public class FSItem : Identifiable, Equatable{
 		return (itemType == .Folder)
 	}
 	
+	public var isEmpty : Bool {
+		return ((self.size == 0 && !self.isFolder) || (self.subelements == [] && self.isFolder))
+	}
+	
+	private var size : Int {
+		var fileSize : UInt64
+		// Get the number of bytes of a file
+		do {
+			var gp = self.path
+			gp.removeLast() // BAD WORKAROUND. MUST REMOVE ASAP
+			let attr = try fileManager.attributesOfItem(atPath: gp)
+			fileSize = attr[FileAttributeKey.size] as! UInt64
+		} catch {
+			fileSize = 0
+		}
+		
+		return Int(fileSize)
+	}
+	
 	// We return the size of a file in a human readable form
 	public var fileSize : String {
 		if (!isFolder) {
-			var fileSize : UInt64
 			var fileSizeString : String = ""
-			
-			// Get the number of bytes of a file
-			do {
-				var gp = self.path
-				gp.removeLast() // BAD WORKAROUND. MUST REMOVE ASAP
-				let attr = try fileManager.attributesOfItem(atPath: gp)
-				fileSize = attr[FileAttributeKey.size] as! UInt64
-			} catch {
-				fileSize = 0
-			}
-			
+			let fileSize = self.size
 			// Convert the number of bytes in a human readable form
 			if (fileSize < 1024) {
 				fileSizeString = "\(fileSize) bytes"

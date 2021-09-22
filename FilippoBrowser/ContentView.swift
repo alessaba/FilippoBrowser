@@ -37,7 +37,6 @@ struct Browser : View {
 								#if os(iOS)
 								// FLEX is only available in iOS
 								FLEXManager.shared.showExplorer()
-								//UIApplication.shared.shortcutItems?.removeAll()
 								#endif
 								NSLog("FLEX activated!")
                     }
@@ -415,17 +414,32 @@ struct BookmarkItem: View {
 	}
 }
 
+struct EmptyItem : View {
+	var body: some View {
+		VStack{
+			Image(systemName: "questionmark.folder.fill").imageScale(.large).font(.system(size: 50))
+			Text("Item Empty or Inaccessible").font(.headline)
+		}
+		
+		.foregroundColor(.secondary)
+	}
+}
+
 
 // MARK: Helper Functions
 
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
 func properView(for item: FSItem) -> AnyView {
 	if item.isFolder{
-		let gridEnabled = userDefaults.bool(forKey: "gridStyleEnabled")
-		if gridEnabled{
-			return DirectoryGridBrowser(directory: item).lazy()
+		if item.isEmpty{
+			return EmptyItem().lazy()
 		} else {
-			return DirectoryListBrowser(directory: item).lazy()
+			let gridEnabled = userDefaults.bool(forKey: "gridStyleEnabled")
+			if gridEnabled{
+				return DirectoryGridBrowser(directory: item).lazy()
+			} else {
+				return DirectoryListBrowser(directory: item).lazy()
+			}
 		}
 	} else {
 		return FileViewer(file: item).lazy()
