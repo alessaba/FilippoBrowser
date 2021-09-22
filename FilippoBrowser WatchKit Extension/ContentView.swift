@@ -29,14 +29,13 @@ struct FileViewer : View {
 			} else {
 				// If the file is not a image, try to transfer it to the iPhone
 				Text(self.file.path)
-					.onAppear{
-						session.transferFile(URL(fileURLWithPath: self.file.path), metadata: nil)
+				.onAppear{
+					session.transferFile(URL(fileURLWithPath: self.file.path), metadata: nil)
 				}
 			}
 		}
 	}
 }
-
 
 // MARK: Directory Viewer
 // This is the directory browser, it shows files and subdirectories of a folder
@@ -84,7 +83,7 @@ struct DirectoryBrowser : View {
                 HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
-                    .foregroundColor((subItem.rootProtected) ? .orange : .green)
+                    .foregroundColor((subItem.rootProtected) ? .gray : .green)
 					
 					Spacer().frame(width:10)
                     
@@ -256,11 +255,19 @@ struct BookmarkItem: View {
 	}
 }
 
+struct EmptyItem : View {
+	var body: some View {
+		VStack{
+			Image(systemName: "questionmark.folder.fill").imageScale(.large).font(.system(size: 50))
+			Text("Item Empty or Inaccessible").font(.headline)
+		}.foregroundColor(.secondary)
+	}
+}
+
 
 // MARK: Disk Space
 // This section tries (not so well) to get the used and free space on disk. Need to optimize this
 #warning("Improve disk space calculations")
-
 let resvalues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeTotalCapacityKey, .volumeAvailableCapacityKey])
 
 func totalCapacity() -> Double {
@@ -281,10 +288,14 @@ func usedSpace() -> Double {
 
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories
 func properView(for item: FSItem) -> AnyView {
-	if item.isFolder{
-		return AnyView(DirectoryBrowser(directory: item))
+	if item.isEmpty{
+		return AnyView(EmptyItem())
 	} else {
-		return AnyView(FileViewer(file: item))
+		if item.isFolder{
+			return AnyView(DirectoryBrowser(directory: item))
+		} else {
+			return AnyView(FileViewer(file: item))
+		}
 	}
 }
 

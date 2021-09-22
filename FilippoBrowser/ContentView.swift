@@ -124,7 +124,7 @@ struct DirectoryListBrowser : View {
 			HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
-						.foregroundColor((subItem.rootProtected) ? .orange : .green)
+						.foregroundColor((subItem.rootProtected) ? .gray : .green)
                      
                     //Name of the file/directory
                     NavigationLink(destination: properView(for: subItem)){

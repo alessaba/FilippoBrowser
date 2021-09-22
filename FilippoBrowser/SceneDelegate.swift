@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftUI
+import WatchConnectivity
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -25,6 +26,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		launchBrowser(scene, at: pathURL)
 	}
 	
+	func watchSessionActivate(){
+		// Apple Watch Session activation
+		NSLog("Session supported: \(WCSession.isSupported())")
+		if WCSession.isSupported(){
+			let watchSession = WCSession.default
+			let delegate = WatchDelegate()
+			watchSession.delegate = delegate
+			watchSession.activate()
+		} else {
+			NSLog("Device not supported or Apple Watch is not paired.")
+		}
+	}
+	
 	func launchBrowser(_ scene: UIScene, at url: URL){
 		var launchPath : String = url.path + "/"
 		
@@ -32,6 +46,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		if !(isFolder(url)){
 			launchPath = url.deletingLastPathComponent().path + "/"
 		}
+		
+		watchSessionActivate()
 		
 		DispatchQueue.main.async {
 			if let windowScene = scene as? UIWindowScene {
@@ -110,7 +126,44 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Use this method to save data, release shared resources, and store enough scene-specific state information
 		// to restore the scene back to its current state.
 	}
+}
 
-
+class WatchDelegate : NSObject, WCSessionDelegate {
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+		// Print info related to the watch session
+		NSLog("Session Reachable:\(session.isReachable)\nActivation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
+	}
+	
+	func sessionDidBecomeInactive(_ session: WCSession) {
+		NSLog("Session Became inactive")
+	}
+	
+	func sessionDidDeactivate(_ session: WCSession) {
+		NSLog("Session deactivated")
+	}
+	
+	func session(_ session: WCSession, didReceive file: WCSessionFile) {
+		// Function that runs when the iPhone receives a file from the Watch
+		let docsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]
+		
+		// Tries to copy the item to the documents folder, and notify the user
+		do{
+			try FileManager.default.copyItem(at: file.fileURL, to: URL(fileURLWithPath: docsDirectory))
+			
+			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
+			
+			let notificationContent = UNMutableNotificationContent()
+			notificationContent.badge = 1
+			notificationContent.title = "Watch File"
+			notificationContent.body = "Your Apple Watch just shared \(filename) with you 😃"
+			
+			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
+			let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
+			
+			notificationCenter.add(request, withCompletionHandler: nil)
+		} catch {
+			NSLog("WatchConnectivity file transfer failed :-(")
+		}
+	}
 }
 

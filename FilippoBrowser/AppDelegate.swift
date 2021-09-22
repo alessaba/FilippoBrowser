@@ -7,71 +7,21 @@
 //
 
 import UIKit
-import WatchConnectivity
 import UserNotifications
 
-let un = UNUserNotificationCenter.current()
+let notificationCenter = UNUserNotificationCenter.current()
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate{
 	
 	let fileManager = FileManager.default
-
-	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		// Print info related to the watch session
-		NSLog("Session Reachable:\(session.isReachable)\nActivation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
-	}
-	
-	func sessionDidBecomeInactive(_ session: WCSession) {
-		// Watch Session Inactive
-		NSLog("Session Became inactive")
-	}
-	
-	func sessionDidDeactivate(_ session: WCSession) {
-		// Watch Session deactivated
-		NSLog("Session deactivated")
-	}
-	
-	func session(_ session: WCSession, didReceive file: WCSessionFile) {
-		// Function that runs when the iPhone receives a file from the Watch
-		let docsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]
-		
-		// Tries to copy the item to the documents folder, and notify the user
-		do{
-			try fileManager.copyItem(at: file.fileURL, to: URL(fileURLWithPath: docsDirectory))
-			
-			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
-			
-			let notificationContent = UNMutableNotificationContent()
-			notificationContent.badge = 1
-			notificationContent.title = "Watch File"
-			notificationContent.body = "Your Apple Watch just shared \(filename) with you 😃"
-			
-			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
-			let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
-			
-			un.add(request, withCompletionHandler: nil)
-		} catch {
-			NSLog("WatchConnectivity file transfer failed :-(")
-		}
-	}
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
 		
 		// Notification Permission request
-		un.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
+		notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
 			NSLog("Notification Authorization Granted.")
-		}
-		
-		// Apple Watch Session activation
-		NSLog("Session supported: \(WCSession.isSupported())")
-		if WCSession.isSupported(){
-			let watchSession = WCSession.default
-			watchSession.delegate = self
-			watchSession.activate()
-		} else {
-			NSLog("Device not supported or Apple Watch is not paired.")
 		}
 		
 		// Cleaning tmp directory (not sure it's really necessary for every launch but ok)
