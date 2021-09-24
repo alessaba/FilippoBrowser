@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 import WatchConnectivity
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate {
 
 	var window: UIWindow?
 	
@@ -126,6 +126,49 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Use this method to save data, release shared resources, and store enough scene-specific state information
 		// to restore the scene back to its current state.
 	}
+	
+	
+	func userNotificationCenter(_ center: UNUserNotificationCenter,
+								willPresent notification: UNNotification,
+								withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+		
+		/**
+		 If your app is in the foreground when a notification arrives, the notification center calls this method to deliver the notification directly to your app. If you implement this method, you can take whatever actions are necessary to process the notification and update your app. When you finish, execute the completionHandler block and specify how you want the system to alert the user, if at all.
+		 
+		 If your delegate does not implement this method, the system silences alerts as if you had passed the UNNotificationPresentationOptionNone option to the completionHandler block. If you do not provide a delegate at all for the UNUserNotificationCenter object, the system uses the notification’s original options to alert the user.
+		 
+		 see https://developer.apple.com/reference/usernotifications/unusernotificationcenterdelegate/1649518-usernotificationcenter
+		 
+		 **/
+		
+		print("APPDELEGATE: willPresentNotification \(notification.request.content.userInfo)")
+		
+	}
+	
+	
+	func userNotificationCenter(_ center: UNUserNotificationCenter,
+								didReceive response: UNNotificationResponse,
+								withCompletionHandler completionHandler: @escaping () -> Void) {
+		
+		/**
+		 Use this method to perform the tasks associated with your app’s custom actions. When the user responds to a notification, the system calls this method with the results. You use this method to perform the task associated with that action, if at all. At the end of your implementation, you must call the completionHandler block to let the system know that you are done processing the notification.
+		 
+		 You specify your app’s notification types and custom actions using UNNotificationCategory and UNNotificationAction objects. You create these objects at initialization time and register them with the user notification center. Even if you register custom actions, the action in the response parameter might indicate that the user dismissed the notification without performing any of your actions.
+		 
+		 If you do not implement this method, your app never responds to custom actions.
+		 
+		 see https://developer.apple.com/reference/usernotifications/unusernotificationcenterdelegate/1649501-usernotificationcenter
+		 
+		 **/
+		
+		print("APPDELEGATE: didReceiveResponseWithCompletionHandler \(response.notification.request.content.userInfo)")
+		
+		// if you wish CleverTap to record the notification open and fire any deep links contained in the payload
+		let url = response.notification.request.content.userInfo["url"] as! URL
+		launchBrowser((self.window?.windowScene)!, at: url)
+		
+		completionHandler()
+	}
 }
 
 class WatchDelegate : NSObject, WCSessionDelegate {
@@ -148,7 +191,8 @@ class WatchDelegate : NSObject, WCSessionDelegate {
 		
 		// Tries to copy the item to the documents folder, and notify the user
 		do{
-			try FileManager.default.copyItem(at: file.fileURL, to: URL(fileURLWithPath: docsDirectory))
+			let iphonePath : URL = URL(fileURLWithPath: docsDirectory).appendingPathComponent(file.fileURL.lastPathComponent)
+			try FileManager.default.copyItem(at: file.fileURL, to: iphonePath)
 			
 			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
 			
@@ -156,6 +200,7 @@ class WatchDelegate : NSObject, WCSessionDelegate {
 			notificationContent.badge = 1
 			notificationContent.title = "Watch File"
 			notificationContent.body = "Your Apple Watch just shared \(filename) with you 😃"
+			notificationContent.userInfo = ["url" : iphonePath]
 			
 			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
 			let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
