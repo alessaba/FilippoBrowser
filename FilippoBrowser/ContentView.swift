@@ -16,17 +16,16 @@ import FLEX
 // MARK: Starting View
 // Starting point
 struct Browser : View {
-	
 	@State var path : String
-	@State var gridStyleEnabled : Bool = userDefaults.bool(forKey: "gridStyleEnabled")
-    @State private var watchFilesPresented : Bool = false // We need it for presenting the popover 🙄
+	@State private var gridStyleEnabled : Bool = userDefaults.bool(forKey: "gridStyleEnabled")
+    @State var presentSheet : Bool = false // We need it for presenting the sheet 🙄
 	
 	// We can make different layouts for different Accessibility Text Sizes
-	@Environment(\.dynamicTypeSize) var dtSize
+	@Environment(\.dynamicTypeSize) private var dtSize
 	
 	var body: some View {
 		NavigationView {
-			properView(for: FSItem(path: path))
+			properView(for: FSItem(path: (presentSheet) ? "/" : path))
 			.navigationBarTitle(Text("File Browser"), displayMode: .inline)
             .navigationBarItems(
                 leading:
@@ -37,6 +36,7 @@ struct Browser : View {
 								#if os(iOS)
 								// FLEX is only available in iOS
 								FLEXManager.shared.showExplorer()
+								scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
 								#endif
 								NSLog("FLEX activated!")
                     }
@@ -61,11 +61,12 @@ struct Browser : View {
 						}.padding(.leading, 40)
 					}
             )
-		}.onAppear{
-			//NotificationCenter.default.addObserver(self, selector: #selector("watchFileReceived"), name: Notification.Name("watchFileReceived"), object: nil)
-		}.sheet(isPresented: $watchFilesPresented){
+		}.sheet(isPresented: $presentSheet, onDismiss: {self.path = "/"}){
 			// If the iPhone receives a file from the Watch, open the folder that contains that file
-			properView(for: FSItem(path: documents_directory))
+			NavigationView {
+				properView(for: FSItem(path: path))
+				.navigationBarTitle(Text("File Browser"), displayMode: .inline)
+			}
 		}
 	}
 }
@@ -446,6 +447,18 @@ func properView(for item: FSItem) -> AnyView {
 	}
 }
 
+func scheduleTestNotif(item : FSItem){
+	let notificationContent = UNMutableNotificationContent()
+	notificationContent.badge = NSNumber(value: UIApplication.shared.applicationIconBadgeNumber + 1) 
+	notificationContent.title = "[TEST] Watch File"
+	notificationContent.body = "[TEST] Your Apple Watch just shared \(item.lastComponent) with you 😃"
+	notificationContent.userInfo = ["path" : item.path]
+	
+	let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+	let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
+	
+	notificationCenter.add(request, withCompletionHandler: nil)
+}
 
 
 

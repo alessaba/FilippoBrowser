@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 	func launchShortcut(_ shortcut : UIApplicationShortcutItem, with scene : UIScene){
 		let path = UserDefaults.standard.string(forKey: shortcut.type) ?? "/" // We use the type to reference a path in the User Defaults
 		let pathURL = URL(fileURLWithPath: path)
-		launchBrowser(scene, at: pathURL)
+		sheetBrowser(scene, at: pathURL)
 	}
 	
 	func watchSessionActivate(){
@@ -39,19 +39,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		}
 	}
 	
-	func launchBrowser(_ scene: UIScene, at url: URL){
-		var launchPath : String = url.path + "/"
+	func sheetBrowser(_ scene: UIScene, at url: URL){
+		let launchPath : String = url.path + "/"
 		
 		// Se l'URL punta a un file, rimanda alla cartella che lo contiene
-		if !(isFolder(url)){
+		/*if !(isFolder(url)){
 			launchPath = url.deletingLastPathComponent().path + "/"
-		}
-		
-		watchSessionActivate()
+		}*/
 		
 		DispatchQueue.main.async {
 			if let windowScene = scene as? UIWindowScene {
-				let contentView = Browser(path: launchPath)
+				let contentView = Browser(path: launchPath, presentSheet: true)
 				let window = UIWindow(windowScene: windowScene)
 				window.rootViewController = UIHostingController(rootView: contentView)
 				self.window = window
@@ -68,6 +66,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		
 		/* Process the quick action if the user selected one to launch the app.
 		 Grab a reference to the shortcutItem to use in the scene.*/
+		
+		watchSessionActivate()
+		notificationCenter.delegate = self
 		
 		if let shortcutItem = connectionOptions.shortcutItem {
 			launchShortcut(shortcutItem, with: scene)
@@ -93,7 +94,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 	
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		if let url = URLContexts.first?.url {
-			launchBrowser(scene, at: url)
+			sheetBrowser(scene, at: url)
 		}
 	}
 
@@ -119,6 +120,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 	func sceneWillEnterForeground(_ scene: UIScene) {
 		// Called as the scene transitions from the background to the foreground.
 		// Use this method to undo the changes made on entering the background.
+		UIApplication.shared.applicationIconBadgeNumber = 0
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {
@@ -141,8 +143,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		 
 		 **/
 		
-		print("APPDELEGATE: willPresentNotification \(notification.request.content.userInfo)")
-		
+		print("Notification while open: \(notification.request.content.userInfo)")
+		let path = notification.request.content.userInfo["path"] as! String
+		sheetBrowser((self.window?.windowScene)!, at: URL(fileURLWithPath: path))
 	}
 	
 	
@@ -161,11 +164,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		 
 		 **/
 		
-		print("APPDELEGATE: didReceiveResponseWithCompletionHandler \(response.notification.request.content.userInfo)")
+		print("Opened Notification from Background: \(response.notification.request.content.userInfo)")
 		
-		// if you wish CleverTap to record the notification open and fire any deep links contained in the payload
-		let url = response.notification.request.content.userInfo["url"] as! URL
-		launchBrowser((self.window?.windowScene)!, at: url)
+		let path = response.notification.request.content.userInfo["path"] as! String
+		sheetBrowser((self.window?.windowScene)!, at: URL(fileURLWithPath: path))
 		
 		completionHandler()
 	}
@@ -191,18 +193,18 @@ class WatchDelegate : NSObject, WCSessionDelegate {
 		
 		// Tries to copy the item to the documents folder, and notify the user
 		do{
-			let iphonePath : URL = URL(fileURLWithPath: docsDirectory).appendingPathComponent(file.fileURL.lastPathComponent)
-			try FileManager.default.copyItem(at: file.fileURL, to: iphonePath)
+			let iphonePath : String = docsDirectory + file.fileURL.lastPathComponent
+			try FileManager.default.copyItem(at: file.fileURL, to: URL(fileURLWithPath: iphonePath))
 			
 			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
 			
 			let notificationContent = UNMutableNotificationContent()
-			notificationContent.badge = 1
+			notificationContent.badge = NSNumber(value: UIApplication.shared.applicationIconBadgeNumber + 1)
 			notificationContent.title = "Watch File"
 			notificationContent.body = "Your Apple Watch just shared \(filename) with you 😃"
-			notificationContent.userInfo = ["url" : iphonePath]
+			notificationContent.userInfo = ["path" : iphonePath]
 			
-			let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0, repeats: false)
+			let trigger : UNNotificationTrigger? = nil // Notification delivered instantly
 			let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
 			
 			notificationCenter.add(request, withCompletionHandler: nil)
