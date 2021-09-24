@@ -167,7 +167,7 @@ struct DirectoryListBrowser : View {
 						subItem.isBookmarked.toggle()
 					} label: {
 						Image(systemName: subItem.isBookmarked ? "heart.slash" : "heart")
-					}
+					}.tint(.red)
 				}
 			}
 		.searchable(text: $searchText) // Search Bar
