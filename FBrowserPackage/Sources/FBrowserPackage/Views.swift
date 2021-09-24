@@ -66,7 +66,7 @@ public struct ItemContextMenu : View {
 }
 #endif
 
-public struct CapsuleButtonStyle : ButtonStyle{
+public struct CapsuleButtonStyle : ButtonStyle {
 	var tint : Color
 	var textColor : Color = .primary
 	

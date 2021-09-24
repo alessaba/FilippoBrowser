@@ -25,23 +25,27 @@ struct Browser : View {
 	
 	var body: some View {
 		NavigationView {
+			#warning("Would be nice to mantain the previous path before launching the sheet")
 			properView(for: FSItem(path: (presentSheet) ? "/" : path))
 			.navigationBarTitle(Text("File Browser"), displayMode: .inline)
-            .navigationBarItems(
-                leading:
-                    Image(systemName: "f.circle.fill")
+			.toolbar{
+				ToolbarItemGroup(placement: .navigationBarLeading){
+					Image(systemName: "f.circle.fill")
 						.padding(.vertical, 10)
 						.safeHover()
-                        .onTapGesture {
-								#if os(iOS)
-								// FLEX is only available in iOS
-								FLEXManager.shared.showExplorer()
-								scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
-								#endif
-								NSLog("FLEX activated!")
-                    }
-                ,
-                trailing:
+						.onTapGesture {
+							#if os(iOS)
+							// FLEX is only available in iOS
+							FLEXManager.shared.showExplorer()
+							#endif
+							NSLog("FLEX activated!")
+						}.onLongPressGesture{
+							NSLog("Test notification triggered, wait 5 secs")
+							scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
+						}
+				}
+				
+				ToolbarItemGroup(placement: .navigationBarTrailing){
 					HStack{
 						// If the text size is small enough for the grid view, let the user enable it
 						if (dtSize < .accessibility2) {
@@ -60,9 +64,10 @@ struct Browser : View {
 								.foregroundColor(.primary)
 						}.padding(.leading, 40)
 					}
-            )
+				}
+			}
 		}.sheet(isPresented: $presentSheet, onDismiss: {self.path = "/"}){
-			// If the iPhone receives a file from the Watch, open the folder that contains that file
+			// Open a sheet in case of shortcut, URL launch or Notification launch
 			NavigationView {
 				properView(for: FSItem(path: path))
 				.navigationBarTitle(Text("File Browser"), displayMode: .inline)
@@ -279,13 +284,12 @@ struct gotoView : View {
 				HStack{
 					Spacer()
 					Text("Go")
-						.padding(10)
-						.foregroundColor(.green)
-						.font(.body.bold())
+						.padding(5)
 					Spacer()
 				}
 			}
-			.buttonStyle(.bordered)
+			.buttonStyle(CapsuleButtonStyle(tint: .green, textColor: .white))
+			.padding()
 			
 			Spacer(minLength: 25)
 			
