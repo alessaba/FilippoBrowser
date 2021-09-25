@@ -12,8 +12,6 @@ import Foundation
 import WatchConnectivity
 import FBrowserPackage
 
-let session = WCSession.default
-
 // MARK: File Viewer
 // This shows the contents of most types of common files
 struct FileViewer : View {
@@ -30,7 +28,10 @@ struct FileViewer : View {
 				// If the file is not a image, try to transfer it to the iPhone
 				Text(self.file.path)
 				.onAppear{
-					session.transferFile(URL(fileURLWithPath: self.file.path), metadata: nil)
+					let newPath = fileManager.temporaryDirectory.appendingPathComponent(self.file.lastComponent)
+					try? fileManager.copyItem(at: self.file.url, to: newPath)
+					session.transferFile(newPath, metadata: nil)
+					print("File \(self.file.lastComponent) transferred to iPhone (maybe)")
 				}
 			}
 		}
@@ -240,7 +241,7 @@ struct BookmarkItem: View {
 						return shortcut.type == key
 					}
 					
-					NSLog("Removed \"\(key)\"")
+					print("Removed \"\(key)\"")
 				},
 					   label: {
 					Image(systemName: "bin.xmark.fill")

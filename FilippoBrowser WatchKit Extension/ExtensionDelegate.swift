@@ -7,11 +7,27 @@
 //
 
 import WatchKit
+import WatchConnectivity
 
-class ExtensionDelegate: NSObject, WKExtensionDelegate {
+let session = WCSession.default
+
+class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
+	
+	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+		// Print info related to the watch session
+		print("\nSession Reachable:\(session.isReachable)\nActivation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
+	}
 
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
+		if WCSession.isSupported(){
+			let session = WCSession.default
+			session.delegate = self
+			session.activate()
+			print("Session Activated")
+		} else {
+			print("Session not supported")
+		}
     }
 
     func applicationDidBecomeActive() {

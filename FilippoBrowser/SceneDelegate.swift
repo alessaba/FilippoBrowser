@@ -10,7 +10,7 @@ import UIKit
 import SwiftUI
 import WatchConnectivity
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate, WCSessionDelegate {
 
 	var window: UIWindow?
 	
@@ -26,18 +26,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		sheetBrowser(scene, at: pathURL)
 	}
 	
-	func watchSessionActivate(){
-		// Apple Watch Session activation
-		NSLog("Session supported: \(WCSession.isSupported())")
-		if WCSession.isSupported(){
-			let watchSession = WCSession.default
-			let delegate = WatchDelegate()
-			watchSession.delegate = delegate
-			watchSession.activate()
-		} else {
-			NSLog("Device not supported or Apple Watch is not paired.")
-		}
-	}
 	
 	func sheetBrowser(_ scene: UIScene, at url: URL){
 		let launchPath : String = url.path + "/"
@@ -59,7 +47,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 	}
 	
 	
-	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+	func scene(_ scene: UIScene,
+			   willConnectTo session: UISceneSession,
+			   options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
@@ -67,7 +57,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		/* Process the quick action if the user selected one to launch the app.
 		 Grab a reference to the shortcutItem to use in the scene.*/
 		
-		watchSessionActivate()
+		// Apple Watch Session activation
+		print("Session supported: \(WCSession.isSupported())")
+		if WCSession.isSupported(){
+			let watchSession = WCSession.default
+			watchSession.delegate = self
+			watchSession.activate()
+		} else {
+			print("Device not supported or Apple Watch is not paired.")
+		}
+		
 		notificationCenter.delegate = self
 		
 		if let shortcutItem = connectionOptions.shortcutItem {
@@ -109,7 +108,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		// Called when the scene has moved from an inactive state to an active state.
 		// Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
 		
-		NSLog("Scene Did Become Active")
+		print("Scene Did Become Active")
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
@@ -134,14 +133,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 								willPresent notification: UNNotification,
 								withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
 		
-		/**
-		 If your app is in the foreground when a notification arrives, the notification center calls this method to deliver the notification directly to your app. If you implement this method, you can take whatever actions are necessary to process the notification and update your app. When you finish, execute the completionHandler block and specify how you want the system to alert the user, if at all.
-		 
-		 If your delegate does not implement this method, the system silences alerts as if you had passed the UNNotificationPresentationOptionNone option to the completionHandler block. If you do not provide a delegate at all for the UNUserNotificationCenter object, the system uses the notification’s original options to alert the user.
-		 
-		 see https://developer.apple.com/reference/usernotifications/unusernotificationcenterdelegate/1649518-usernotificationcenter
-		 
-		 **/
+		//https://developer.apple.com/reference/usernotifications/unusernotificationcenterdelegate/1649518-usernotificationcenter
 		
 		print("Notification while open: \(notification.request.content.userInfo)")
 		let path = notification.request.content.userInfo["path"] as! String
@@ -153,16 +145,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 								didReceive response: UNNotificationResponse,
 								withCompletionHandler completionHandler: @escaping () -> Void) {
 		
-		/**
-		 Use this method to perform the tasks associated with your app’s custom actions. When the user responds to a notification, the system calls this method with the results. You use this method to perform the task associated with that action, if at all. At the end of your implementation, you must call the completionHandler block to let the system know that you are done processing the notification.
-		 
-		 You specify your app’s notification types and custom actions using UNNotificationCategory and UNNotificationAction objects. You create these objects at initialization time and register them with the user notification center. Even if you register custom actions, the action in the response parameter might indicate that the user dismissed the notification without performing any of your actions.
-		 
-		 If you do not implement this method, your app never responds to custom actions.
-		 
-		 see https://developer.apple.com/reference/usernotifications/unusernotificationcenterdelegate/1649501-usernotificationcenter
-		 
-		 **/
+		
+		//https://developer.apple.com/reference/usernotifications/unusernotificationcenterdelegate/1649501-usernotificationcenter
+		
 		
 		print("Opened Notification from Background: \(response.notification.request.content.userInfo)")
 		
@@ -171,31 +156,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		
 		completionHandler()
 	}
-}
-
-class WatchDelegate : NSObject, WCSessionDelegate {
+	
 	func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-		// Print info related to the watch session
-		NSLog("Session Reachable:\(session.isReachable)\nActivation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
+		print("Session Reachable:\(session.isReachable)\nActivation State:\(activationState.rawValue == 2 ? "Activated" : "Not Active")")
 	}
 	
 	func sessionDidBecomeInactive(_ session: WCSession) {
-		NSLog("Session Became inactive")
+		print("Session Became inactive")
 	}
 	
 	func sessionDidDeactivate(_ session: WCSession) {
-		NSLog("Session deactivated")
+		print("Session deactivated")
 	}
 	
-	func session(_ session: WCSession, didReceive file: WCSessionFile) {
+	func session(_ session: WCSession,
+				 didReceive file: WCSessionFile) {
 		// Function that runs when the iPhone receives a file from the Watch
 		let docsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .allDomainsMask, true)[0]
 		
+		print("Receiving file from watch.")
 		// Tries to copy the item to the documents folder, and notify the user
 		do{
 			let iphonePath : String = docsDirectory + file.fileURL.lastPathComponent
 			try FileManager.default.copyItem(at: file.fileURL, to: URL(fileURLWithPath: iphonePath))
-			
 			let filename = String(file.fileURL.absoluteString.split(separator: "/").last ?? "a file")
 			
 			let notificationContent = UNMutableNotificationContent()
@@ -209,7 +192,7 @@ class WatchDelegate : NSObject, WCSessionDelegate {
 			
 			notificationCenter.add(request, withCompletionHandler: nil)
 		} catch {
-			NSLog("WatchConnectivity file transfer failed :-(")
+			print("WatchConnectivity file transfer failed :-(")
 		}
 	}
 }

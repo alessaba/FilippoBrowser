@@ -38,7 +38,7 @@ public struct ItemContextMenu : View {
 			
 			// Copy path button
 			Button(action: {
-				NSLog("Copy URL button pressed")
+				print("Copy URL button pressed")
 				UIPasteboard.general.string = "file://" + subItem.path
 			}){
 				Image(systemName: "link.circle.fill")
@@ -47,7 +47,7 @@ public struct ItemContextMenu : View {
 			
 			// Copy path button
 			Button(action: {
-				NSLog("Copy Path button pressed")
+				print("Copy Path button pressed")
 				UIPasteboard.general.string = subItem.path
 			}){
 				Image(systemName: "doc.circle.fill")

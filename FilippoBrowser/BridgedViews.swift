@@ -30,7 +30,7 @@ struct ShareView: UIViewControllerRepresentable {
 	}
 	
 	// In case we want to update something when the Bridged View is used
-	func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ShareView>) { NSLog("ActivityVC used") }
+	func updateUIViewController(_ uiViewController: UIActivityViewController, context: UIViewControllerRepresentableContext<ShareView>) { print("ActivityVC used") }
 }
 
 
@@ -71,7 +71,7 @@ struct SceneView: UIViewControllerRepresentable {
 		return sceneVC
 	}
 	
-	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<SceneView>) { NSLog("SceneVC used.") }
+	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<SceneView>) { print("SceneVC used.") }
 }
 
 
@@ -117,5 +117,5 @@ struct QuickLook: UIViewControllerRepresentable {
 		return navigationController
 	}
 	
-	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLook>) { NSLog("QuickLook used.") }
+	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLook>) { print("QuickLook used.") }
 }

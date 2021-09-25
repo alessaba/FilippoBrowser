@@ -38,9 +38,9 @@ struct Browser : View {
 							// FLEX is only available in iOS
 							FLEXManager.shared.showExplorer()
 							#endif
-							NSLog("FLEX activated!")
+							print("FLEX activated!")
 						}.onLongPressGesture{
-							NSLog("Test notification triggered, wait 5 secs")
+							print("Test notification triggered, wait 5 secs")
 							scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
 						}
 				}
@@ -161,7 +161,6 @@ struct DirectoryListBrowser : View {
 								.padding(.leading)
 						}
 					}
-				
 				}.swipeActions(edge: .leading, allowsFullSwipe: true){
 					Button{
 						subItem.isBookmarked.toggle()
@@ -404,7 +403,7 @@ struct BookmarkItem: View {
 								return shortcut.type == key
 							}
 							
-							NSLog("Removed \"\(key)\"")
+							print("Removed \"\(key)\"")
 						},
 					   label: {
 							Image(systemName: "bin.xmark.fill")

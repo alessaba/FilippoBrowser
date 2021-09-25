@@ -150,7 +150,7 @@ public class FSItem : Identifiable, Equatable{
 				}
 			} catch {
 				if (runningInXcode) {
-					NSLog("\(path) probably has root permissions")
+					print("\(path) probably has root permissions")
 				}
 				return []
 			}

@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// Notification Permission request
 		notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
-			NSLog("Notification Authorization Granted.")
+			print("Notification Authorization Granted.")
 		}
 		
 		// Cleaning tmp directory (not sure it's really necessary for every launch but ok)

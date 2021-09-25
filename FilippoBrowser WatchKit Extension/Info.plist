@@ -35,7 +35,7 @@
 	<key>WKExtensionDelegateClassName</key>
 	<string>$(PRODUCT_MODULE_NAME).ExtensionDelegate</string>
 	<key>WKRunsIndependentlyOfCompanionApp</key>
-	<true/>
+	<false/>
 	<key>WKWatchOnly</key>
 	<false/>
 </dict>
