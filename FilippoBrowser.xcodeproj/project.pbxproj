@@ -203,11 +203,8 @@
 		0B45B55C266CDB0B007E0DCA /* RootBrowser */ = {
 			isa = PBXGroup;
 			children = (
-				0B45B55D266CDB0B007E0DCA /* FileProviderExtension.swift */,
-				0B45B55F266CDB0B007E0DCA /* FileProviderItem.swift */,
-				0B45B561266CDB0B007E0DCA /* FileProviderEnumerator.swift */,
-				0B45B563266CDB0B007E0DCA /* Info.plist */,
-				0B45B564266CDB0B007E0DCA /* RootBrowser.entitlements */,
+				0BA1E75726FF7E0700ABD4B9 /* Code */,
+				0BA1E75826FF7E0E00ABD4B9 /* Misc */,
 			);
 			path = RootBrowser;
 			sourceTree = "<group>";
@@ -236,14 +233,8 @@
 		0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
-				0B4BED97233531DA005E5BB1 /* ContentView.swift */,
-				0B4BED99233531DA005E5BB1 /* HostingController.swift */,
-				0B4BED9B233531DA005E5BB1 /* ExtensionDelegate.swift */,
-				0B4BED9D233531DA005E5BB1 /* ComplicationController.swift */,
-				0B4BED9F233531DA005E5BB1 /* Assets.xcassets */,
-				0B4BEDA4233531DA005E5BB1 /* Info.plist */,
-				0B9F5407257FD5A6004365E5 /* FilippoBrowser WatchKit Extension.entitlements */,
-				0B4BEDA1233531DA005E5BB1 /* Preview Content */,
+				0BA1E75526FF7DCF00ABD4B9 /* Code */,
+				0BA1E75626FF7DD600ABD4B9 /* Misc */,
 			);
 			path = "FilippoBrowser WatchKit Extension";
 			sourceTree = "<group>";
@@ -254,6 +245,57 @@
 				0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0BA1E75426FF7DB600ABD4B9 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				0BD2432422AD5297006A4929 /* Assets.xcassets */,
+				0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */,
+				0BD2432622AD5298006A4929 /* Preview Content */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
+		0BA1E75526FF7DCF00ABD4B9 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				0B4BED97233531DA005E5BB1 /* ContentView.swift */,
+				0B4BED99233531DA005E5BB1 /* HostingController.swift */,
+				0B4BED9B233531DA005E5BB1 /* ExtensionDelegate.swift */,
+				0B4BED9D233531DA005E5BB1 /* ComplicationController.swift */,
+			);
+			name = Code;
+			sourceTree = "<group>";
+		};
+		0BA1E75626FF7DD600ABD4B9 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				0B4BED9F233531DA005E5BB1 /* Assets.xcassets */,
+				0B4BEDA4233531DA005E5BB1 /* Info.plist */,
+				0B9F5407257FD5A6004365E5 /* FilippoBrowser WatchKit Extension.entitlements */,
+				0B4BEDA1233531DA005E5BB1 /* Preview Content */,
+			);
+			name = Misc;
+			sourceTree = "<group>";
+		};
+		0BA1E75726FF7E0700ABD4B9 /* Code */ = {
+			isa = PBXGroup;
+			children = (
+				0B45B55D266CDB0B007E0DCA /* FileProviderExtension.swift */,
+				0B45B55F266CDB0B007E0DCA /* FileProviderItem.swift */,
+				0B45B561266CDB0B007E0DCA /* FileProviderEnumerator.swift */,
+			);
+			name = Code;
+			sourceTree = "<group>";
+		};
+		0BA1E75826FF7E0E00ABD4B9 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				0B45B563266CDB0B007E0DCA /* Info.plist */,
+				0B45B564266CDB0B007E0DCA /* RootBrowser.entitlements */,
+			);
+			name = Misc;
 			sourceTree = "<group>";
 		};
 		0BBC8B752349D7FF007A6EFB /* Frameworks */ = {
@@ -267,6 +309,7 @@
 		0BD2431222AD5296006A4929 = {
 			isa = PBXGroup;
 			children = (
+				0B1E54F6245B2EDD00419AB7 /* TODO.md */,
 				0BD2431D22AD5296006A4929 /* FilippoBrowser */,
 				0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
@@ -295,10 +338,7 @@
 			children = (
 				0B32342B26EDE714007683F4 /* Application */,
 				0B32342D26EDE722007683F4 /* Views */,
-				0BD2432422AD5297006A4929 /* Assets.xcassets */,
-				0B1E54F6245B2EDD00419AB7 /* TODO.md */,
-				0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */,
-				0BD2432622AD5298006A4929 /* Preview Content */,
+				0BA1E75426FF7DB600ABD4B9 /* Misc */,
 			);
 			path = FilippoBrowser;
 			sourceTree = "<group>";
