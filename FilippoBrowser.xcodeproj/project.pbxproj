@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B1921A0270DCC0100E71202 /* FBrowserPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B19219F270DCC0100E71202 /* FBrowserPackage */; };
+		0B1921A2270DDBF400E71202 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1921A1270DDBF400E71202 /* Helpers.swift */; };
 		0B1E54F7245B2EDD00419AB7 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 0B1E54F6245B2EDD00419AB7 /* TODO.md */; };
 		0B31FF5726722682008BA335 /* FBrowserPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B31FF5626722682008BA335 /* FBrowserPackage */; };
 		0B31FF59267226DD008BA335 /* FBrowserPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B31FF58267226DD008BA335 /* FBrowserPackage */; };
@@ -99,6 +101,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0B1921A1270DDBF400E71202 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		0B1E54F6245B2EDD00419AB7 /* TODO.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = TODO.md; sourceTree = "<group>"; };
 		0B31FF552672226F008BA335 /* FBrowserPackage */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FBrowserPackage; sourceTree = "<group>"; };
 		0B41F9AF2672643F0087EF41 /* BridgedViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgedViews.swift; sourceTree = "<group>"; };
@@ -143,6 +146,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B1921A0270DCC0100E71202 /* FBrowserPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,9 +286,10 @@
 		0BA1E75726FF7E0700ABD4B9 /* Code */ = {
 			isa = PBXGroup;
 			children = (
-				0B45B55D266CDB0B007E0DCA /* FileProviderExtension.swift */,
+				0B1921A1270DDBF400E71202 /* Helpers.swift */,
 				0B45B55F266CDB0B007E0DCA /* FileProviderItem.swift */,
 				0B45B561266CDB0B007E0DCA /* FileProviderEnumerator.swift */,
+				0B45B55D266CDB0B007E0DCA /* FileProviderExtension.swift */,
 			);
 			name = Code;
 			sourceTree = "<group>";
@@ -367,6 +372,9 @@
 			dependencies = (
 			);
 			name = RootBrowser;
+			packageProductDependencies = (
+				0B19219F270DCC0100E71202 /* FBrowserPackage */,
+			);
 			productName = RootBrowser;
 			productReference = 0B45B55B266CDB0B007E0DCA /* RootBrowser.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -554,6 +562,7 @@
 				0B45B55E266CDB0B007E0DCA /* FileProviderExtension.swift in Sources */,
 				0B45B560266CDB0B007E0DCA /* FileProviderItem.swift in Sources */,
 				0B45B562266CDB0B007E0DCA /* FileProviderEnumerator.swift in Sources */,
+				0B1921A2270DDBF400E71202 /* Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1073,6 +1082,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0B19219F270DCC0100E71202 /* FBrowserPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FBrowserPackage;
+		};
 		0B31FF5626722682008BA335 /* FBrowserPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FBrowserPackage;

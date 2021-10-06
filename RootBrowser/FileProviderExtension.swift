@@ -11,32 +11,34 @@ import FileProvider
 let docPath = NSFileProviderManager.default.documentStorageURL
 
 class FileProviderExtension: NSFileProviderExtension {
-    
-    var fileManager = FileManager()
 	
-    
     override init() {
         super.init()
     }
     
     override func item(for identifier: NSFileProviderItemIdentifier) throws -> NSFileProviderItem {
         // resolve the given identifier to a record in the model
-        
-        // TODO: implement the actual lookup
-		return FileProviderItem(path: "/")
+		if let path = identifierLookupTable[identifier]{
+			return FileProviderItem(path: path)
+		} else {
+			return FileProviderItem(path: homeDirectory)
+		}
     }
     
     override func urlForItem(withPersistentIdentifier identifier: NSFileProviderItemIdentifier) -> URL? {
         // resolve the given identifier to a file on disk
-        guard let item = try? item(for: identifier) else {
-            return nil
-        }
-        
-        // in this implementation, all paths are structured as <base storage directory>/<item identifier>/<item file name>
-        let manager = NSFileProviderManager.default
-        let perItemDirectory = manager.documentStorageURL.appendingPathComponent(identifier.rawValue, isDirectory: true)
-        
-        return perItemDirectory.appendingPathComponent(item.filename, isDirectory:false)
+		let sourcePath = identifierLookupTable[identifier] ?? homeDirectory
+		var isDir : ObjCBool = false
+		
+		if fm.fileExists(atPath: sourcePath, isDirectory: &isDir){
+			let bookmarkPath = fm.temporaryDirectory
+				.appendingPathComponent(identifier.rawValue)
+				.appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent)
+			return bookmarkPath
+		} else {
+			print("SourcePath does not exist.")
+			return URL(fileURLWithPath: homeDirectory)
+		}
     }
     
     override func persistentIdentifierForItem(at url: URL) -> NSFileProviderItemIdentifier? {
@@ -92,8 +94,14 @@ class FileProviderExtension: NSFileProviderExtension {
              }
          }
          */
-        
-        completionHandler(NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
+		
+		var error : NSError? = nil
+		
+		if !(fm.fileExists(atPath: url.path)) {
+			error = NSError(domain: NSPOSIXErrorDomain, code: -1, userInfo: nil)
+		}
+		
+		completionHandler(error)
     }
     
     override func itemChanged(at url: URL) {
@@ -105,6 +113,7 @@ class FileProviderExtension: NSFileProviderExtension {
          - create a fresh background NSURLSessionTask and schedule it to upload the current modifications
          - register the NSURLSessionTask with NSFileProviderManager to provide progress updates
          */
+		print("Item changed at URL: \(url)")
     }
     
     override func stopProvidingItem(at url: URL) {
@@ -114,7 +123,7 @@ class FileProviderExtension: NSFileProviderExtension {
         // Called after the last claim to the file has been released. At this point, it is safe for the file provider to remove the content file.
         
         // TODO: look up whether the file has local changes
-        let fileHasLocalChanges = false
+        /*let fileHasLocalChanges = false
         
         if !fileHasLocalChanges {
             // remove the existing file to free up space
@@ -128,7 +137,9 @@ class FileProviderExtension: NSFileProviderExtension {
             self.providePlaceholder(at: url, completionHandler: { error in
                 // TODO: handle any error, do any necessary cleanup
             })
-        }
+        }*/
+		
+		print("Stop providing item at URL: \(url)")
     }
     
     // MARK: - Actions
@@ -143,20 +154,7 @@ class FileProviderExtension: NSFileProviderExtension {
     // MARK: - Enumeration
     
     override func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier) throws -> NSFileProviderEnumerator {
-        let maybeEnumerator: NSFileProviderEnumerator? = nil
-        if (containerItemIdentifier == NSFileProviderItemIdentifier.rootContainer) {
-            // TODO: instantiate an enumerator for the container root
-        } else if (containerItemIdentifier == NSFileProviderItemIdentifier.workingSet) {
-            // TODO: instantiate an enumerator for the working set
-        } else {
-            // TODO: determine if the item is a directory or a file
-            // - for a directory, instantiate an enumerator of its subitems
-            // - for a file, instantiate an enumerator that observes changes to the file
-        }
-        guard let enumerator = maybeEnumerator else {
-            throw NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:])
-        }
-        return enumerator
+        return FileProviderEnumerator(enumeratedItemIdentifier: containerItemIdentifier)
     }
     
 }

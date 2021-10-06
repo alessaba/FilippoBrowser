@@ -7,65 +7,71 @@
 //
 
 import FileProvider
-
-enum ItemType : String{
-	case file = "public.file"
-	case directory = "public.directory"
-	case image = "public.image"
-	case text = "public.text"
-	//case tidimensionalObj
-}
+import FBrowserPackage
+import MobileCoreServices
+import UniformTypeIdentifiers
 
 class FileProviderItem: NSObject, NSFileProviderItem {
 
     // TODO: implement an initializer to create an item from your extension's backing model
     // TODO: implement the accessors to return the values from your extension's backing model
-    
+	var internalFilePath : URL = URL(fileURLWithPath: homeDirectory)
+	
+	var isDownloaded: Bool = true
+	var isUploaded: Bool = true
+	var isMostRecentVersionDownloaded: Bool = true
+	
 	// Proprietà fondamentali
-	var filename: String = "Test"
-	var typeIdentifier: String = "public.item"
-	var itemIdentifier: NSFileProviderItemIdentifier = NSFileProviderItemIdentifier("\(UUID()))")
-    var parentItemIdentifier: NSFileProviderItemIdentifier = NSFileProviderItemIdentifier("")
+	var filename: String {
+		self.internalFilePath.lastPathComponent
+	}
 	
 	// Impostiamo la visualizzazione in sola lettura, dato che ci serve solo visualizzare
-	var capabilities: NSFileProviderItemCapabilities = .allowsReading
-	//var documentSize: NSNumber?
-    
+	var capabilities: NSFileProviderItemCapabilities {
+		FSItem(path: internalFilePath.absoluteString).isFolder ? .allowsContentEnumerating : .allowsReading
+	}
 	
-	// Inizializzatore per le 4 proprietà fondamentali. internal perchè non ci serve esporre fuori dalla estensione
-	internal init(name: String, type:ItemType, itemID: String, parentID:String) {
-		filename = name
-		typeIdentifier = type.rawValue
-		itemIdentifier = NSFileProviderItemIdentifier(itemID)
-		parentItemIdentifier = NSFileProviderItemIdentifier(parentID)
-		
-		super.init()
+	var typeIdentifier: String {
+		if FSItem(path: internalFilePath.absoluteString).isFolder {
+			return "public.folder"
+		} else {
+			return "public.file"//UTTypeCreateAllIdentifiersForTag(UTTagClass.filenameExtension.rawValue as CFString, self.internalFilePath.pathExtension as CFString, nil)?.hashValue.description
+		}
+	}
+	
+	var documentSize: NSNumber? {
+		FSItem(path: self.internalFilePath.absoluteString).size as NSNumber
+	}
+	
+	var itemIdentifier: NSFileProviderItemIdentifier {
+		let p = self.internalFilePath.absoluteString
+		if p == homeDirectory {
+			return .rootContainer
+		} else {
+			return md5Identifier(p)
+		}
+	}
+	
+    var parentItemIdentifier: NSFileProviderItemIdentifier {
+		let p = self.internalFilePath.deletingLastPathComponent().absoluteString
+		if (p == homeDirectory){
+			return .rootContainer
+		} else {
+			return md5Identifier(p)
+		}
+	}
+	
+	var childItemCount: NSNumber? {
+		FSItem(path: internalFilePath.absoluteString).subelements.count as NSNumber
+	}
+	
+	var versionIdentifier: Data? {
+		let i = Date.timeIntervalSinceReferenceDate
+		return String(format: "%f", i).data(using: .utf8)
 	}
 	
 	internal init(path: String) {
-		filename = String(path.split(separator: "/").last ?? "Root")
-		itemIdentifier = NSFileProviderItemIdentifier(path)
-		parentItemIdentifier = NSFileProviderItemIdentifier(path)
-		typeIdentifier = findType(path).rawValue
-		
+		self.internalFilePath = URL(fileURLWithPath: path)
 		super.init()
-	}
-	
-	
-    
-}
-
-func findType(_ path: String) -> ItemType{
-	let fileExt = String(path.split(separator: ".").last ?? "")
-	
-	switch fileExt {
-	case "":
-		return .directory
-	case "txt":
-		return .text
-	case "png", "jpeg":
-		return .image
-	default:
-		return .file
 	}
 }

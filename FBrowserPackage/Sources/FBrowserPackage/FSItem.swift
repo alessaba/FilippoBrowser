@@ -83,7 +83,7 @@ public class FSItem : Identifiable, Equatable{
 		return ((self.size == 0 && !self.isFolder) || (self.subelements == [] && self.isFolder))
 	}
 	
-	private var size : UInt64 {
+	public var size : UInt64 {
 		// Get the number of bytes of a file
 		do {
 			var gp = self.path
@@ -133,32 +133,34 @@ public class FSItem : Identifiable, Equatable{
 	
 	public var subelements : [FSItem] {
 		// This property is only meaningful for folders. Files have no subelements
-		if self.isFolder{
-			do{
-				// Gonna do some exceptions for System and usr, else we'll just get the files
-				if path == "/System/"{
+		if (self.isFolder) {
+			let subElements = try? fileManager.contentsOfDirectory(atPath: path)
+			if (subElements != nil) {
+				var subDirs : [FSItem] = []
+				for sd in subElements! {
+					subDirs.append(FSItem(path: "\(self.path)\(sd)/"))
+				}
+				return subDirs
+			} else {
+				switch path{
+				case "/System/":
 					return [FSItem(path: "/System/Library/")]
-				} else if path == "/usr/" {
-					return [FSItem(path: "/usr/lib/")]
-				} else {
-					// Make a list containing FSItems with the contents of the FSItem (which is a directory)
-					var subDirs : [FSItem] = []
-					for sd in try fileManager.contentsOfDirectory(atPath: path) {
-						subDirs.append(FSItem(path: "\(self.path)\(sd)/"))
+				case "/usr/":
+					return [FSItem(path: "/usr/lib/"), FSItem(path: "/usr/libexec/"), FSItem(path: "/usr/bin/")]
+				case "/var/":
+					return [FSItem(path: "/var/mobile/")]
+				case "/Library/":
+					return [FSItem(path: "/Library/Preferences/")]
+				default:
+					if (runningInXcode) {
+						print("\(path) probably has root permissions")
 					}
-					return subDirs
+					return []
 				}
-			} catch {
-				if (runningInXcode) {
-					print("\(path) probably has root permissions")
-				}
-				return []
 			}
-		} else {
-			return []
 		}
+		return []
 	}
-	
 	// This computed variable is used both for verifying if a item is bookmarked, and for adding/removing the item in Bookmarks
 	public var isBookmarked : Bool {
 		get{

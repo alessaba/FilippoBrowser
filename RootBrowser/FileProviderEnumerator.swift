@@ -7,6 +7,7 @@
 //
 
 import FileProvider
+import FBrowserPackage
 
 class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
@@ -20,6 +21,37 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     func invalidate() {
         // TODO: perform invalidation of server connection if necessary
     }
+	
+	func createLocalReference(to sourcePath : String){
+		let id = md5Identifier(sourcePath)
+		identifierLookupTable[id] = sourcePath
+		
+		var isDir : ObjCBool = false
+		
+		if fm.fileExists(atPath: sourcePath, isDirectory: &isDir){
+			let bookmarkPath = fm.temporaryDirectory.appendingPathComponent(id.rawValue).appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent).path
+			
+			try? fm.removeItem(atPath: bookmarkPath)
+			
+			do {
+				if !(fm.fileExists(atPath: bookmarkPath)){
+					try fm.createDirectory(atPath: bookmarkPath, withIntermediateDirectories: true, attributes: nil)
+					
+					if (isDir.boolValue) {
+						try fm.linkItem(atPath: sourcePath, toPath: bookmarkPath)
+						try fm.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkPath)
+					} else {
+						try fm.copyItem(atPath: sourcePath, toPath: bookmarkPath)
+					}
+				}
+			} catch {
+				print("Something failed while linking the sourcePath")
+			}
+			
+		} else {
+			print("SourcePath does not exist.")
+		}
+	}
 
     func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
         /* TODO:
@@ -34,14 +66,22 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer about the items returned by the server (possibly multiple times)
          - inform the observer that you are finished with this page
          */
-		let fm = FileManager.default
-		let subItems = try? fm.contentsOfDirectory(atPath: "/")
-		var listing = [FileProviderItem]()
+		/*let fm = FileManager.default
+		let subItems = try? fm.contentsOfDirectory(atPath: homeDirectory)
+		var listing : [FileProviderItem] = []
 		
-		for item in subItems ?? [] {
-			let fileProviderItem = FileProviderItem(path: "/\(item)")
-			listing.append(fileProviderItem)
+		 for item in subItems ?? [] {
+		  let fileProviderItem = FileProviderItem(path: URL(fileURLWithPath: homeDirectory).appendingPathComponent(item).absoluteString)
+		  listing.append(fileProviderItem)
 		}
+		 */
+		
+		let homeItem = FSItem(path: homeDirectory)
+		let listing : [FileProviderItem] = homeItem.subelements.map{ item in
+			createLocalReference(to: item.path)
+			return FileProviderItem(path: item.path)
+		}
+
 		print("Trying to enumerate")
 		observer.didEnumerate(listing)
 		
@@ -63,5 +103,4 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer when you have finished enumerating up to a subsequent sync anchor
          */
     }
-
 }
