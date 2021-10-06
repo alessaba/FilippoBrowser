@@ -26,35 +26,30 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 		let id = md5Identifier(sourcePath)
 		identifierLookupTable[id] = sourcePath
 		
-		var isDir : ObjCBool = false
+		let bookmarkPath = fm.temporaryDirectory.appendingPathComponent(id.rawValue).appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent).path
 		
-		if fm.fileExists(atPath: sourcePath, isDirectory: &isDir){
-			let bookmarkPath = fm.temporaryDirectory.appendingPathComponent(id.rawValue).appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent).path
-			
-			try? fm.removeItem(atPath: bookmarkPath)
-			
-			do {
-				if !(fm.fileExists(atPath: bookmarkPath)){
-					NSLog("Making directory: \(bookmarkPath)")
-					try? fm.createDirectory(atPath: URL(fileURLWithPath: bookmarkPath).deletingLastPathComponent().path, withIntermediateDirectories: true, attributes: nil)
-					
-					if (isDir.boolValue) {
-						NSLog("Linking path...")
-						try fm.createSymbolicLink(atPath: sourcePath, withDestinationPath: bookmarkPath)
-						//try fm.linkItem(atPath: sourcePath, toPath: bookmarkPath)
-						NSLog("Setting 0777 attributes...")
-						try fm.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkPath)
-					} else {
-						NSLog("Copying file to sandbox..")
-						try fm.copyItem(atPath: sourcePath, toPath: bookmarkPath)
-					}
+		var isDir : ObjCBool = false
+		fm.fileExists(atPath: sourcePath, isDirectory: &isDir)
+		try? fm.removeItem(atPath: bookmarkPath)
+		
+		do {
+			if !(fm.fileExists(atPath: bookmarkPath)){
+				NSLog("Making directory: \(bookmarkPath)")
+				try? fm.createDirectory(atPath: URL(fileURLWithPath: bookmarkPath).deletingLastPathComponent().path, withIntermediateDirectories: true, attributes: nil)
+				
+				if (isDir.boolValue) {
+					NSLog("Linking path...")
+					//try fm.createSymbolicLink(atPath: sourcePath, withDestinationPath: bookmarkPath)
+					try fm.linkItem(atPath: sourcePath, toPath: bookmarkPath)
+					NSLog("Setting 0777 attributes...")
+					try fm.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkPath)
+				} else {
+					NSLog("Copying file to sandbox..")
+					try fm.copyItem(atPath: sourcePath, toPath: bookmarkPath)
 				}
-			} catch {
-				NSLog("Failed while creating local reference.")
 			}
-			
-		} else {
-			NSLog("Path does not exist.")
+		} catch {
+			NSLog("Failed while creating local reference.")
 		}
 	}
 
@@ -81,15 +76,25 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 		}
 		 */
 		
-		let homeItem = FSItem(path: homeDirectory)
-		let listing : [FileProviderItem] = homeItem.subelements.map{ item in
-			NSLog("Creating local reference to \(item.lastComponent).")
-			createLocalReference(to: item.path)
-			return FileProviderItem(path: item.path)
+		guard let basePath = identifierLookupTable[self.enumeratedItemIdentifier] else {
+			NSLog("NO BASE PATH!!")
+			return
 		}
-
-		NSLog("Trying to enumerate\n\(listing.description)")
-		observer.didEnumerate(listing)
+		
+		var isDir : ObjCBool = false
+		fm.fileExists(atPath: basePath, isDirectory: &isDir)
+		
+		if (isDir.boolValue){
+			let baseItem = FSItem(path: basePath)
+			let listing : [FileProviderItem] = baseItem.subelements.map{ item -> FileProviderItem in
+				NSLog("Creating local reference to \(item.lastComponent).")
+				createLocalReference(to: item.path)
+				return FileProviderItem(path: item.path)
+			}
+			
+			NSLog("Trying to enumerate\n\(listing.description)")
+			observer.didEnumerate(listing)
+		}
 		
 		// We're returning everything as a single page here (upToPAge: nil)
 		// TOOD: Since the extension is given a very small amount of memory,
