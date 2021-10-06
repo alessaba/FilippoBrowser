@@ -36,7 +36,7 @@ class FileProviderExtension: NSFileProviderExtension {
 				.appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent)
 			return bookmarkPath
 		} else {
-			print("SourcePath does not exist.")
+			NSLog("source path does not exist.")
 			return URL(fileURLWithPath: homeDirectory)
 		}
     }
@@ -99,6 +99,8 @@ class FileProviderExtension: NSFileProviderExtension {
 		
 		if !(fm.fileExists(atPath: url.path)) {
 			error = NSError(domain: NSPOSIXErrorDomain, code: -1, userInfo: nil)
+		} else {
+			NSLog("\(url.lastPathComponent) Exixsts!")
 		}
 		
 		completionHandler(error)
@@ -113,7 +115,7 @@ class FileProviderExtension: NSFileProviderExtension {
          - create a fresh background NSURLSessionTask and schedule it to upload the current modifications
          - register the NSURLSessionTask with NSFileProviderManager to provide progress updates
          */
-		print("Item changed at URL: \(url)")
+		NSLog("Item changed at URL: \(url)")
     }
     
     override func stopProvidingItem(at url: URL) {
@@ -139,7 +141,7 @@ class FileProviderExtension: NSFileProviderExtension {
             })
         }*/
 		
-		print("Stop providing item at URL: \(url)")
+		NSLog("Stop providing item at URL: \(url)")
     }
     
     // MARK: - Actions
@@ -154,6 +156,7 @@ class FileProviderExtension: NSFileProviderExtension {
     // MARK: - Enumeration
     
     override func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier) throws -> NSFileProviderEnumerator {
+		NSLog("Getting enumerator...")
         return FileProviderEnumerator(enumeratedItemIdentifier: containerItemIdentifier)
     }
     

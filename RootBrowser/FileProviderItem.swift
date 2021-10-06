@@ -28,23 +28,23 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	
 	// Impostiamo la visualizzazione in sola lettura, dato che ci serve solo visualizzare
 	var capabilities: NSFileProviderItemCapabilities {
-		FSItem(path: internalFilePath.absoluteString).isFolder ? .allowsContentEnumerating : .allowsReading
+		FSItem(path: internalFilePath.path).isFolder ? .allowsContentEnumerating : .allowsReading
 	}
 	
 	var typeIdentifier: String {
-		if FSItem(path: internalFilePath.absoluteString).isFolder {
+		if FSItem(path: internalFilePath.path).isFolder {
 			return "public.folder"
 		} else {
-			return "public.file"//UTTypeCreateAllIdentifiersForTag(UTTagClass.filenameExtension.rawValue as CFString, self.internalFilePath.pathExtension as CFString, nil)?.hashValue.description
+			return UTTypeCreatePreferredIdentifierForTag(UTTagClass.filenameExtension.rawValue as CFString, self.internalFilePath.pathExtension as CFString, "public.file" as CFString)!.takeUnretainedValue() as String
 		}
 	}
 	
 	var documentSize: NSNumber? {
-		FSItem(path: self.internalFilePath.absoluteString).size as NSNumber
+		FSItem(path: self.internalFilePath.path).size as NSNumber
 	}
 	
 	var itemIdentifier: NSFileProviderItemIdentifier {
-		let p = self.internalFilePath.absoluteString
+		let p = self.internalFilePath.path
 		if p == homeDirectory {
 			return .rootContainer
 		} else {
@@ -53,7 +53,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	}
 	
     var parentItemIdentifier: NSFileProviderItemIdentifier {
-		let p = self.internalFilePath.deletingLastPathComponent().absoluteString
+		let p = self.internalFilePath.deletingLastPathComponent().path
 		if (p == homeDirectory){
 			return .rootContainer
 		} else {
@@ -62,7 +62,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	}
 	
 	var childItemCount: NSNumber? {
-		FSItem(path: internalFilePath.absoluteString).subelements.count as NSNumber
+		FSItem(path: internalFilePath.path).subelements.count as NSNumber
 	}
 	
 	var versionIdentifier: Data? {
@@ -73,5 +73,6 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	internal init(path: String) {
 		self.internalFilePath = URL(fileURLWithPath: path)
 		super.init()
+		NSLog("Path: \(path) -> Item type: \(self.typeIdentifier)\n")
 	}
 }

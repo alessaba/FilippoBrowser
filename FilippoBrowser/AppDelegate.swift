@@ -23,7 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
 			print("Notification Authorization Granted.")
 		}
-		
+
+		return true
+	}
+
+	func applicationWillTerminate(_ application: UIApplication) {
+		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 		// Cleaning tmp directory (not sure it's really necessary for every launch but ok)
 		let tempDir = fileManager.temporaryDirectory
 		let tempDirContents = try? fileManager.contentsOfDirectory(atPath: tempDir.path)
@@ -32,12 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				try? fileManager.removeItem(atPath: tempDir.appendingPathComponent(tempFile).path)
 			}
 		}
-
-		return true
-	}
-
-	func applicationWillTerminate(_ application: UIApplication) {
-		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 	}
 
 	// MARK: UISceneSession Lifecycle
