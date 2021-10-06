@@ -134,10 +134,9 @@ public class FSItem : Identifiable, Equatable{
 	public var subelements : [FSItem] {
 		// This property is only meaningful for folders. Files have no subelements
 		if (self.isFolder) {
-			let subElements = try? fileManager.contentsOfDirectory(atPath: path)
-			if (subElements != nil) {
+			if let subElements = try? fileManager.contentsOfDirectory(atPath: path) {
 				var subDirs : [FSItem] = []
-				for sd in subElements! {
+				for sd in subElements {
 					subDirs.append(FSItem(path: "\(self.path)\(sd)/"))
 				}
 				return subDirs

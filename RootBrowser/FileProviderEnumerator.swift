@@ -40,8 +40,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 					
 					if (isDir.boolValue) {
 						NSLog("Linking path...")
-						//try fm.createSymbolicLink(atPath: sourcePath, withDestinationPath: bookmarkPath)
-						try fm.linkItem(atPath: sourcePath, toPath: bookmarkPath)
+						try fm.createSymbolicLink(atPath: sourcePath, withDestinationPath: bookmarkPath)
+						//try fm.linkItem(atPath: sourcePath, toPath: bookmarkPath)
 						NSLog("Setting 0777 attributes...")
 						try fm.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkPath)
 					} else {
