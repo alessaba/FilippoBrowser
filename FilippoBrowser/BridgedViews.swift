@@ -91,7 +91,7 @@ struct QuickLook: UIViewControllerRepresentable {
 		func numberOfPreviewItems(in controller: QLPreviewController) -> Int { return 1 }
 		
 		func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-			let tempPath = (tmp_directory.appendingPathComponent(String(parent.filePath.split(separator: "/").last ?? "")))
+			let tempPath = tmp_directory.url.appendingPathComponent(FSItem(path: parent.filePath).lastComponent)
 			
 			do{
 				try FileManager.default.copyItem(at: URL(fileURLWithPath: parent.filePath), to: tempPath)

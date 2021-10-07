@@ -13,7 +13,7 @@ public let fileManager : FileManager = FileManager.default
 
 public let appGroup_directory = (fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
 public let documents_directory = (fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]).path + "/"
-public let tmp_directory = fileManager.temporaryDirectory
+public let tmp_directory =  FSItem(url: fileManager.temporaryDirectory)
 
 
 public func setFavorite(name: String, path: String) {

@@ -270,7 +270,7 @@ struct gotoView : View {
 		
 		var subpaths : [FSItem] {
 			if (path.split(separator: "/").last?.count ?? 0) > 1 {
-				return FSItem(path: parentDirectory(path)).subelements.filter{ subElement in
+				return FSItem(path: path).parentItem.subelements.filter{ subElement in
 					return subElement.path.lowercased().contains(path.lowercased())
 				}
 			} else {
@@ -296,7 +296,7 @@ struct gotoView : View {
 				// Search Suggestions
 				ForEach(subpaths){ suggestion in
 					Button(action: {
-						path = parentDirectory(path) + suggestion.lastComponent + "/"
+						path = FSItem(path: path).parentItem.url.appendingPathComponent(suggestion.lastComponent).path + "/"
 					}, label: {
 						Text(suggestion.lastComponent)
 							.padding(10)
@@ -312,7 +312,7 @@ struct gotoView : View {
 				#if os(iOS) || os(watchOS)
 					BookmarkItem(name: "Media 🖥", path: "/var/mobile/Media/")
 					BookmarkItem(name: "Documents 🗂", path: documents_directory)
-					BookmarkItem(name: "App Container 💾", path: parentDirectory(tmp_directory.path))
+				BookmarkItem(name: "App Container 💾", path: tmp_directory.parentItem.path)
 				#endif
 				
 				// User Added Bookmarks
