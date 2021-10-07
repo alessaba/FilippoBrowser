@@ -86,8 +86,7 @@ public class FSItem : Identifiable, Equatable{
 	public var size : UInt64 {
 		// Get the number of bytes of a file
 		do {
-			var gp = self.path
-			gp.removeLast() // BAD WORKAROUND. MUST REMOVE ASAP
+			let gp = URL(fileURLWithPath: self.path).path
 			let attr = try fileManager.attributesOfItem(atPath: gp)
 			return attr[FileAttributeKey.size] as! UInt64
 		} catch {

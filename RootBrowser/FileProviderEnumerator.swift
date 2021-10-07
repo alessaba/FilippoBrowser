@@ -7,7 +7,6 @@
 //
 
 import FileProvider
-import FBrowserPackage
 
 class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
@@ -22,36 +21,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         // TODO: perform invalidation of server connection if necessary
     }
 	
-	func createLocalReference(to sourcePath : String){
-		let id = md5Identifier(sourcePath)
-		identifierLookupTable[id] = sourcePath
-		
-		let bookmarkPath = fm.temporaryDirectory.appendingPathComponent(id.rawValue).appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent).path
-		
-		var isDir : ObjCBool = false
-		fm.fileExists(atPath: sourcePath, isDirectory: &isDir)
-		try? fm.removeItem(atPath: bookmarkPath)
-		
-		do {
-			if !(fm.fileExists(atPath: bookmarkPath)){
-				NSLog("Making directory: \(bookmarkPath)")
-				try? fm.createDirectory(atPath: URL(fileURLWithPath: bookmarkPath).deletingLastPathComponent().path, withIntermediateDirectories: true, attributes: nil)
-				
-				if (isDir.boolValue) {
-					NSLog("Linking path...")
-					//try fm.createSymbolicLink(atPath: sourcePath, withDestinationPath: bookmarkPath)
-					try fm.linkItem(atPath: sourcePath, toPath: bookmarkPath)
-					NSLog("Setting 0777 attributes...")
-					try fm.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkPath)
-				} else {
-					NSLog("Copying file to sandbox..")
-					try fm.copyItem(atPath: sourcePath, toPath: bookmarkPath)
-				}
-			}
-		} catch {
-			NSLog("Failed while creating local reference.")
-		}
-	}
 
     func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
         /* TODO:
@@ -82,15 +51,10 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 		}
 		
 		var isDir : ObjCBool = false
-		fm.fileExists(atPath: basePath, isDirectory: &isDir)
+		fileManager.fileExists(atPath: basePath, isDirectory: &isDir)
 		
 		if (isDir.boolValue){
-			let baseItem = FSItem(path: basePath)
-			let listing : [FileProviderItem] = baseItem.subelements.map{ item -> FileProviderItem in
-				NSLog("Creating local reference to \(item.lastComponent).")
-				createLocalReference(to: item.path)
-				return FileProviderItem(path: item.path)
-			}
+			let listing : [FileProviderItem] = subelements(path: basePath)
 			
 			NSLog("Trying to enumerate\n\(listing.description)")
 			observer.didEnumerate(listing)

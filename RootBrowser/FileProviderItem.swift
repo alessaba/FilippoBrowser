@@ -7,7 +7,6 @@
 //
 
 import FileProvider
-import FBrowserPackage
 import MobileCoreServices
 import UniformTypeIdentifiers
 
@@ -28,19 +27,24 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	
 	// Impostiamo la visualizzazione in sola lettura, dato che ci serve solo visualizzare
 	var capabilities: NSFileProviderItemCapabilities {
-		FSItem(path: internalFilePath.path).isFolder ? .allowsContentEnumerating : .allowsReading
+		isFolder(path: self.internalFilePath.path) ? .allowsContentEnumerating : .allowsReading
 	}
 	
 	var typeIdentifier: String {
-		if FSItem(path: internalFilePath.path).isFolder {
+		if isFolder(path: self.internalFilePath.path) {
 			return "public.folder"
 		} else {
-			return UTTypeCreatePreferredIdentifierForTag(UTTagClass.filenameExtension.rawValue as CFString, self.internalFilePath.pathExtension as CFString, "public.file" as CFString)!.takeUnretainedValue() as String
+			return UTTypeCreatePreferredIdentifierForTag(UTTagClass.filenameExtension.rawValue as CFString, self.internalFilePath.pathExtension as CFString, nil)!.takeRetainedValue() as String
 		}
 	}
 	
 	var documentSize: NSNumber? {
-		FSItem(path: self.internalFilePath.path).size as NSNumber
+		do{
+			let attr = try fileManager.attributesOfItem(atPath: self.internalFilePath.path)
+			return attr[FileAttributeKey.size] as? NSNumber
+		} catch {
+			return 0
+		}
 	}
 	
 	var itemIdentifier: NSFileProviderItemIdentifier {
@@ -62,7 +66,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	}
 	
 	var childItemCount: NSNumber? {
-		FSItem(path: internalFilePath.path).subelements.count as NSNumber
+		subelements(path: self.internalFilePath.path).count as NSNumber
 	}
 	
 	var versionIdentifier: Data? {
