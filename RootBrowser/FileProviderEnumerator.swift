@@ -51,7 +51,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 		}
 		
 		var isDir : ObjCBool = false
-		fileManager.fileExists(atPath: basePath, isDirectory: &isDir)
+		filemanager.fileExists(atPath: basePath, isDirectory: &isDir)
 		
 		if (isDir.boolValue){
 			let listing : [FileProviderItem] = subelements(path: basePath)

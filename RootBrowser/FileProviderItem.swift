@@ -40,7 +40,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	
 	var documentSize: NSNumber? {
 		do{
-			let attr = try fileManager.attributesOfItem(atPath: self.internalFilePath.path)
+			let attr = try filemanager.attributesOfItem(atPath: self.internalFilePath.path)
 			return attr[FileAttributeKey.size] as? NSNumber
 		} catch {
 			return 0

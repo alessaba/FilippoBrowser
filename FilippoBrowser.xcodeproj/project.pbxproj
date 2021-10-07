@@ -11,8 +11,6 @@
 		0B128943270F5FA8008CB412 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B128942270F5FA8008CB412 /* PreviewViewController.swift */; };
 		0B128945270F5FA8008CB412 /* PreviewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B128944270F5FA8008CB412 /* PreviewProvider.swift */; };
 		0B128948270F5FA8008CB412 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B128946270F5FA8008CB412 /* MainInterface.storyboard */; };
-		0B12894C270F5FA8008CB412 /* PropertyLister.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0B12893E270F5FA8008CB412 /* PropertyLister.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		0B1921A0270DCC0100E71202 /* FBrowserPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B19219F270DCC0100E71202 /* FBrowserPackage */; };
 		0B1921A2270DDBF400E71202 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1921A1270DDBF400E71202 /* Helpers.swift */; };
 		0B1E54F7245B2EDD00419AB7 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 0B1E54F6245B2EDD00419AB7 /* TODO.md */; };
 		0B31FF5726722682008BA335 /* FBrowserPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B31FF5626722682008BA335 /* FBrowserPackage */; };
@@ -45,13 +43,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0B12894A270F5FA8008CB412 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0B12893D270F5FA8008CB412;
-			remoteInfo = PropertyLister;
-		};
 		0B45B571266CDB0C007E0DCA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0BD2431322AD5296006A4929 /* Project object */;
@@ -104,7 +95,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				0B12894C270F5FA8008CB412 /* PropertyLister.appex in Embed App Extensions */,
 				0B45B573266CDB0C007E0DCA /* RootBrowserUI.appex in Embed App Extensions */,
 				0B45B576266CDB0C007E0DCA /* RootBrowser.appex in Embed App Extensions */,
 			);
@@ -174,7 +164,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B1921A0270DCC0100E71202 /* FBrowserPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +422,6 @@
 			);
 			name = RootBrowser;
 			packageProductDependencies = (
-				0B19219F270DCC0100E71202 /* FBrowserPackage */,
 			);
 			productName = RootBrowser;
 			productReference = 0B45B55B266CDB0B007E0DCA /* RootBrowser.appex */;
@@ -509,7 +497,6 @@
 			dependencies = (
 				0B45B572266CDB0C007E0DCA /* PBXTargetDependency */,
 				0B45B575266CDB0C007E0DCA /* PBXTargetDependency */,
-				0B12894B270F5FA8008CB412 /* PBXTargetDependency */,
 			);
 			name = FilippoBrowser;
 			packageProductDependencies = (
@@ -681,11 +668,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0B12894B270F5FA8008CB412 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0B12893D270F5FA8008CB412 /* PropertyLister */;
-			targetProxy = 0B12894A270F5FA8008CB412 /* PBXContainerItemProxy */;
-		};
 		0B45B572266CDB0C007E0DCA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0B45B568266CDB0C007E0DCA /* RootBrowserUI */;
@@ -744,6 +726,8 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = PropertyLister/PropertyLister.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 974TR9G2UN;
@@ -760,6 +744,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.PropertyLister;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -773,6 +759,8 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_ENTITLEMENTS = PropertyLister/PropertyLister.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 974TR9G2UN;
@@ -789,6 +777,8 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.PropertyLister;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1244,10 +1234,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0B19219F270DCC0100E71202 /* FBrowserPackage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FBrowserPackage;
-		};
 		0B31FF5626722682008BA335 /* FBrowserPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FBrowserPackage;

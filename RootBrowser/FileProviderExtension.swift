@@ -30,8 +30,8 @@ class FileProviderExtension: NSFileProviderExtension {
 		let sourcePath = identifierLookupTable[identifier] ?? homeDirectory
 		var isDir : ObjCBool = false
 		
-		if fileManager.fileExists(atPath: sourcePath, isDirectory: &isDir){
-			let bookmarkPath = fileManager.temporaryDirectory
+		if filemanager.fileExists(atPath: sourcePath, isDirectory: &isDir){
+			let bookmarkPath = filemanager.temporaryDirectory
 				.appendingPathComponent(identifier.rawValue)
 				.appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent)
 			return bookmarkPath
@@ -97,7 +97,7 @@ class FileProviderExtension: NSFileProviderExtension {
 		
 		var error : NSError? = nil
 		
-		if !(fileManager.fileExists(atPath: url.path)) {
+		if !(filemanager.fileExists(atPath: url.path)) {
 			error = NSError(domain: NSPOSIXErrorDomain, code: -1, userInfo: nil)
 		} else {
 			NSLog("\(url.lastPathComponent) Exixsts!")
