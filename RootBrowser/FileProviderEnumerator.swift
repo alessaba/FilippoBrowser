@@ -8,6 +8,30 @@
 
 import FileProvider
 
+func createLocalReference(to sourceURL : URL){
+	let id = md5Identifier(sourceURL)
+	identifierLookupTable[id] = sourceURL
+	
+	//NSFileProviderManager.default.documentStorageURL
+	let bookmarkURL = NSFileProviderManager.default.documentStorageURL.appendingPathComponent(id.rawValue).appendingPathComponent( sourceURL.lastPathComponent)
+	
+	var isDir : ObjCBool = false
+	filemanager.fileExists(atPath: sourceURL.path, isDirectory: &isDir)
+	try? filemanager.removeItem(at: bookmarkURL)
+	
+	if !(filemanager.fileExists(atPath: bookmarkURL.path)){
+		NSLog("Making directory: \(bookmarkURL)")
+		try? filemanager.createDirectory(atPath: bookmarkURL.deletingLastPathComponent().path, withIntermediateDirectories: true, attributes: nil)
+		
+		if (isDir.boolValue) {
+			NSLog("Linked path: \(String(describing: try? filemanager.linkItem(at: sourceURL, to: bookmarkURL)))")
+			NSLog("Setting attributes: \(String(describing: try? filemanager.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkURL.path)))")
+		} else {
+			NSLog("File copy to sandbox: \(String(describing: try? filemanager.copyItem(at: sourceURL, to: bookmarkURL)))")
+		}
+	}
+}
+
 class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
     var enumeratedItemIdentifier: NSFileProviderItemIdentifier
@@ -34,16 +58,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          
          - inform the observer about the items returned by the server (possibly multiple times)
          - inform the observer that you are finished with this page
-         */
-		/*let fm = FileManager.default
-		let subItems = try? fm.contentsOfDirectory(atPath: homeDirectory)
-		var listing : [FileProviderItem] = []
-		
-		 for item in subItems ?? [] {
-		  let fileProviderItem = FileProviderItem(path: URL(fileURLWithPath: homeDirectory).appendingPathComponent(item).absoluteString)
-		  listing.append(fileProviderItem)
-		}
-		 */
+		*/
 		
 		guard let basePath = identifierLookupTable[self.enumeratedItemIdentifier] else {
 			NSLog("NO BASE PATH!!")
@@ -51,10 +66,17 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 		}
 		
 		var isDir : ObjCBool = false
-		filemanager.fileExists(atPath: basePath, isDirectory: &isDir)
+		filemanager.fileExists(atPath: basePath.path, isDirectory: &isDir)
 		
 		if (isDir.boolValue){
-			let listing : [FileProviderItem] = subelements(path: basePath)
+			let listingPaths : [String] = subelements(url: basePath)
+			
+			let listing : [FileProviderItem] = listingPaths.map{ item in
+				let newP = basePath.appendingPathComponent(item)
+				NSLog("Creating local reference to \(newP.path).")
+				createLocalReference(to: newP)
+				return FileProviderItem(url: newP)
+			}
 			
 			NSLog("Trying to enumerate\n\(listing.description)")
 			observer.didEnumerate(listing)
@@ -66,7 +88,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 		// of files.
 		observer.finishEnumerating(upTo: nil)
     }
-	
+	/*
 	func currentSyncAnchor(completionHandler: @escaping (NSFileProviderSyncAnchor?) -> Void) {
 		completionHandler(nil)
 	}
@@ -81,5 +103,5 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer about item deletions and updates (modifications + insertions)
          - inform the observer when you have finished enumerating up to a subsequent sync anchor
          */
-    }
+    }*/
 }

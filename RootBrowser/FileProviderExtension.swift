@@ -18,26 +18,27 @@ class FileProviderExtension: NSFileProviderExtension {
     
     override func item(for identifier: NSFileProviderItemIdentifier) throws -> NSFileProviderItem {
         // resolve the given identifier to a record in the model
-		if let path = identifierLookupTable[identifier]{
-			return FileProviderItem(path: path)
+		if let url = identifierLookupTable[identifier]{
+			return FileProviderItem(url: url)
 		} else {
-			return FileProviderItem(path: homeDirectory)
+			return FileProviderItem(url: homeDirectory)
 		}
     }
     
     override func urlForItem(withPersistentIdentifier identifier: NSFileProviderItemIdentifier) -> URL? {
         // resolve the given identifier to a file on disk
-		let sourcePath = identifierLookupTable[identifier] ?? homeDirectory
+		guard let sourceURL = identifierLookupTable[identifier] else {
+			NSLog("source URL not in lookup table")
+			return nil
+		}
 		var isDir : ObjCBool = false
 		
-		if filemanager.fileExists(atPath: sourcePath, isDirectory: &isDir){
-			let bookmarkPath = filemanager.temporaryDirectory
-				.appendingPathComponent(identifier.rawValue)
-				.appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent)
-			return bookmarkPath
+		if filemanager.fileExists(atPath: sourceURL.path, isDirectory: &isDir){
+			let bookmarkURL = NSFileProviderManager.default.documentStorageURL.appendingPathComponent(identifier.rawValue).appendingPathComponent(URL(fileURLWithPath: sourceURL.path).lastPathComponent)
+			return bookmarkURL
 		} else {
 			NSLog("source path does not exist.")
-			return URL(fileURLWithPath: homeDirectory)
+			return nil
 		}
     }
     
@@ -53,7 +54,7 @@ class FileProviderExtension: NSFileProviderExtension {
     }
     
     override func providePlaceholder(at url: URL, completionHandler: @escaping (Error?) -> Void) {
-        guard let identifier = persistentIdentifierForItem(at: url) else {
+        /*guard let identifier = persistentIdentifierForItem(at: url) else {
             completionHandler(NSFileProviderError(.noSuchItem))
             return
         }
@@ -65,7 +66,9 @@ class FileProviderExtension: NSFileProviderExtension {
             completionHandler(nil)
         } catch let error {
             completionHandler(error)
-        }
+        }*/
+		
+		completionHandler(nil)
     }
 
     override func startProvidingItem(at url: URL, completionHandler: @escaping ((_ error: Error?) -> Void)) {
@@ -99,8 +102,6 @@ class FileProviderExtension: NSFileProviderExtension {
 		
 		if !(filemanager.fileExists(atPath: url.path)) {
 			error = NSError(domain: NSPOSIXErrorDomain, code: -1, userInfo: nil)
-		} else {
-			NSLog("\(url.lastPathComponent) Exixsts!")
 		}
 		
 		completionHandler(error)

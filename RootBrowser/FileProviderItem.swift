@@ -14,7 +14,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 
     // TODO: implement an initializer to create an item from your extension's backing model
     // TODO: implement the accessors to return the values from your extension's backing model
-	var internalFilePath : URL = URL(fileURLWithPath: homeDirectory)
+	var fileURL : URL 
 	
 	var isDownloaded: Bool = true
 	var isUploaded: Bool = true
@@ -22,25 +22,25 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	
 	// Proprietà fondamentali
 	var filename: String {
-		self.internalFilePath.lastPathComponent
+		self.fileURL.lastPathComponent
 	}
 	
 	// Impostiamo la visualizzazione in sola lettura, dato che ci serve solo visualizzare
 	var capabilities: NSFileProviderItemCapabilities {
-		isFolder(path: self.internalFilePath.path) ? .allowsContentEnumerating : .allowsReading
+		isFolder(path: self.fileURL.path) ? .allowsContentEnumerating : .allowsReading
 	}
 	
 	var typeIdentifier: String {
-		if isFolder(path: self.internalFilePath.path) {
+		if isFolder(path: self.fileURL.path) {
 			return "public.folder"
 		} else {
-			return UTTypeCreatePreferredIdentifierForTag(UTTagClass.filenameExtension.rawValue as CFString, self.internalFilePath.pathExtension as CFString, nil)!.takeRetainedValue() as String
+			return UTTypeCreatePreferredIdentifierForTag(UTTagClass.filenameExtension.rawValue as CFString, self.fileURL.pathExtension as CFString, nil)!.takeRetainedValue() as String
 		}
 	}
 	
 	var documentSize: NSNumber? {
 		do{
-			let attr = try filemanager.attributesOfItem(atPath: self.internalFilePath.path)
+			let attr = try filemanager.attributesOfItem(atPath: self.fileURL.path)
 			return attr[FileAttributeKey.size] as? NSNumber
 		} catch {
 			return 0
@@ -48,7 +48,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	}
 	
 	var itemIdentifier: NSFileProviderItemIdentifier {
-		let p = self.internalFilePath.path
+		let p = self.fileURL
 		if p == homeDirectory {
 			return .rootContainer
 		} else {
@@ -57,7 +57,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	}
 	
     var parentItemIdentifier: NSFileProviderItemIdentifier {
-		let p = self.internalFilePath.deletingLastPathComponent().path
+		let p = self.fileURL.deletingLastPathComponent()
 		if (p == homeDirectory){
 			return .rootContainer
 		} else {
@@ -66,7 +66,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	}
 	
 	var childItemCount: NSNumber? {
-		subelements(path: self.internalFilePath.path).count as NSNumber
+		subelements(url: self.fileURL).count as NSNumber
 	}
 	
 	var versionIdentifier: Data? {
@@ -75,7 +75,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	}
 	
 	internal init(path: String) {
-		self.internalFilePath = URL(fileURLWithPath: path)
+		self.fileURL = URL(fileURLWithPath: path)
 		super.init()
 		NSLog("Path: \(path) -> Item type: \(self.typeIdentifier)\n")
 	}

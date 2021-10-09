@@ -11,8 +11,14 @@ import FileProvider
 import CommonCrypto
 
 let filemanager = FileManager.default
-let homeDirectory = "/"
-var identifierLookupTable : [NSFileProviderItemIdentifier : String] = [NSFileProviderItemIdentifier.rootContainer : homeDirectory]
+let homeDirectory = URL(fileURLWithPath: "/")
+var identifierLookupTable : [NSFileProviderItemIdentifier : URL] = [NSFileProviderItemIdentifier.rootContainer : homeDirectory]
+
+extension FileProviderItem {
+	convenience init(url : URL){
+		self.init(path: url.path)
+	}
+}
 
 private func MD5(string: String) -> Data {
 	let length = Int(CC_MD5_DIGEST_LENGTH)
@@ -32,8 +38,8 @@ private func MD5(string: String) -> Data {
 }
 
 
-func md5Identifier(_ str: String) -> NSFileProviderItemIdentifier {
-	let hash = MD5(string: str).map { String(format: "%02hhx", $0) }.joined()
+func md5Identifier(_ url: URL) -> NSFileProviderItemIdentifier {
+	let hash = MD5(string: url.path).map { String(format: "%02hhx", $0) }.joined()
 	return NSFileProviderItemIdentifier(hash)
 }
 
@@ -43,71 +49,30 @@ func isFolder(path : String) -> Bool {
 	return (isFoldr.boolValue && exists)
 }
 
-func createLocalReference(to sourcePath : String){
-	let id = md5Identifier(sourcePath)
-	identifierLookupTable[id] = sourcePath
-	
-	let bookmarkPath = filemanager.temporaryDirectory.appendingPathComponent(id.rawValue).appendingPathComponent(URL(fileURLWithPath: sourcePath).lastPathComponent).path
-	
-	var isDir : ObjCBool = false
-	filemanager.fileExists(atPath: sourcePath, isDirectory: &isDir)
-	try? filemanager.removeItem(atPath: bookmarkPath)
-	
-	do {
-		if !(filemanager.fileExists(atPath: bookmarkPath)){
-			NSLog("Making directory: \(bookmarkPath)")
-			try? filemanager.createDirectory(atPath: URL(fileURLWithPath: bookmarkPath).deletingLastPathComponent().path, withIntermediateDirectories: true, attributes: nil)
-			
-			if (isDir.boolValue) {
-				NSLog("Linking path...")
-				//try fm.createSymbolicLink(atPath: sourcePath, withDestinationPath: bookmarkPath)
-				try filemanager.linkItem(atPath: sourcePath, toPath: bookmarkPath)
-				NSLog("Setting 0777 attributes...")
-				try filemanager.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkPath)
-			} else {
-				NSLog("Copying file to sandbox..")
-				try filemanager.copyItem(atPath: sourcePath, toPath: bookmarkPath)
-			}
-		}
-	} catch {
-		NSLog("Failed while creating local reference.")
-	}
-}
-
-func subelements(path : String) -> [FileProviderItem] {
+func subelements(url : URL) -> [String] {
 	// This property is only meaningful for folders. Files have no subelements
 	var isFolder : ObjCBool = false
 	
-	guard (filemanager.fileExists(atPath: path, isDirectory: &isFolder) != false) else {
+	guard (filemanager.fileExists(atPath: url.path, isDirectory: &isFolder) != false) else {
 		return []
 	}
 	
 	if (isFolder.boolValue) {
-		if let subElements = try? filemanager.contentsOfDirectory(atPath: path) {
-			var subDirs : [FileProviderItem] = []
-			for sd in subElements {
-				let newP = URL(fileURLWithPath: path).appendingPathComponent(sd)
-				subDirs.append(FileProviderItem(path: newP.path))
-				
-				NSLog("Creating local reference to \(newP.path).")
-				createLocalReference(to: newP.path)
-			}
-			return subDirs
-		} else {
-			switch path{
+		var subElements : [String]? = try? filemanager.contentsOfDirectory(atPath: url.path)
+	
+		switch url.path{
 			case "/System":
-				return [FileProviderItem(path: "/System/Library")]
+				 subElements = ["Library"]
 			case "/usr":
-				return [FileProviderItem(path: "/usr/lib"), FileProviderItem(path: "/usr/libexec"), FileProviderItem(path: "/usr/bin")]
+				subElements = ["lib", "libexec", "bin"]
 			case "/var":
-				return [FileProviderItem(path: "/var/mobile")]
+				subElements =  ["mobile"]
 			case "/Library":
-				return [FileProviderItem(path: "/Library/Preferences")]
+				subElements =  ["Preferences"]
 			default:
-				NSLog("Folder \(path) is empty?")
-				return []
-			}
+				NSLog("Folder \(url.path) is probably empty")
 		}
+		return subElements ?? []
 	}
 	return []
 	}
