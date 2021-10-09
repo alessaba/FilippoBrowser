@@ -119,3 +119,15 @@ struct QuickLook: UIViewControllerRepresentable {
 	
 	func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<QuickLook>) { print("QuickLook used.") }
 }
+
+// MARK: UIDocumentBrowserViewController
+struct FilesDocumentBrowser : UIViewControllerRepresentable {
+	// Then conform to the SwiftUI bridging protocol with the 2 functions below.
+	// We return the ViewController we want to bridge to SwiftUI
+	func makeUIViewController(context: UIViewControllerRepresentableContext<FilesDocumentBrowser>) -> UIDocumentBrowserViewController {
+		return UIDocumentBrowserViewController()
+	}
+	
+	// In case we want to update something when the Bridged View is used
+	func updateUIViewController(_ uiViewController: UIDocumentBrowserViewController, context: UIViewControllerRepresentableContext<FilesDocumentBrowser>) { print("UIDocumentBrowserViewController used") }
+}

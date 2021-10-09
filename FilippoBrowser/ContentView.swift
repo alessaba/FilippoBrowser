@@ -19,6 +19,7 @@ struct Browser : View {
 	@State var path : String
 	@State private var gridStyleEnabled : Bool = userDefaults.bool(forKey: "gridStyleEnabled")
     @State var presentSheet : Bool = false // We need it for presenting the sheet 🙄
+	@State var presentRBSheet : Bool = false
 	
 	// We can make different layouts for different Accessibility Text Sizes
 	@Environment(\.dynamicTypeSize) private var dtSize
@@ -30,13 +31,22 @@ struct Browser : View {
 			.navigationBarTitle(Text("File Browser"), displayMode: .inline)
 			.toolbar{
 				ToolbarItemGroup(placement: .navigationBarLeading){
+					
+				
+					Image(systemName: "folder.circle.fill")
+						.padding(.vertical, 10)
+						.safeHover()
+						.onTapGesture {
+							self.presentRBSheet = true
+						}
+				
+					
 					Image(systemName: "f.circle.fill")
 						.padding(.vertical, 10)
 						.safeHover()
 						.onTapGesture {
 							#if os(iOS)
-							// FLEX is only available in iOS
-							FLEXManager.shared.showExplorer()
+							FLEXManager.shared.showExplorer() // FLEX is only available in iOS
 							#endif
 							print("FLEX activated!")
 						}.onLongPressGesture{
@@ -50,7 +60,7 @@ struct Browser : View {
 						// If the text size is small enough for the grid view, let the user enable it
 						if (dtSize < .accessibility2) {
 							// The icon changes to reflect the outcome of the button
-							Image(systemName: gridStyleEnabled ? "list.dash" :  "square.grid.2x2.fill").onTapGesture {
+							Image(systemName: gridStyleEnabled ? "list.bullet.circle.fill" :  "circle.grid.3x3.circle.fill").onTapGesture {
 								userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
 								gridStyleEnabled.toggle()
 							}
@@ -60,18 +70,19 @@ struct Browser : View {
 						NavigationLink(destination: gotoView()){
 							Image(systemName: "arrow.right.circle.fill")
 								.padding(.vertical, 10)
-								.safeHover()
 								.foregroundColor(.primary)
-						}.padding(.leading, 40)
+								.safeHover()
+						}//.padding(.leading, 40)
 					}
 				}
 			}
 		}.sheet(isPresented: $presentSheet, onDismiss: {self.path = "/"}){
-			// Open a sheet in case of shortcut, URL launch or Notification launch
-			NavigationView {
+			NavigationView { // Open a sheet in case of shortcut, URL launch or Notification launch
 				properView(for: FSItem(path: path))
 				.navigationBarTitle(Text("File Browser"), displayMode: .inline)
 			}
+		}.sheet(isPresented: $presentRBSheet, onDismiss: nil){
+			FilesDocumentBrowser()
 		}
 	}
 }
