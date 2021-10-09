@@ -14,11 +14,6 @@ let filemanager = FileManager.default
 let homeDirectory = URL(fileURLWithPath: "/")
 var identifierLookupTable : [NSFileProviderItemIdentifier : URL] = [NSFileProviderItemIdentifier.rootContainer : homeDirectory]
 
-extension FileProviderItem {
-	convenience init(url : URL){
-		self.init(path: url.path)
-	}
-}
 
 private func MD5(string: String) -> Data {
 	let length = Int(CC_MD5_DIGEST_LENGTH)
@@ -50,29 +45,28 @@ func isFolder(path : String) -> Bool {
 }
 
 func subelements(url : URL) -> [String] {
-	// This property is only meaningful for folders. Files have no subelements
-	var isFolder : ObjCBool = false
 	
+	var isFolder : ObjCBool = false
 	guard (filemanager.fileExists(atPath: url.path, isDirectory: &isFolder) != false) else {
 		return []
 	}
 	
+	// This property is only meaningful for folders. Files have no subelements
 	if (isFolder.boolValue) {
-		var subElements : [String]? = try? filemanager.contentsOfDirectory(atPath: url.path)
-	
 		switch url.path{
 			case "/System":
-				 subElements = ["Library"]
+				 return ["Library"]
 			case "/usr":
-				subElements = ["lib", "libexec", "bin"]
+				return ["lib", "libexec", "bin"]
 			case "/var":
-				subElements =  ["mobile"]
+				return ["mobile"]
 			case "/Library":
-				subElements =  ["Preferences"]
+				return ["Preferences"]
 			default:
-				NSLog("Folder \(url.path) is probably empty")
+				let subElements = try? filemanager.contentsOfDirectory(atPath: url.path)
+				return subElements ?? []
 		}
-		return subElements ?? []
 	}
+	
 	return []
-	}
+}

@@ -13,21 +13,21 @@ func createLocalReference(to sourceURL : URL){
 	identifierLookupTable[id] = sourceURL
 	
 	//NSFileProviderManager.default.documentStorageURL
-	let bookmarkURL = NSFileProviderManager.default.documentStorageURL.appendingPathComponent(id.rawValue).appendingPathComponent( sourceURL.lastPathComponent)
+	let bookmarkURL = filemanager.temporaryDirectory.appendingPathComponent(id.rawValue).appendingPathComponent( sourceURL.lastPathComponent)
 	
 	var isDir : ObjCBool = false
 	filemanager.fileExists(atPath: sourceURL.path, isDirectory: &isDir)
 	try? filemanager.removeItem(at: bookmarkURL)
 	
 	if !(filemanager.fileExists(atPath: bookmarkURL.path)){
-		NSLog("Making directory: \(bookmarkURL)")
+		//print("Making directory: \(bookmarkURL)")
 		try? filemanager.createDirectory(atPath: bookmarkURL.deletingLastPathComponent().path, withIntermediateDirectories: true, attributes: nil)
 		
-		if (isDir.boolValue) {
-			NSLog("Linked path: \(String(describing: try? filemanager.linkItem(at: sourceURL, to: bookmarkURL)))")
-			NSLog("Setting attributes: \(String(describing: try? filemanager.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkURL.path)))")
-		} else {
-			NSLog("File copy to sandbox: \(String(describing: try? filemanager.copyItem(at: sourceURL, to: bookmarkURL)))")
+		if (isDir.boolValue) { // Folders gets linked and its attributes are set
+			try? filemanager.linkItem(at: sourceURL, to: bookmarkURL)
+			try? filemanager.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkURL.path)
+		} else { // Files are copied to the temp directory
+			try? filemanager.copyItem(at: sourceURL, to: bookmarkURL)
 		}
 	}
 }
@@ -47,38 +47,26 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 	
 
     func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
-        /* TODO:
-         - inspect the page to determine whether this is an initial or a follow-up request
-         
-         If this is an enumerator for a directory, the root container or all directories:
-         - perform a server request to fetch directory contents
-         If this is an enumerator for the active set:
-         - perform a server request to update your local database
-         - fetch the active set from your local database
-         
-         - inform the observer about the items returned by the server (possibly multiple times)
-         - inform the observer that you are finished with this page
-		*/
 		
-		guard let basePath = identifierLookupTable[self.enumeratedItemIdentifier] else {
-			NSLog("NO BASE PATH!!")
+		guard let baseURL = identifierLookupTable[self.enumeratedItemIdentifier] else {
+			print("NO BASE PATH!!")
 			return
 		}
 		
 		var isDir : ObjCBool = false
-		filemanager.fileExists(atPath: basePath.path, isDirectory: &isDir)
+		filemanager.fileExists(atPath: baseURL.path, isDirectory: &isDir)
 		
 		if (isDir.boolValue){
-			let listingPaths : [String] = subelements(url: basePath)
+			let listingPaths : [String] = subelements(url: baseURL)
 			
 			let listing : [FileProviderItem] = listingPaths.map{ item in
-				let newP = basePath.appendingPathComponent(item)
-				NSLog("Creating local reference to \(newP.path).")
+				let newP = baseURL.appendingPathComponent(item)
 				createLocalReference(to: newP)
+				
 				return FileProviderItem(url: newP)
 			}
 			
-			NSLog("Trying to enumerate\n\(listing.description)")
+			//print("Trying to enumerate\n\(baseURL.path)")
 			observer.didEnumerate(listing)
 		}
 		
@@ -86,9 +74,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 		// TOOD: Since the extension is given a very small amount of memory,
 		// paginating the results may be necessary for directories with lots
 		// of files.
+		#warning("Research how to do pagination for folders with more than 50-500 subfolders")
 		observer.finishEnumerating(upTo: nil)
     }
-	/*
+	
+	#warning("Should research what these two functions must do")
 	func currentSyncAnchor(completionHandler: @escaping (NSFileProviderSyncAnchor?) -> Void) {
 		completionHandler(nil)
 	}
@@ -103,5 +93,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer about item deletions and updates (modifications + insertions)
          - inform the observer when you have finished enumerating up to a subsequent sync anchor
          */
-    }*/
+		print("Enumerating Changes: \(observer.description)")
+    }
 }
