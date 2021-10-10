@@ -27,7 +27,11 @@ func createLocalReference(to sourceURL : URL){
 			try? filemanager.linkItem(at: sourceURL, to: bookmarkURL)
 			try? filemanager.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkURL.path)
 		} else { // Files are copied to the temp directory
-			try? filemanager.copyItem(at: sourceURL, to: bookmarkURL)
+			if sourceURL.pathExtension == "png"{
+				try? filemanager.copyItem(at: sourceURL, to: bookmarkURL)
+			} else {
+				try? filemanager.createSymbolicLink(at: bookmarkURL, withDestinationURL: sourceURL)//
+			}
 		}
 	}
 }
