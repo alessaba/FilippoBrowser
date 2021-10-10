@@ -15,6 +15,8 @@
 		0B1E54F7245B2EDD00419AB7 /* TODO.md in Resources */ = {isa = PBXBuildFile; fileRef = 0B1E54F6245B2EDD00419AB7 /* TODO.md */; };
 		0B31FF5726722682008BA335 /* FBrowserPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B31FF5626722682008BA335 /* FBrowserPackage */; };
 		0B31FF59267226DD008BA335 /* FBrowserPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 0B31FF58267226DD008BA335 /* FBrowserPackage */; };
+		0B320C392712F6BB003FDEEA /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B1921A1270DDBF400E71202 /* Helpers.swift */; };
+		0B320C3A2712F83C003FDEEA /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B55F266CDB0B007E0DCA /* FileProviderItem.swift */; };
 		0B41F9B02672643F0087EF41 /* BridgedViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B41F9AF2672643F0087EF41 /* BridgedViews.swift */; };
 		0B45B55E266CDB0B007E0DCA /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B55D266CDB0B007E0DCA /* FileProviderExtension.swift */; };
 		0B45B560266CDB0B007E0DCA /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B55F266CDB0B007E0DCA /* FileProviderItem.swift */; };
@@ -639,7 +641,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B320C3A2712F83C003FDEEA /* FileProviderItem.swift in Sources */,
 				0B45B56C266CDB0C007E0DCA /* DocumentActionViewController.swift in Sources */,
+				0B320C392712F6BB003FDEEA /* Helpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

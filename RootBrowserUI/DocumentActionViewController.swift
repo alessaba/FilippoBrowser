@@ -10,11 +10,25 @@ import UIKit
 import FileProviderUI
 
 class DocumentActionViewController: FPUIActionExtensionViewController {
+	
+	 let userDefaults = UserDefaults.standard
+	
     override func prepare(forAction actionIdentifier: String, itemIdentifiers: [NSFileProviderItemIdentifier]) {
 		#warning("Fetch path from lookupTable, then get the path and add the path to FilippoBrowser's Bookmarks")
 		
 		print("Completing task...")
-		//extensionContext.completeRequest()
+		for id in itemIdentifiers{
+			let url = identifierLookupTable[id]
+			guard (url != nil) else {
+				NSLog("Couln't get path from lookup table")
+				return
+			}
+			print("typeID: \(FileProviderItem(url: url!).typeIdentifier)")
+			self.userDefaults.set(url!.path, forKey: "FB_\(url!.lastPathComponent)")
+		}
+		print("Done!")
+		self.userDefaults.synchronize()
+		extensionContext.completeRequest()
     }
     
     override func prepare(forError error: Error) {

@@ -7,8 +7,6 @@
 //
 
 import FileProvider
-import MobileCoreServices
-import UniformTypeIdentifiers
 
 class FileProviderItem: NSObject, NSFileProviderItem {
 
@@ -40,15 +38,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	}
 	
 	var typeIdentifier: String {
-		if isFolder(path: self.fileURL.path) {
-			return "public.folder"
-		} else {
-			return UTTypeCreatePreferredIdentifierForTag(
-				UTTagClass.filenameExtension.rawValue as CFString,
-				self.fileURL.pathExtension as CFString,
-				nil)!
-				.takeRetainedValue() as String
-		}
+		uti(for: self.fileURL)
 	}
 	
 	

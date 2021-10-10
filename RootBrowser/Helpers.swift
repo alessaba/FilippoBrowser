@@ -10,6 +10,9 @@ import Foundation
 import FileProvider
 import CommonCrypto
 
+import MobileCoreServices
+import UniformTypeIdentifiers
+
 let filemanager = FileManager.default
 let homeDirectory = URL(fileURLWithPath: "/")
 var identifierLookupTable : [NSFileProviderItemIdentifier : URL] = [NSFileProviderItemIdentifier.rootContainer : homeDirectory]
@@ -36,6 +39,18 @@ private func MD5(string: String) -> Data {
 func md5Identifier(_ url: URL) -> NSFileProviderItemIdentifier {
 	let hash = MD5(string: url.path).map { String(format: "%02hhx", $0) }.joined()
 	return NSFileProviderItemIdentifier(hash)
+}
+
+func uti(for url: URL) -> String {
+	if isFolder(path: url.path) {
+		return "public.folder"
+	} else {
+		return UTTypeCreatePreferredIdentifierForTag(
+			UTTagClass.filenameExtension.rawValue as CFString,
+			url.pathExtension as CFString,
+			nil)!
+			.takeRetainedValue() as String
+	}
 }
 
 func isFolder(path : String) -> Bool {

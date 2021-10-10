@@ -26,11 +26,12 @@ func createLocalReference(to sourceURL : URL){
 		if (isDir.boolValue) { // Folders gets linked and its attributes are set
 			try? filemanager.linkItem(at: sourceURL, to: bookmarkURL)
 			try? filemanager.setAttributes([FileAttributeKey.posixPermissions : 0777], ofItemAtPath: bookmarkURL.path)
-		} else { // Files are copied to the temp directory
-			if sourceURL.pathExtension == "png"{
-				try? filemanager.copyItem(at: sourceURL, to: bookmarkURL)
+		} else { // Files are copied to the temp directory or symlinked
+			// If the UTI is not supported, don't bother copying it, wasting resources
+			if uti(for: sourceURL).hasPrefix("dyn"){
+				try? filemanager.createSymbolicLink(at: bookmarkURL, withDestinationURL: sourceURL)
 			} else {
-				try? filemanager.createSymbolicLink(at: bookmarkURL, withDestinationURL: sourceURL)//
+				try? filemanager.copyItem(at: sourceURL, to: bookmarkURL)
 			}
 		}
 	}
