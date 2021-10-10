@@ -150,19 +150,19 @@ public class FSItem : Identifiable, Equatable{
 				return subDirs
 			} else {
 				switch path{
-				case "/System":
-					return [FSItem(path: "/System/Library")]
-				case "/usr":
-					return [FSItem(path: "/usr/lib"), FSItem(path: "/usr/libexec"), FSItem(path: "/usr/bin")]
-				case "/var":
-					return [FSItem(path: "/var/mobile")]
-				case "/Library":
-					return [FSItem(path: "/Library/Preferences")]
-				default:
-					if (runningInXcode) {
-						print("\(path) probably has root permissions")
-					}
-					return []
+					case "/System":
+						return [FSItem(path: "/System/Library")]
+					case "/usr":
+						return [FSItem(path: "/usr/lib"), FSItem(path: "/usr/libexec"), FSItem(path: "/usr/bin")]
+					case "/var":
+						return [FSItem(path: "/var/mobile")]
+					case "/Library":
+						return [FSItem(path: "/Library/Preferences")]
+					default:
+						if (runningInXcode) {
+							print("\(path) probably has root permissions")
+						}
+						return []
 				}
 			}
 		}
