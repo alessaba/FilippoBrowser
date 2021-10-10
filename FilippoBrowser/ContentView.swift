@@ -141,7 +141,7 @@ struct DirectoryListBrowser : View {
 			HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
-						.foregroundColor((subItem.rootProtected) ? .gray : .green)
+						.foregroundColor((subItem.isEmpty) ? .gray : .green)
                      
                     //Name of the file/directory
                     NavigationLink(destination: properView(for: subItem)){
@@ -228,7 +228,7 @@ struct DirectoryGridBrowser : View {
 						VStack{
 							// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 							Image(systemName: subItem.itemType.rawValue)
-								.foregroundColor((subItem.rootProtected) ? .orange : .green)
+								.foregroundColor((subItem.isEmpty) ? .orange : .green)
 								.padding(.vertical, 5)
 								.padding(.horizontal, 30)
 
@@ -307,7 +307,7 @@ struct gotoView : View {
 				// Search Suggestions
 				ForEach(subpaths){ suggestion in
 					Button(action: {
-						path = FSItem(path: path).parentItem.url.appendingPathComponent(suggestion.lastComponent).path + "/"
+						path = FSItem(path: path).parentItem.pathByAppending(path: suggestion.lastComponent) + "/"
 					}, label: {
 						Text(suggestion.lastComponent)
 							.padding(10)

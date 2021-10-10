@@ -21,12 +21,23 @@ public enum ItemType : String {
 }
 
 public class FSItem : Identifiable, Equatable{
-
+	
+	public var id =  UUID()
+	public var path : String = ""
+	
+	// MARK: Operatori
+	
 	// We can compare FSitems by veryfying their path is the same
-	public static func == (lhs: FSItem, rhs: FSItem) -> Bool {
-		return lhs.path == rhs.path
+	public static func == (a: FSItem, b: FSItem) -> Bool {
+		return a.path == b.path
 	}
 	
+	// We get a new FSItem if we sum it with a path. Useless but cool
+	public static func + (a: FSItem, path: String) -> FSItem {
+		return FSItem(url: a.url.appendingPathComponent(path))
+	}
+	
+	// MARK: Initializers
 	// We just need the path to initialize a FSItem. Everithing else can be computed.
 	public init(path: String) {
 		self.path = path
@@ -36,8 +47,11 @@ public class FSItem : Identifiable, Equatable{
 		self.path = url.path
 	}
 	
-	public var id =  UUID()
-	public var path : String = ""
+	// MARK: Properties
+	
+	public var url : URL {
+		URL(fileURLWithPath: self.path)
+	}
 	
 	// Return the last part of the path, which should be the item name
 	public var lastComponent : String {
@@ -51,32 +65,30 @@ public class FSItem : Identifiable, Equatable{
 		//String(self.lastComponent.split(separator: ".").last ?? "")
 	}
 	
-	public var url : URL {
-		URL(fileURLWithPath: self.path)
-	}
-	
 	// Associate a list of extensions to their respective Item Types
 	public var itemType : ItemType {
 		let textExtensions = ["txt", "strings"]
 		let listExtensions = ["plist", "json"]
-		let imageExtensions = ["jpg", "jpeg", "png" , "tiff"]
-		let threeDExtensions = ["stl", "scn", "scnz"]
+		let imageExtensions = ["jpg", "jpeg", "png" , "tiff", "svg"]
+		let threeDExtensions = ["stl", "scn", "scnz", "usd", "usdz"]
 		
 		var isFoldr : ObjCBool = false
 		fileManager.fileExists(atPath: path, isDirectory: &isFoldr)
 		
 		if isFoldr.boolValue {
 			return .Folder
-		} else if imageExtensions.contains(self.fileExtension) {
-			return .Image
-		} else if listExtensions.contains(self.fileExtension){
-			return .List
-		} else if textExtensions.contains(self.fileExtension) {
-			return .Text
-		} else if threeDExtensions.contains(self.fileExtension) {
-			return .threeD
 		} else {
-			return .GenericDocument
+			if imageExtensions.contains(self.fileExtension) {
+				return .Image
+			} else if listExtensions.contains(self.fileExtension){
+				return .List
+			} else if textExtensions.contains(self.fileExtension) {
+				return .Text
+			} else if threeDExtensions.contains(self.fileExtension) {
+				return .threeD
+			} else {
+				return .GenericDocument
+			}
 		}
 	}
 	
@@ -123,18 +135,6 @@ public class FSItem : Identifiable, Equatable{
 		}
 	}
 	
-	// Verify if we can read the folder/file. If not, it's root protected
-	public var rootProtected : Bool {
-		#warning("this is a inaccurate assumption")
-		
-		// If it's a empty folder, it PROBABLY (not accurate) is protected by sandbox
-		if isFolder && subelements.count == 0 {
-			return true
-		} else {
-			return false
-		}
-	}
-	
 	public var isRoot : Bool {
 		self.url == URL(fileURLWithPath: "file:///")
 	}
@@ -145,7 +145,7 @@ public class FSItem : Identifiable, Equatable{
 			if let subElements = try? fileManager.contentsOfDirectory(atPath: path) {
 				var subDirs : [FSItem] = []
 				for sd in subElements {
-					subDirs.append(FSItem(url: self.url.appendingPathComponent(sd)))
+					subDirs.append(FSItem(url: self.urlByAppending(path: sd)))
 				}
 				return subDirs
 			} else {
@@ -192,6 +192,15 @@ public class FSItem : Identifiable, Equatable{
 				UserDefaults.standard.removeObject(forKey: "FB_\(name)")
 			}
 		}
+	}
+	
+	// MARK: Path Functions
+	public func urlByAppending(path : String ) -> URL {
+		return self.url.appendingPathComponent(path)
+	}
+	
+	public func pathByAppending(path : String ) -> String {
+		return self.urlByAppending(path: path).path
 	}
 }
 

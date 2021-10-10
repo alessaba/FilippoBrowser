@@ -91,15 +91,15 @@ struct QuickLook: UIViewControllerRepresentable {
 		func numberOfPreviewItems(in controller: QLPreviewController) -> Int { return 1 }
 		
 		func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-			let tempPath = tmp_directory.url.appendingPathComponent(FSItem(path: parent.filePath).lastComponent)
+			let tempURL = tmp_directory.urlByAppending(path: FSItem(path: parent.filePath).lastComponent)
 			
 			do{
-				try FileManager.default.copyItem(at: URL(fileURLWithPath: parent.filePath), to: tempPath)
+				try FileManager.default.copyItem(at: URL(fileURLWithPath: parent.filePath), to: tempURL)
 			} catch {
 				print("Failed to copy to tmp")
 			}
 			
-			return tempPath as NSURL
+			return tempURL as NSURL
 		}
 	}
 	

@@ -28,8 +28,8 @@ struct FileViewer : View {
 				// If the file is not a image, try to transfer it to the iPhone
 				Text(self.file.path)
 				.onAppear{
-					let newPath = fileManager.temporaryDirectory.appendingPathComponent(self.file.lastComponent)
-					try? fileManager.copyItem(at: self.file.url, to: newPath)
+					let newUrl = tmp_directory.urlByAppending(path: self.file.lastComponent)
+					try? fileManager.copyItem(at: self.file.url, to: newUrl)
 					session.transferFile(newPath, metadata: nil)
 					print("File \(self.file.lastComponent) transferred to iPhone (maybe)")
 				}
