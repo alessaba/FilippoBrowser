@@ -32,7 +32,6 @@ struct Browser : View {
 			.toolbar{
 				ToolbarItemGroup(placement: .navigationBarLeading){
 					
-				
 					Image(systemName: "folder.circle.fill")
 						.padding(.vertical, 10)
 						.safeHover()
@@ -40,7 +39,6 @@ struct Browser : View {
 							self.presentRBSheet = true
 						}
 				
-					
 					Image(systemName: "f.circle.fill")
 						.padding(.vertical, 10)
 						.safeHover()
@@ -72,7 +70,7 @@ struct Browser : View {
 								.padding(.vertical, 10)
 								.foregroundColor(.primary)
 								.safeHover()
-						}//.padding(.leading, 40)
+						}
 					}
 				}
 			}
