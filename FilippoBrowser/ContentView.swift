@@ -28,7 +28,7 @@ struct Browser : View {
 		NavigationView {
 			#warning("Would be nice to mantain the previous path before launching the sheet")
 			properView(for: FSItem(path: (presentSheet) ? "/" : path))
-			.navigationBarTitle(Text("File Browser"), displayMode: .inline)
+				.navigationBarTitle(Text("File Browser"), displayMode: .inline)
 			.toolbar{
 				ToolbarItemGroup(placement: .navigationBarLeading){
 					
@@ -58,10 +58,13 @@ struct Browser : View {
 						// If the text size is small enough for the grid view, let the user enable it
 						if (dtSize < .accessibility2) {
 							// The icon changes to reflect the outcome of the button
-							Image(systemName: gridStyleEnabled ? "list.bullet.circle.fill" :  "circle.grid.3x3.circle.fill").onTapGesture {
-								userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
-								gridStyleEnabled.toggle()
-							}
+							Image(systemName: gridStyleEnabled ? "list.bullet.circle.fill" :  "circle.grid.3x3.circle.fill")
+								.onTapGesture {
+									userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
+									gridStyleEnabled.toggle()
+								}.onLongPressGesture {
+									toggleAppIcons()
+								}
 						}
 						
 						// Button Linked to the GoTo launchpad view
@@ -470,6 +473,18 @@ func scheduleTestNotif(item : FSItem){
 	let request = UNNotificationRequest(identifier: "watchFilePending", content: notificationContent, trigger: trigger)
 	
 	notificationCenter.add(request, withCompletionHandler: nil)
+}
+
+func toggleAppIcons(){
+	let iconNames = [nil, "OriginalIcon"] // La icona di default è nil
+	let currentIndex = userDefaults.integer(forKey: "appIconIndex")
+	
+	var newIndex = currentIndex + 1
+	if (newIndex == iconNames.count) { newIndex = 0 }
+	
+	print("Toggling icon: \(iconNames[newIndex] ?? "AppIcon")")
+	UIApplication.shared.setAlternateIconName(iconNames[newIndex], completionHandler: nil)
+	userDefaults.set(newIndex, forKey: "appIconIndex")
 }
 
 
