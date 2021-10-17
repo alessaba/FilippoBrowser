@@ -47,9 +47,36 @@ struct Browser : View {
 							FLEXManager.shared.showExplorer() // FLEX is only available in iOS
 							#endif
 							print("FLEX activated!")
-						}.onLongPressGesture{
-							print("Test notification triggered, wait 5 secs")
-							scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
+						}.contextMenu{
+							VStack{
+								Text("FilibboBrowser Toolbox")
+								
+								// Add/Remove Favourite button
+								Button(action: {
+									print("FLEX activated!")
+									FLEXManager.shared.showExplorer()
+								}){
+									Image(systemName: "f.circle.fill")
+									Text("Open FLEX")
+								}
+								
+								// Add/Remove Favourite button
+								Button(action: {
+									print("Test notification triggered, wait 5 secs")
+									scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
+								}){
+									Image(systemName: "app.badge")
+									Text("Trigger Test Notification")
+								}
+								
+								// Add/Remove Favourite button
+								Button(action: {
+									toggleAppIcons()
+								}){
+									Image(systemName: (UIDevice.current.model == "iPad") ? "apps.ipad" :  "apps.iphone")
+									Text("Toggle App Icons")
+								}
+							}
 						}
 				}
 				
@@ -62,8 +89,6 @@ struct Browser : View {
 								.onTapGesture {
 									userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
 									gridStyleEnabled.toggle()
-								}.onLongPressGesture {
-									toggleAppIcons()
 								}
 						}
 						
