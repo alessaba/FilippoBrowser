@@ -51,7 +51,7 @@ struct Browser : View {
 							VStack{
 								Text("FilibboBrowser Toolbox")
 								
-								// Add/Remove Favourite button
+								// Open FLEX
 								Button(action: {
 									print("FLEX activated!")
 									FLEXManager.shared.showExplorer()
@@ -60,7 +60,7 @@ struct Browser : View {
 									Text("Open FLEX")
 								}
 								
-								// Add/Remove Favourite button
+								// Test Notification
 								Button(action: {
 									print("Test notification triggered, wait 5 secs")
 									scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
@@ -69,7 +69,7 @@ struct Browser : View {
 									Text("Trigger Test Notification")
 								}
 								
-								// Add/Remove Favourite button
+								// Switch Icons
 								Button(action: {
 									toggleAppIcons()
 								}){

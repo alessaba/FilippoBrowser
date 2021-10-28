@@ -6,9 +6,49 @@
 //  Copyright © 2019 Alessandro Saba. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
 import WatchConnectivity
+import UserNotifications
+
+let notificationCenter = UNUserNotificationCenter.current()
+
+
+class AppDelegate: UIResponder, UIApplicationDelegate {
+	
+	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+		// Override point for customization after application launch.
+		
+		// Notification Permission request
+		notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
+			print("Notification Authorization Granted.")
+		}
+		
+		return true
+	}
+	
+	func applicationWillTerminate(_ application: UIApplication) {
+		// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+		// Cleaning tmp directory (not sure it's really necessary for every launch but ok)
+		let fm = FileManager.default
+		let tempDir = fm.temporaryDirectory
+		let tempDirContents = try? fm.contentsOfDirectory(atPath: tempDir.path)
+		if let tempDirContents = tempDirContents{
+			for tempFile in tempDirContents{
+				try? fm.removeItem(atPath: tempDir.appendingPathComponent(tempFile).path)
+			}
+		}
+	}
+	
+	// MARK: UISceneSession Lifecycle
+	
+	func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+		// Called when a new scene session is being created.
+		// Use this method to select a configuration to create the new scene with.
+		let sceneConf = UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+		sceneConf.delegateClass = SceneDelegate.self
+		return sceneConf
+	}
+}
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate, WCSessionDelegate {
@@ -98,13 +138,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		}
 	}
 	
-	func sceneDidDisconnect(_ scene: UIScene) {
-		// Called as the scene is being released by the system.
-		// This occurs shortly after the scene enters the background, or when its session is discarded.
-		// Release any resources associated with this scene that can be re-created the next time the scene connects.
-		// The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
-	}
-	
 	func sceneDidBecomeActive(_ scene: UIScene) {
 		// Called when the scene has moved from an inactive state to an active state.
 		// Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
@@ -112,21 +145,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		print("Scene Did Become Active")
 	}
 	
-	func sceneWillResignActive(_ scene: UIScene) {
-		// Called when the scene will move from an active state to an inactive state.
-		// This may occur due to temporary interruptions (ex. an incoming phone call).
-	}
-	
 	func sceneWillEnterForeground(_ scene: UIScene) {
 		// Called as the scene transitions from the background to the foreground.
 		// Use this method to undo the changes made on entering the background.
 		UIApplication.shared.applicationIconBadgeNumber = 0
-	}
-	
-	func sceneDidEnterBackground(_ scene: UIScene) {
-		// Called as the scene transitions from the foreground to the background.
-		// Use this method to save data, release shared resources, and store enough scene-specific state information
-		// to restore the scene back to its current state.
 	}
 	
 	
