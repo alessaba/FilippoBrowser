@@ -20,7 +20,7 @@ public enum ItemType : String {
 	case threeD = "cube.transparent"
 }
 
-public class FSItem : Identifiable, Equatable{
+public class FSItem : Identifiable, Equatable {
 	
 	public var id =  UUID()
 	public var path : String = ""
