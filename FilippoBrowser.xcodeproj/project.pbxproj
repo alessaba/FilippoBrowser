@@ -143,6 +143,7 @@
 		0B9301E423806D6E0039A1AB /* FilippoBrowser WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FilippoBrowser WatchKit App.entitlements"; sourceTree = "<group>"; };
 		0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FilippoBrowser.entitlements; sourceTree = "<group>"; };
 		0B9F5407257FD5A6004365E5 /* FilippoBrowser WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FilippoBrowser WatchKit Extension.entitlements"; sourceTree = "<group>"; };
+		0BC8694B272AA7C700CBC4BD /* FilippoBrowserPlaygrounds.swiftpm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = FilippoBrowserPlaygrounds.swiftpm; sourceTree = "<group>"; };
 		0BD2431B22AD5296006A4929 /* FilippoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FilippoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BD2431E22AD5296006A4929 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0BD2432022AD5296006A4929 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -347,6 +348,7 @@
 			isa = PBXGroup;
 			children = (
 				0B1E54F6245B2EDD00419AB7 /* TODO.md */,
+				0BC8694B272AA7C700CBC4BD /* FilippoBrowserPlaygrounds.swiftpm */,
 				0BD2431D22AD5296006A4929 /* FilippoBrowser */,
 				0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
 				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
