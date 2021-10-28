@@ -489,6 +489,7 @@ func properView(for item: FSItem) -> AnyView {
 
 func scheduleTestNotif(item : FSItem){
 	let notificationContent = UNMutableNotificationContent()
+	let notificationCenter = UNUserNotificationCenter.current()
 	notificationContent.badge = NSNumber(value: UIApplication.shared.applicationIconBadgeNumber + 1) 
 	notificationContent.title = "[TEST] Watch File"
 	notificationContent.body = "[TEST] Your Apple Watch just shared \(item.lastComponent) with you 😃"

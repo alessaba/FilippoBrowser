@@ -11,7 +11,6 @@ import UserNotifications
 
 let notificationCenter = UNUserNotificationCenter.current()
 
-@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	let fileManager = FileManager.default

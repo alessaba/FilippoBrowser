@@ -5,10 +5,11 @@
 //  Created by Alessandro Saba on 09/06/2019.
 //  Copyright © 2019 Alessandro Saba. All rights reserved.
 //
-
+/*
 import UIKit
 import SwiftUI
 import WatchConnectivity
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate, WCSessionDelegate {
 
@@ -197,3 +198,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 	}
 }
 
+*/
