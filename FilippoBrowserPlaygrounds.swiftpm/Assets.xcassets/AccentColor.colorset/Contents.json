@@ -2,8 +2,8 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "universal",
-        "reference" : "quaternaryLabelColor"
+        "platform" : "ios",
+        "reference" : "systemFillColor"
       },
       "idiom" : "universal"
     }
