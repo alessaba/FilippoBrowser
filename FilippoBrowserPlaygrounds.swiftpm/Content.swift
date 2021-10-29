@@ -11,7 +11,9 @@ import UIKit
 import Foundation
 import FBrowserPackage
 
-//import FLEX
+#if canImport(FLEX)
+import FLEX
+#endif
 
 // MARK: Starting View
 // Starting point
@@ -43,24 +45,26 @@ struct Browser : View {
 						.padding(.vertical, 10)
 						.safeHover()
 						.onTapGesture {
-							#if os(iOS)
-							//FLEXManager.shared.showExplorer() // FLEX is only available in iOS
+							#if os(iOS) && canImport(FLEX)
+							FLEXManager.shared.showExplorer() // FLEX is only available in iOS
 							#endif
 							print("FLEX activated!")
 						}.contextMenu{
 							VStack{
 								Text("FilibboBrowser Toolbox")
 								
+								#if canImport(FLEX)
 								// Open FLEX
 								Button(action: {
 									print("FLEX activated!")
-									//FLEXManager.shared.showExplorer()
+									FLEXManager.shared.showExplorer()
 								}){
 									Image(systemName: "f.circle.fill")
 									Text("Open FLEX")
 								}
+								#endif
 								
-								// Test notification
+								// Test Notification
 								Button(action: {
 									print("Test notification triggered, wait 5 secs")
 									scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
@@ -87,7 +91,8 @@ struct Browser : View {
 							// The icon changes to reflect the outcome of the button
 							Image(systemName: gridStyleEnabled ? "list.bullet.circle.fill" :  "circle.grid.3x3.circle.fill")
 								.onTapGesture {
-									//userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
+									let oldVal = userDefaults.bool(forKey: "gridStyleEnabled")
+									userDefaults.set(!oldVal, forKey: "gridStyleEnabled")
 									gridStyleEnabled.toggle()
 								}
 						}

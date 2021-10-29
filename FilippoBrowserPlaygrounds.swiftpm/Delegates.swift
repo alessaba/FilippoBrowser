@@ -13,6 +13,7 @@ import UserNotifications
 let notificationCenter = UNUserNotificationCenter.current()
 
 
+@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -52,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate, WCSessionDelegate {
-	
+
 	var window: UIWindow?
 	
 	func isFolder(_ url : URL) -> Bool {
@@ -73,8 +74,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 		
 		// Se l'URL punta a un file, rimanda alla cartella che lo contiene
 		/*if !(isFolder(url)){
-		 launchPath = url.deletingLastPathComponent().path + "/"
-		 }*/
+			launchPath = url.deletingLastPathComponent().path + "/"
+		}*/
 		
 		DispatchQueue.main.async {
 			if let windowScene = scene as? UIWindowScene {
@@ -91,9 +92,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 	func scene(_ scene: UIScene,
 			   willConnectTo session: UISceneSession,
 			   options connectionOptions: UIScene.ConnectionOptions) {
-		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
+        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		
 		/* Process the quick action if the user selected one to launch the app.
 		 Grab a reference to the shortcutItem to use in the scene.*/
@@ -125,7 +126,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 				window.makeKeyAndVisible()
 			}
 		}
-	}
+    }
 	
 	func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem) async -> Bool {
 		launchShortcut(shortcutItem, with: windowScene)
@@ -137,20 +138,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
 			sheetBrowser(scene, at: url)
 		}
 	}
-	
+
 	func sceneDidBecomeActive(_ scene: UIScene) {
 		// Called when the scene has moved from an inactive state to an active state.
 		// Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
 		
 		print("Scene Did Become Active")
 	}
-	
+
 	func sceneWillEnterForeground(_ scene: UIScene) {
 		// Called as the scene transitions from the background to the foreground.
 		// Use this method to undo the changes made on entering the background.
 		UIApplication.shared.applicationIconBadgeNumber = 0
 	}
-	
+
 	
 	func userNotificationCenter(_ center: UNUserNotificationCenter,
 								willPresent notification: UNNotification,

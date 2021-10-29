@@ -11,14 +11,16 @@ import UIKit
 import Foundation
 import FBrowserPackage
 
+#if canImport(FLEX)
 import FLEX
+#endif
 
 // MARK: Starting View
 // Starting point
 struct Browser : View {
 	@State var path : String
 	@State private var gridStyleEnabled : Bool = userDefaults.bool(forKey: "gridStyleEnabled")
-    @State var presentSheet : Bool = false // We need it for presenting the sheet 🙄
+	@State var presentSheet : Bool = false // We need it for presenting the sheet 🙄
 	@State var presentRBSheet : Bool = false
 	
 	// We can make different layouts for different Accessibility Text Sizes
@@ -26,86 +28,89 @@ struct Browser : View {
 	
 	var body: some View {
 		NavigationView {
-			#warning("Would be nice to mantain the previous path before launching the sheet")
+		#warning("Would be nice to mantain the previous path before launching the sheet")
 			properView(for: FSItem(path: (presentSheet) ? "/" : path))
 				.navigationBarTitle(Text("File Browser"), displayMode: .inline)
-			.toolbar{
-				ToolbarItemGroup(placement: .navigationBarLeading){
-					
-					Image(systemName: "folder.circle.fill")
-						.padding(.vertical, 10)
-						.safeHover()
-						.onTapGesture {
-							self.presentRBSheet = true
-						}
-				
-					Image(systemName: "f.circle.fill")
-						.padding(.vertical, 10)
-						.safeHover()
-						.onTapGesture {
-							#if os(iOS)
-							FLEXManager.shared.showExplorer() // FLEX is only available in iOS
-							#endif
-							print("FLEX activated!")
-						}.contextMenu{
-							VStack{
-								Text("FilibboBrowser Toolbox")
-								
-								// Open FLEX
-								Button(action: {
-									print("FLEX activated!")
-									FLEXManager.shared.showExplorer()
-								}){
-									Image(systemName: "f.circle.fill")
-									Text("Open FLEX")
-								}
-								
-								// Test Notification
-								Button(action: {
-									print("Test notification triggered, wait 5 secs")
-									scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
-								}){
-									Image(systemName: "app.badge")
-									Text("Trigger Test Notification")
-								}
-								
-								// Switch Icons
-								Button(action: {
-									toggleAppIcons()
-								}){
-									Image(systemName: (UIDevice.current.model == "iPad") ? "apps.ipad" :  "apps.iphone")
-									Text("Toggle App Icons")
+				.toolbar{
+					ToolbarItemGroup(placement: .navigationBarLeading){
+						
+						Image(systemName: "folder.circle.fill")
+							.padding(.vertical, 10)
+							.safeHover()
+							.onTapGesture {
+								self.presentRBSheet = true
+							}
+						
+						Image(systemName: "f.circle.fill")
+							.padding(.vertical, 10)
+							.safeHover()
+							.onTapGesture {
+								#if os(iOS) && canImport(FLEX)
+								FLEXManager.shared.showExplorer() // FLEX is only available in iOS
+								#endif
+								print("FLEX activated!")
+							}.contextMenu{
+								VStack{
+									Text("FilibboBrowser Toolbox")
+									
+									#if canImport(FLEX)
+									// Open FLEX
+									Button(action: {
+										print("FLEX activated!")
+										FLEXManager.shared.showExplorer()
+									}){
+										Image(systemName: "f.circle.fill")
+										Text("Open FLEX")
+									}
+									#endif
+									
+									// Test Notification
+									Button(action: {
+										print("Test notification triggered, wait 5 secs")
+										scheduleTestNotif(item: FSItem(path: "/System/Library/Pearl/ReferenceFrames/reference-sparse__T_7.068740.bin"))
+									}){
+										Image(systemName: "app.badge")
+										Text("Trigger Test Notification")
+									}
+									
+									// Switch Icons
+									Button(action: {
+										toggleAppIcons()
+									}){
+										Image(systemName: (UIDevice.current.model == "iPad") ? "apps.ipad" :  "apps.iphone")
+										Text("Toggle App Icons")
+									}
 								}
 							}
-						}
-				}
-				
-				ToolbarItemGroup(placement: .navigationBarTrailing){
-					HStack{
-						// If the text size is small enough for the grid view, let the user enable it
-						if (dtSize < .accessibility2) {
-							// The icon changes to reflect the outcome of the button
-							Image(systemName: gridStyleEnabled ? "list.bullet.circle.fill" :  "circle.grid.3x3.circle.fill")
-								.onTapGesture {
-									userDefaults.flex_toggleBool(forKey: "gridStyleEnabled")
-									gridStyleEnabled.toggle()
-								}
-						}
-						
-						// Button Linked to the GoTo launchpad view
-						NavigationLink(destination: gotoView()){
-							Image(systemName: "arrow.right.circle.fill")
-								.padding(.vertical, 10)
-								.foregroundColor(.primary)
-								.safeHover()
+					}
+					
+					ToolbarItemGroup(placement: .navigationBarTrailing){
+						HStack{
+							// If the text size is small enough for the grid view, let the user enable it
+							if (dtSize < .accessibility2) {
+								// The icon changes to reflect the outcome of the button
+								Image(systemName: gridStyleEnabled ? "list.bullet.circle.fill" :  "circle.grid.3x3.circle.fill")
+									.onTapGesture {
+										let oldVal = userDefaults.bool(forKey: "gridStyleEnabled")
+										userDefaults.set(!oldVal, forKey: "gridStyleEnabled")
+										gridStyleEnabled.toggle()
+									}
+							}
+							
+							// Button Linked to the GoTo launchpad view
+							NavigationLink(destination: gotoView()){
+								Image(systemName: "arrow.right.circle.fill")
+									.padding(.vertical, 10)
+									.foregroundColor(.primary)
+									.safeHover()
+							}
 						}
 					}
 				}
-			}
 		}.sheet(isPresented: $presentSheet, onDismiss: {self.path = "/"}){
 			NavigationView { // Open a sheet in case of shortcut, URL launch or Notification launch
 				properView(for: FSItem(path: path))
-				.navigationBarTitle(Text("File Browser"), displayMode: .inline)
+					.navigationBarTitle(Text("File Browser"), displayMode: .inline)
 			}
 		}.sheet(isPresented: $presentRBSheet, onDismiss: nil){
 			FilesDocumentBrowser()
@@ -125,8 +130,8 @@ struct FileViewer : View {
 			if (self.file.itemType == .Image){
 				// Show a Image View if the file is a Image. More efficient than QuickLook
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
-				.resizable()
-				.aspectRatio(contentMode: .fit)
+					.resizable()
+					.aspectRatio(contentMode: .fit)
 			} else if (self.file.itemType == .threeD){
 				// Show a 3D Viewer if the file is 3D Representable
 				SceneView(filePath: self.file.path)
@@ -142,7 +147,7 @@ struct FileViewer : View {
 // MARK: Directory List Viewer
 // This is the directory browser, it shows files and subdirectories of a folder in list style
 struct DirectoryListBrowser : View {
-    @State private var searchText : String = ""
+	@State private var searchText : String = ""
 	@State private var sharePresented : Bool = false
 	var directory : FSItem
 	
@@ -163,49 +168,49 @@ struct DirectoryListBrowser : View {
 			}
 		}
 		
-        List(subelements) { subItem in
+		List(subelements) { subItem in
 			HStack{
-                    // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
-					Image(systemName: subItem.itemType.rawValue)
-						.foregroundColor((subItem.isEmpty) ? .gray : .green)
-                     
-                    //Name of the file/directory
-                    NavigationLink(destination: properView(for: subItem)){
-                        Text(subItem.lastComponent)
-                            .fontWeight(.semibold)
-                            .lineLimit(1)
-                            .foregroundColor(.blue)
-                            .padding(.leading)
-                            .contextMenu{
-								// Unified ContextMenu view between grid and list view
-								ItemContextMenu(subItem, sharePresented: $sharePresented)
-                            }
-					}.sheet(isPresented: $sharePresented, onDismiss: nil) {
-						// Present the share sheet
-						ShareView(activityItems: [subItem.url])
-					}
-					
-					// Don't show a subtext if the text accessibility setting is set too large, it's not THAT important for a user with low eyesight anyway
-					if dtSize < .xxxLarge {
-						//Detail SubText: Number of subelements in case of folders. Size of the file in case of files
-						if subItem.isFolder {
-							Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
-								.foregroundColor(.secondary)
-								.padding(.leading)
-						} else {
-							Text(subItem.fileSize)
-								.foregroundColor(.secondary)
-								.padding(.leading)
+				// Test for various file types and assign icons (SFSymbols, which are GREAT <3)
+				Image(systemName: subItem.itemType.rawValue)
+					.foregroundColor((subItem.isEmpty) ? .gray : .green)
+				
+				//Name of the file/directory
+				NavigationLink(destination: properView(for: subItem)){
+					Text(subItem.lastComponent)
+						.fontWeight(.semibold)
+						.lineLimit(1)
+						.foregroundColor(.blue)
+						.padding(.leading)
+						.contextMenu{
+							// Unified ContextMenu view between grid and list view
+							ItemContextMenu(subItem, sharePresented: $sharePresented)
 						}
-					}
-				}.swipeActions(edge: .leading, allowsFullSwipe: true){
-					Button{
-						subItem.isBookmarked.toggle()
-					} label: {
-						Image(systemName: subItem.isBookmarked ? "heart.slash" : "heart")
-					}.tint(.red)
+				}.sheet(isPresented: $sharePresented, onDismiss: nil) {
+					// Present the share sheet
+					ShareView(activityItems: [subItem.url])
 				}
+				
+				// Don't show a subtext if the text accessibility setting is set too large, it's not THAT important for a user with low eyesight anyway
+				if dtSize < .xxxLarge {
+					//Detail SubText: Number of subelements in case of folders. Size of the file in case of files
+					if subItem.isFolder {
+						Text("\(subItem.subelements.count) \((subItem.subelements.count != 1) ? "elements" : "element" )")
+							.foregroundColor(.secondary)
+							.padding(.leading)
+					} else {
+						Text(subItem.fileSize)
+							.foregroundColor(.secondary)
+							.padding(.leading)
+					}
+				}
+			}.swipeActions(edge: .leading, allowsFullSwipe: true){
+				Button{
+					subItem.isBookmarked.toggle()
+				} label: {
+					Image(systemName: subItem.isBookmarked ? "heart.slash" : "heart")
+				}.tint(.red)
 			}
+		}
 		.searchable(text: $searchText) // Search Bar
 		.navigationBarTitle(Text(directory.path), displayMode: .inline)
 	}
@@ -257,7 +262,7 @@ struct DirectoryGridBrowser : View {
 								.foregroundColor((subItem.isEmpty) ? .orange : .green)
 								.padding(.vertical, 5)
 								.padding(.horizontal, 30)
-
+							
 							//Name of the file/directory
 							NavigationLink(destination: properView(for: subItem)){
 								Text(subItem.lastComponent)
@@ -347,8 +352,8 @@ struct gotoView : View {
 				// Pre-defined bookmarks
 				BookmarkItem(name: "App Group ⌚️", path: appGroup_directory)
 				#if os(iOS) || os(watchOS)
-					BookmarkItem(name: "Media 🖥", path: "/var/mobile/Media/")
-					BookmarkItem(name: "Documents 🗂", path: documents_directory)
+				BookmarkItem(name: "Media 🖥", path: "/var/mobile/Media/")
+				BookmarkItem(name: "Documents 🗂", path: documents_directory)
 				BookmarkItem(name: "App Container 💾", path: tmp_directory.parentItem.path)
 				#endif
 				
@@ -360,11 +365,11 @@ struct gotoView : View {
 			}
 			.padding(.horizontal)
 			.searchable(text: $path, prompt: "Path").keyboardType(.URL)
-			}.onAppear{
-				userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
-					$0.starts(with: "FB_")
-				}
-			}.navigationTitle("Go To")
+		}.onAppear{
+			userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
+				$0.starts(with: "FB_")
+			}
+		}.navigationTitle("Go To")
 	}
 }
 
@@ -385,10 +390,10 @@ struct BookmarkItem: View {
 	
 	var color : Color{
 		switch self.type{
-			case .system:
-				return .blue
-			case .userAdded:
-				return .red
+		case .system:
+			return .blue
+		case .userAdded:
+			return .red
 		}
 	}
 	
@@ -427,25 +432,25 @@ struct BookmarkItem: View {
 			if type == .userAdded {
 				Button(role: .destructive,
 					   action: {
-							// Remove the bookmark
-							userDefaults.removeObject(forKey: key)
-							
-							// Make the Bookmarks list reload
-							defaultsList.removeAll{
-								$0 == key
-							}
-							
-							// Remove item from 3D Touch menu
-							UIApplication.shared.shortcutItems?.removeAll{ shortcut in
-								return shortcut.type == key
-							}
-							
-							print("Removed \"\(key)\"")
-						},
+					// Remove the bookmark
+					userDefaults.removeObject(forKey: key)
+					
+					// Make the Bookmarks list reload
+					defaultsList.removeAll{
+						$0 == key
+					}
+					
+					// Remove item from 3D Touch menu
+					UIApplication.shared.shortcutItems?.removeAll{ shortcut in
+						return shortcut.type == key
+					}
+					
+					print("Removed \"\(key)\"")
+				},
 					   label: {
-							Image(systemName: "bin.xmark.fill")
-							Text("Delete")
-						}
+					Image(systemName: "bin.xmark.fill")
+					Text("Delete")
+				}
 				)
 			}
 		}
@@ -489,7 +494,8 @@ func properView(for item: FSItem) -> AnyView {
 
 func scheduleTestNotif(item : FSItem){
 	let notificationContent = UNMutableNotificationContent()
-	notificationContent.badge = NSNumber(value: UIApplication.shared.applicationIconBadgeNumber + 1) 
+	let notificationCenter = UNUserNotificationCenter.current()
+	notificationContent.badge = NSNumber(value: UIApplication.shared.applicationIconBadgeNumber + 1)
 	notificationContent.title = "[TEST] Watch File"
 	notificationContent.body = "[TEST] Your Apple Watch just shared \(item.lastComponent) with you 😃"
 	notificationContent.userInfo = ["path" : item.path]
@@ -516,8 +522,8 @@ func toggleAppIcons(){
 
 #if DEBUG
 struct ContentView_Previews : PreviewProvider {
-    static var previews: some View {
-        Browser(path: "/")
-    }
+	static var previews: some View {
+		Browser(path: "/")
+	}
 }
 #endif
