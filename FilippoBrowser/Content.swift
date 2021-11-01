@@ -11,9 +11,7 @@ import UIKit
 import Foundation
 import FBrowserPackage
 
-#if canImport(FLEX)
 import FLEX
-#endif
 
 // MARK: Starting View
 // Starting point
@@ -45,7 +43,7 @@ struct Browser : View {
 							.padding(.vertical, 10)
 							.safeHover()
 							.onTapGesture {
-								#if os(iOS) && canImport(FLEX)
+								#if os(iOS)
 								FLEXManager.shared.showExplorer() // FLEX is only available in iOS
 								#endif
 								print("FLEX activated!")
@@ -53,7 +51,6 @@ struct Browser : View {
 								VStack{
 									Text("FilibboBrowser Toolbox")
 									
-									#if canImport(FLEX)
 									// Open FLEX
 									Button(action: {
 										print("FLEX activated!")
@@ -62,7 +59,6 @@ struct Browser : View {
 										Image(systemName: "f.circle.fill")
 										Text("Open FLEX")
 									}
-									#endif
 									
 									// Test Notification
 									Button(action: {
