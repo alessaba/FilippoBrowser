@@ -240,6 +240,7 @@
 		0B45B55C266CDB0B007E0DCA /* RootBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				0B45B56A266CDB0C007E0DCA /* RootBrowserUI */,
 				0BA1E75726FF7E0700ABD4B9 /* Code */,
 				0BA1E75826FF7E0E00ABD4B9 /* Misc */,
 			);
@@ -259,6 +260,7 @@
 		0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */ = {
 			isa = PBXGroup;
 			children = (
+				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
 				0B9301E423806D6E0039A1AB /* FilippoBrowser WatchKit App.entitlements */,
 				0B4BED88233531D9005E5BB1 /* Interface.storyboard */,
 				0B4BED8B233531DA005E5BB1 /* Assets.xcassets */,
@@ -339,6 +341,7 @@
 		0BBC8B752349D7FF007A6EFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0B31FF552672226F008BA335 /* FBrowserPackage */,
 				0B12893F270F5FA8008CB412 /* QuickLook.framework */,
 			);
 			name = Frameworks;
@@ -351,10 +354,7 @@
 				0BC8694B272AA7C700CBC4BD /* FilippoBrowserPlaygrounds.swiftpm */,
 				0BD2431D22AD5296006A4929 /* FilippoBrowser */,
 				0B4BED87233531D9005E5BB1 /* FilippoBrowser WatchKit App */,
-				0B4BED96233531DA005E5BB1 /* FilippoBrowser WatchKit Extension */,
 				0B45B55C266CDB0B007E0DCA /* RootBrowser */,
-				0B45B56A266CDB0C007E0DCA /* RootBrowserUI */,
-				0B31FF552672226F008BA335 /* FBrowserPackage */,
 				0B128941270F5FA8008CB412 /* PropertyLister */,
 				0BD2431C22AD5296006A4929 /* Products */,
 				0BBC8B752349D7FF007A6EFB /* Frameworks */,
