@@ -35,7 +35,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(path: "/Users/filippoclaudi/Developer/FilippoBrowser/FBrowserPackage"),
+        .package(path: "../FBrowserPackage"),
         .package(url: "https://github.com/FLEXTool/FLEX.git", .branch("wip/spm"))
     ],
     targets: [
