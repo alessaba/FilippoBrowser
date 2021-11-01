@@ -34,8 +34,7 @@
 		0B4BED9E233531DA005E5BB1 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BED9D233531DA005E5BB1 /* ComplicationController.swift */; };
 		0B4BEDA0233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED9F233531DA005E5BB1 /* Assets.xcassets */; };
 		0B4BEDA3233531DA005E5BB1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */; };
-		0B671732242BB97D00311160 /* FLEX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B671726242BB81C00311160 /* FLEX.framework */; };
-		0B671733242BB97D00311160 /* FLEX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0B671726242BB81C00311160 /* FLEX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0BB4D57F2730552100B435EA /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB4D57E2730552100B435EA /* FLEX */; };
 		0BCD008E272C2832000E969A /* Delegates.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0BD2432022AD5296006A4929 /* Delegates.swift */; };
 		0BCD008F272C2832000E969A /* BridgedViews.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0B41F9AF2672643F0087EF41 /* BridgedViews.swift */; };
 		0BCD0090272C2AAC000E969A /* Content.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0BD2432222AD5296006A4929 /* Content.swift */; };
@@ -81,17 +80,6 @@
 				0B4BED93233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BBC8B6A2349D3AF007A6EFB /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				0B671733242BB97D00311160 /* FLEX.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0BCD008D272C2749000E969A /* CopyFiles */ = {
@@ -155,7 +143,6 @@
 		0B4BED9F233531DA005E5BB1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0B4BEDA4233531DA005E5BB1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0B671726242BB81C00311160 /* FLEX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FLEX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B9301E423806D6E0039A1AB /* FilippoBrowser WatchKit App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FilippoBrowser WatchKit App.entitlements"; sourceTree = "<group>"; };
 		0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FilippoBrowser.entitlements; sourceTree = "<group>"; };
 		0B9F5407257FD5A6004365E5 /* FilippoBrowser WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "FilippoBrowser WatchKit Extension.entitlements"; sourceTree = "<group>"; };
@@ -211,8 +198,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B671732242BB97D00311160 /* FLEX.framework in Frameworks */,
 				0B31FF5726722682008BA335 /* FBrowserPackage in Frameworks */,
+				0BB4D57F2730552100B435EA /* FLEX in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +339,6 @@
 		0BBC8B752349D7FF007A6EFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0B671726242BB81C00311160 /* FLEX.framework */,
 				0B12893F270F5FA8008CB412 /* QuickLook.framework */,
 			);
 			name = Frameworks;
@@ -508,7 +494,6 @@
 				0BD2431822AD5296006A4929 /* Frameworks */,
 				0BD2431922AD5296006A4929 /* Resources */,
 				0BD2434122AD52C0006A4929 /* Embed App Extensions */,
-				0BBC8B6A2349D3AF007A6EFB /* Embed Frameworks */,
 				0BCD008D272C2749000E969A /* CopyFiles */,
 			);
 			buildRules = (
@@ -520,6 +505,7 @@
 			name = FilippoBrowser;
 			packageProductDependencies = (
 				0B31FF5626722682008BA335 /* FBrowserPackage */,
+				0BB4D57E2730552100B435EA /* FLEX */,
 			);
 			productName = ShortcutParamTest;
 			productReference = 0BD2431B22AD5296006A4929 /* FilippoBrowser.app */;
@@ -564,6 +550,9 @@
 				Base,
 			);
 			mainGroup = 0BD2431222AD5296006A4929;
+			packageReferences = (
+				0BB4D57B2730550500B435EA /* XCRemoteSwiftPackageReference "FLEX" */,
+			);
 			productRefGroup = 0BD2431C22AD5296006A4929 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1257,6 +1246,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		0BB4D57B2730550500B435EA /* XCRemoteSwiftPackageReference "FLEX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FLEXTool/FLEX.git";
+			requirement = {
+				branch = wip/spm;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		0B31FF5626722682008BA335 /* FBrowserPackage */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1265,6 +1265,11 @@
 		0B31FF58267226DD008BA335 /* FBrowserPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FBrowserPackage;
+		};
+		0BB4D57E2730552100B435EA /* FLEX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0BB4D57B2730550500B435EA /* XCRemoteSwiftPackageReference "FLEX" */;
+			productName = FLEX;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

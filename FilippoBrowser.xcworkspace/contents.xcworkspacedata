@@ -4,7 +4,4 @@
    <FileRef
       location = "container:FilippoBrowser.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:FLEX/FLEX.xcodeproj">
-   </FileRef>
 </Workspace>
