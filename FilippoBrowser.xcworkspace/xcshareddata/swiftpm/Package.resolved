@@ -5,8 +5,8 @@
         "package": "FLEX",
         "repositoryURL": "https://github.com/FLEXTool/FLEX.git",
         "state": {
-          "branch": "wip/spm",
-          "revision": "adff9e1250b8752e97db5ee4e8395f2ae4cd8d87",
+          "branch": "master",
+          "revision": "d15e72c681941640e5c16304284885fed856edeb",
           "version": null
         }
       }

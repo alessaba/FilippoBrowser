@@ -850,7 +850,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 120921;
 				DEVELOPMENT_TEAM = 974TR9G2UN;
-				INFOPLIST_FILE = RootBrowserUI/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/RootBrowser/RootBrowserUI/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -872,7 +872,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 120921;
 				DEVELOPMENT_TEAM = 974TR9G2UN;
-				INFOPLIST_FILE = RootBrowserUI/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/RootBrowser/RootBrowserUI/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -952,7 +952,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"FilippoBrowser WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "FilippoBrowser WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -979,7 +979,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"FilippoBrowser WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "FilippoBrowser WatchKit Extension/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1251,7 +1251,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/FLEXTool/FLEX.git";
 			requirement = {
-				branch = wip/spm;
+				branch = master;
 				kind = branch;
 			};
 		};
