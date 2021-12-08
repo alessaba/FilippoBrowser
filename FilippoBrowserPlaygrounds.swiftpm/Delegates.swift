@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		// Override point for customization after application launch.
-		
+		UserDefaults.standard.set(false, forKey:"_UIConstraintBasedLayoutLogUnsatisfiable")
 		// Notification Permission request
 		notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]){ _,_ in
 			print("Notification Authorization Granted.")
