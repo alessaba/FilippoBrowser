@@ -1,0 +1,3 @@
+[submodule "FilippoBrowserPlaygrounds.swiftpm"]
+	path = FilippoBrowserPlaygrounds.swiftpm
+	url = https://github.com/alessaba/FilippoBrowserPlaygrounds.swiftpm.git
