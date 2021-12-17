@@ -35,10 +35,6 @@
 		0B4BEDA0233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED9F233531DA005E5BB1 /* Assets.xcassets */; };
 		0B4BEDA3233531DA005E5BB1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BEDA2233531DA005E5BB1 /* Preview Assets.xcassets */; };
 		0BB4D57F2730552100B435EA /* FLEX in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB4D57E2730552100B435EA /* FLEX */; };
-		0BCD008E272C2832000E969A /* Delegates.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0BD2432022AD5296006A4929 /* Delegates.swift */; };
-		0BCD008F272C2832000E969A /* BridgedViews.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0B41F9AF2672643F0087EF41 /* BridgedViews.swift */; };
-		0BCD0090272C2AAC000E969A /* Content.swift in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0BD2432222AD5296006A4929 /* Content.swift */; };
-		0BCD0091272C2ADA000E969A /* Assets.xcassets in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0BD2432422AD5297006A4929 /* Assets.xcassets */; };
 		0BD2432122AD5296006A4929 /* Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2432022AD5296006A4929 /* Delegates.swift */; };
 		0BD2432322AD5296006A4929 /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BD2432222AD5296006A4929 /* Content.swift */; };
 		0BD2432522AD5298006A4929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432422AD5297006A4929 /* Assets.xcassets */; };
@@ -80,19 +76,6 @@
 				0B4BED93233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0BCD008D272C2749000E969A /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /Users/filippoclaudi/Developer/FilippoBrowser/FilippoBrowserPlaygrounds.swiftpm;
-			dstSubfolderSpec = 0;
-			files = (
-				0BCD0091272C2ADA000E969A /* Assets.xcassets in CopyFiles */,
-				0BCD0090272C2AAC000E969A /* Content.swift in CopyFiles */,
-				0BCD008E272C2832000E969A /* Delegates.swift in CopyFiles */,
-				0BCD008F272C2832000E969A /* BridgedViews.swift in CopyFiles */,
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		0BD2434122AD52C0006A4929 /* Embed App Extensions */ = {
@@ -494,7 +477,6 @@
 				0BD2431822AD5296006A4929 /* Frameworks */,
 				0BD2431922AD5296006A4929 /* Resources */,
 				0BD2434122AD52C0006A4929 /* Embed App Extensions */,
-				0BCD008D272C2749000E969A /* CopyFiles */,
 			);
 			buildRules = (
 			);
