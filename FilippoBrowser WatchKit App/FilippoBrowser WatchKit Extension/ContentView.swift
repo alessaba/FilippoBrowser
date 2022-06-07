@@ -30,7 +30,7 @@ struct FileViewer : View {
 				.onAppear{
 					let newUrl = tmp_directory.urlByAppending(path: self.file.lastComponent)
 					try? fileManager.copyItem(at: self.file.url, to: newUrl)
-					session.transferFile(newPath, metadata: nil)
+					session.transferFile(newUrl, metadata: nil)
 					print("File \(self.file.lastComponent) transferred to iPhone (maybe)")
 				}
 			}
@@ -84,7 +84,7 @@ struct DirectoryBrowser : View {
                 HStack{
                     // Test for various file types and assign icons (SFSymbols, which are GREAT <3)
 					Image(systemName: subItem.itemType.rawValue)
-                    .foregroundColor((subItem.rootProtected) ? .gray : .green)
+                    .foregroundColor((subItem.isEmpty) ? .gray : .green)
 					
 					Spacer().frame(width:10)
                     
@@ -134,7 +134,7 @@ struct gotoView : View {
 			
 			// Pre-defined bookmarks
 			BookmarkItem(name: "Media 🖥", path: "/var/mobile/Media/")
-			BookmarkItem(name: "App Container 💾", path: parentDirectory(tmp_directory.path))
+			BookmarkItem(name: "App Container 💾", path: tmp_directory.parentItem.path)
 			
 			// User Added Bookmarks
 			ForEach(userDefaultsKeys){ key in
@@ -148,7 +148,7 @@ struct gotoView : View {
 			
 			Spacer()
 			
-			HStack{
+			/*HStack{
 				Gauge(value: usedSpace(),
 					  in: 0...totalCapacity(),
 					  label: {Text("GB")},
@@ -157,7 +157,7 @@ struct gotoView : View {
 					.gaugeStyle(CircularGaugeStyle(tint: .indigo))
 			}.onTapGesture {
 				print("Total Space: \(totalCapacity())")
-			}
+			}*/
 			
 		}.onAppear{
 			userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
@@ -275,7 +275,7 @@ func totalCapacity() -> Double {
 	if let resvalues = resvalues{
 		return round(Double(0 - (resvalues.volumeTotalCapacity ?? 0)) * 0.000000011835758)
 	} else {
-		return 0
+		return 1
 	}
 }
 
@@ -283,7 +283,7 @@ func usedSpace() -> Double {
 	if let resvalues = resvalues{
 		return (Double(resvalues.volumeAvailableCapacity ?? 0) / 1000000000) * 16
 	} else {
-		return 0
+		return 1
 	}
 }
 
