@@ -76,8 +76,8 @@ func **(sinistra: Int, destra: Int) -> Int {
 	return result
 }
 
-func md5(_ str : String) -> String {
-	String(CryptoKit.Insecure.MD5.hash(data: str.data(using: .utf8) ?? Data()).description.dropFirst(12))
+func hash(_ str : String) -> String {
+	String(CryptoKit.SHA256.hash(data: str.data(using: .utf8) ?? Data()).description.dropFirst(15))
 }
 
 // MARK: Troubleshooting Functions
@@ -86,14 +86,17 @@ func md5(_ str : String) -> String {
 // We could have also done this at the first v4 launch, then checking every launch if a userdefault named "v4Upgraded" was true. But i am going to use this manually in the "secret" debug menu
 public func bookmarksUpgrade_4(){
 	let oldKeys = userDefaults.dictionaryRepresentation().keys.filter{
-		($0.starts(with: "FB_"))
+		($0.starts(with: "FB4_"))
 	}
+	
+	rebuildShortcuts()
 	
 	for k in oldKeys {
 		let val = userDefaults.string(forKey:k)
-		print("Setting \("FB4_\(md5(val!))") for \(val!.dropLast(1))")
-		userDefaults.set(val!.dropLast(1), forKey: "FB4_\(md5(val!))")
+		print("Setting \("FB4_\(hash(val!))") for \(val!.dropLast(1))")
 		userDefaults.removeObject(forKey: k)
+		setFavorite(FSItem(path: val!))
+		//userDefaults.set(val!.dropLast(1), forKey: "FB4_\(hash(val!))")
 	}
 	
 	print(oldKeys.description)

@@ -40,19 +40,19 @@ public class FSItem : Identifiable, Equatable {
 	// MARK: Initializers
 	// We just need the path to initialize a FSItem. Everithing else can be computed.
 	public init(path: String) {
-		self.id = UUID(uuidString: md5(path)) ?? UUID()
+		self.id = UUID(uuidString: hash(path)) ?? UUID()
 		self.path = path
 	}
 	
 	public init(url: URL){
-		self.id = UUID(uuidString: md5(path)) ?? UUID()
+		self.id = UUID(uuidString: hash(path)) ?? UUID()
 		self.path = url.path
 	}
 	
 	// MARK: Properties
 	
 	public var uuid : String{
-		return md5(self.path)
+		return hash(self.path)
 	}
 	
 	public var url : URL {

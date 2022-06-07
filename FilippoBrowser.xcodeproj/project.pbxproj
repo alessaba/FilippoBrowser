@@ -23,11 +23,11 @@
 		0B45B562266CDB0B007E0DCA /* FileProviderEnumerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B561266CDB0B007E0DCA /* FileProviderEnumerator.swift */; };
 		0B45B56C266CDB0C007E0DCA /* DocumentActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B45B56B266CDB0C007E0DCA /* DocumentActionViewController.swift */; };
 		0B45B56F266CDB0C007E0DCA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B45B56D266CDB0C007E0DCA /* MainInterface.storyboard */; };
-		0B45B573266CDB0C007E0DCA /* RootBrowserUI.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0B45B569266CDB0C007E0DCA /* RootBrowserUI.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		0B45B576266CDB0C007E0DCA /* RootBrowser.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0B45B55B266CDB0B007E0DCA /* RootBrowser.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0B45B573266CDB0C007E0DCA /* RootBrowserUI.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0B45B569266CDB0C007E0DCA /* RootBrowserUI.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0B45B576266CDB0C007E0DCA /* RootBrowser.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0B45B55B266CDB0B007E0DCA /* RootBrowser.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0B4BED8A233531D9005E5BB1 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED88233531D9005E5BB1 /* Interface.storyboard */; };
 		0B4BED8C233531DA005E5BB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B4BED8B233531DA005E5BB1 /* Assets.xcassets */; };
-		0B4BED93233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0B4BED92233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		0B4BED93233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0B4BED92233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0B4BED98233531DA005E5BB1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BED97233531DA005E5BB1 /* ContentView.swift */; };
 		0B4BED9A233531DA005E5BB1 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BED99233531DA005E5BB1 /* HostingController.swift */; };
 		0B4BED9C233531DA005E5BB1 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4BED9B233531DA005E5BB1 /* ExtensionDelegate.swift */; };
@@ -67,27 +67,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		0B4BEDAA233531DA005E5BB1 /* Embed App Extensions */ = {
+		0B4BEDAA233531DA005E5BB1 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				0B4BED93233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex in Embed App Extensions */,
+				0B4BED93233531DA005E5BB1 /* FilippoBrowser WatchKit Extension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0BD2434122AD52C0006A4929 /* Embed App Extensions */ = {
+		0BD2434122AD52C0006A4929 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				0B45B573266CDB0C007E0DCA /* RootBrowserUI.appex in Embed App Extensions */,
-				0B45B576266CDB0C007E0DCA /* RootBrowser.appex in Embed App Extensions */,
+				0B45B573266CDB0C007E0DCA /* RootBrowserUI.appex in Embed Foundation Extensions */,
+				0B45B576266CDB0C007E0DCA /* RootBrowser.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -434,7 +434,7 @@
 			buildConfigurationList = 0B4BEDAE233531DA005E5BB1 /* Build configuration list for PBXNativeTarget "FilippoBrowser WatchKit App" */;
 			buildPhases = (
 				0B4BED81233531D9005E5BB1 /* Resources */,
-				0B4BEDAA233531DA005E5BB1 /* Embed App Extensions */,
+				0B4BEDAA233531DA005E5BB1 /* Embed Foundation Extensions */,
 				0BBC8B7A2349D7FF007A6EFB /* Frameworks */,
 			);
 			buildRules = (
@@ -474,7 +474,7 @@
 				0BD2431722AD5296006A4929 /* Sources */,
 				0BD2431822AD5296006A4929 /* Frameworks */,
 				0BD2431922AD5296006A4929 /* Resources */,
-				0BD2434122AD52C0006A4929 /* Embed App Extensions */,
+				0BD2434122AD52C0006A4929 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -498,7 +498,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = "Filippo Claudi";
 				TargetAttributes = {
 					0B12893D270F5FA8008CB412 = {

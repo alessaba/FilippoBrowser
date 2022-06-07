@@ -19,7 +19,7 @@ let homeDirectory = URL(fileURLWithPath: "/")
 var identifierLookupTable : [NSFileProviderItemIdentifier : URL] = [NSFileProviderItemIdentifier.rootContainer : homeDirectory]
 
 func hashIdentifier(_ url: URL) -> NSFileProviderItemIdentifier {
- let hash = String(CryptoKit.Insecure.MD5.hash(data: url.absoluteString.data(using: .utf8) ?? Data()).description.dropFirst(12))
+ let hash = String(CryptoKit.SHA256.hash(data: url.absoluteString.data(using: .utf8) ?? Data()).description.dropFirst(15))
  return NSFileProviderItemIdentifier(hash)
  }
 
