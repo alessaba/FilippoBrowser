@@ -44,12 +44,12 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 	
 	var itemIdentifier: NSFileProviderItemIdentifier {
 		let url = self.fileURL
-		return (url == homeDirectory) ? .rootContainer : md5Identifier(url)
+		return (url == homeDirectory) ? .rootContainer : hashIdentifier(url)
 	}
 	
     var parentItemIdentifier: NSFileProviderItemIdentifier {
 		let url = self.fileURL.deletingLastPathComponent()
-		return (url == homeDirectory) ? .rootContainer : md5Identifier(url)
+		return (url == homeDirectory) ? .rootContainer : hashIdentifier(url)
 	}
 	
 	var childItemCount: NSNumber? {

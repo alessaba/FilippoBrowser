@@ -76,6 +76,15 @@ struct Browser : View {
 										Image(systemName: (UIDevice.current.model == "iPad") ? "apps.ipad" :  "apps.iphone")
 										Text("Toggle App Icons")
 									}
+									
+									// Switch Icons
+									Button(action: {
+										bookmarksUpgrade_4()
+									}){
+										Image(systemName: "arrow.clockwise.heart.fill")
+										Text("Upgrade Bookmarks")
+									}
+									
 								}
 							}
 					}
@@ -363,7 +372,7 @@ struct gotoView : View {
 			.searchable(text: $path, prompt: "Path").keyboardType(.URL)
 		}.onAppear{
 			userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
-				$0.starts(with: "FB_")
+				$0.starts(with: "FB4_")
 			}
 		}.navigationTitle("Go To")
 	}
@@ -405,8 +414,8 @@ struct BookmarkItem: View {
 	// Used for user added bookmarks
 	init(key: String, defaultsArray : Binding<Array<String>>){
 		self.key = key
-		self.name = String(key.split(separator: "_").last!)
 		self.path = String(userDefaults.string(forKey: key) ?? "/")
+		self.name = String(self.path.split(by: "/").last ?? "???")
 		self.type = .userAdded
 		self._defaultsList = defaultsArray
 	}
@@ -441,7 +450,7 @@ struct BookmarkItem: View {
 						return shortcut.type == key
 					}
 					
-					print("Removed \"\(key)\"")
+					print("Removed \(self.name) (\"\(key)\")")
 				},
 					   label: {
 					Image(systemName: "bin.xmark.fill")
@@ -489,6 +498,7 @@ func properView(for item: FSItem) -> AnyView {
 }
 
 func scheduleTestNotif(item : FSItem){
+	#warning("Could try to add a dynamic notification too, with a countdown")
 	let notificationContent = UNMutableNotificationContent()
 	let notificationCenter = UNUserNotificationCenter.current()
 	notificationContent.badge = NSNumber(value: UIApplication.shared.applicationIconBadgeNumber + 1)

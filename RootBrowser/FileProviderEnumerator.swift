@@ -9,7 +9,7 @@
 import FileProvider
 
 func createLocalReference(to sourceURL : URL){
-	let id = md5Identifier(sourceURL)
+	let id = hashIdentifier(sourceURL)
 	identifierLookupTable[id] = sourceURL
 	
 	//NSFileProviderManager.default.documentStorageURL

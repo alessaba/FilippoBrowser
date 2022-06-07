@@ -28,7 +28,7 @@ public struct ItemContextMenu : View {
 			// Add/Remove Favourite button
 			Button(action: {
 				subItem.isBookmarked.toggle()
-				let newFavorite = UIMutableApplicationShortcutItem(type: "FB_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+				let newFavorite = UIMutableApplicationShortcutItem(type: "FB4_\(subItem.lastComponent)", localizedTitle: subItem.lastComponent, localizedSubtitle: subItem.path, icon: UIApplicationShortcutIcon(systemImageName: subItem.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
 				UIApplication.shared.shortcutItems?.append(newFavorite)
 				
 			}){

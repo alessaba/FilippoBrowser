@@ -7,17 +7,18 @@
 
 import Foundation
 import SwiftUI
+import CryptoKit
 
 public let userDefaults : UserDefaults = UserDefaults.standard
 public let fileManager : FileManager = FileManager.default
 
 public let appGroup_directory = (fileManager.containerURL(forSecurityApplicationGroupIdentifier: "group.FilippoBrowser") ?? URL(string: "file://")!).path + "/"
-public let documents_directory = (fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]).path + "/"
+public let documents_directory = (fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]).path + "/" //URL.documentsDirectory
 public let tmp_directory =  FSItem(url: fileManager.temporaryDirectory)
 
 
 public func setFavorite(name: String, path: String) {
-	userDefaults.set(path, forKey: "FB_\(name)")
+	userDefaults.set(path, forKey: "FB4_\(name)")
 	userDefaults.synchronize()
 }
 
@@ -61,4 +62,34 @@ extension String : Identifiable{
 	public var id : UUID {
 		return UUID()
 	}
+}
+
+infix operator **
+func **(sinistra: Int, destra: Int) -> Int {
+	var result : Int = 1
+	for _ in 1...destra{
+		result *= sinistra
+	}
+	return result
+}
+
+func md5(_ str : String) -> String {
+	String(CryptoKit.Insecure.MD5.hash(data: str.data(using: .utf8) ?? Data()).description.dropFirst(12))
+}
+
+// v4 introduced a different way of handling bookmarks. let's make a function to convert old ones at launch
+// We could have also done this at the first v4 launch, then checking every launch if a userdefault named "v4Upgraded" was true. But i am going to use this manually in the "secret" debug menu
+public func bookmarksUpgrade_4(){
+	let oldKeys = userDefaults.dictionaryRepresentation().keys.filter{
+		($0.starts(with: "FB_"))
+	}
+	
+	for k in oldKeys {
+		let val = userDefaults.string(forKey:k)
+		print("Setting \("FB4_\(md5(val!))") for \(val!.dropLast(1))")
+		userDefaults.set(val!.dropLast(1), forKey: "FB4_\(md5(val!))")
+		userDefaults.removeObject(forKey: k)
+	}
+	
+	print(oldKeys.description)
 }

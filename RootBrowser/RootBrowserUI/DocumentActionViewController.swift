@@ -20,7 +20,7 @@ class DocumentActionViewController: FPUIActionExtensionViewController {
 		for id in itemIdentifiers{
 			let url = identifierLookupTable[id]
 			guard (url != nil) else {
-				NSLog("Couln't get path from lookup table")
+				print("Couln't get path from lookup table")
 				return
 			}
 			print("typeID: \(FileProviderItem(url: url!).typeIdentifier)")

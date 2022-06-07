@@ -22,7 +22,7 @@ public enum ItemType : String {
 
 public class FSItem : Identifiable, Equatable {
 	
-	public var id =  UUID()
+	public var id : UUID
 	public var path : String = ""
 	
 	// MARK: Operatori
@@ -40,14 +40,20 @@ public class FSItem : Identifiable, Equatable {
 	// MARK: Initializers
 	// We just need the path to initialize a FSItem. Everithing else can be computed.
 	public init(path: String) {
+		self.id = UUID(uuidString: md5(path)) ?? UUID()
 		self.path = path
 	}
 	
 	public init(url: URL){
+		self.id = UUID(uuidString: md5(path)) ?? UUID()
 		self.path = url.path
 	}
 	
 	// MARK: Properties
+	
+	private var uuid : String{
+		return md5(self.path)
+	}
 	
 	public var url : URL {
 		URL(fileURLWithPath: self.path)
@@ -176,20 +182,19 @@ public class FSItem : Identifiable, Equatable {
 	// This computed variable is used both for verifying if a item is bookmarked, and for adding/removing the item in Bookmarks
 	public var isBookmarked : Bool {
 		get{
-			#warning("We could have multiple bookmarks with the same name")
 			// Verify if we have a bookmark with that name.
-			return (UserDefaults.standard.value(forKey: "FB_\(self.lastComponent)") != nil)
+			return (UserDefaults.standard.value(forKey: "FB4_\(self.uuid)") != nil)
 		}
 		set{
 			let name = self.lastComponent
 			if (newValue == true){
 				// Add a Favourite to Bookmarks
 				print("Adding favourite \"\(name)\"")
-				setFavorite(name: name, path: self.path)
+				setFavorite(name: self.uuid, path: self.path)
 			} else {
 				// Remove a Favourite from Bookmarks
 				print("Removing favourite \"\(name)\"")
-				UserDefaults.standard.removeObject(forKey: "FB_\(name)")
+				UserDefaults.standard.removeObject(forKey: "FB4_\(self.uuid)")
 			}
 		}
 	}
@@ -203,16 +208,3 @@ public class FSItem : Identifiable, Equatable {
 		return self.urlByAppending(path: path).path
 	}
 }
-
-/*
-// Tries to read files
-public func readFile(_ path: String) -> Data {
-	var data : Data
-	do{
-		data = try Data(contentsOf: URL(string: "file://" + path)!)
-	} catch {
-		data = Data()
-	}
-	return data
-}
-*/

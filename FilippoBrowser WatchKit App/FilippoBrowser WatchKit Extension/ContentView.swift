@@ -161,7 +161,7 @@ struct gotoView : View {
 			
 		}.onAppear{
 			userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
-				return $0.starts(with: "FB_")
+				return $0.starts(with: "FB4_")
 			}
 		}
 	}
