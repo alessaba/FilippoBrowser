@@ -49,7 +49,9 @@ struct Browser : View {
 								print("FLEX activated!")
 							}.contextMenu{
 								VStack{
-									Text("FilibboBrowser Toolbox")
+									Text("FilippoBrowser Toolbox")
+									
+									Divider()
 									
 									// Open FLEX
 									Button(action: {
@@ -77,12 +79,24 @@ struct Browser : View {
 										Text("Toggle App Icons")
 									}
 									
-									// Switch Icons
-									Button(action: {
+									Divider()
+									
+									// Upgrade bookmarks to V4
+									Button(role: .destructive
+									,action: {
 										bookmarksUpgrade_4()
 									}){
 										Image(systemName: "arrow.clockwise.heart.fill")
 										Text("Upgrade Bookmarks")
+									}
+									
+									// Delete Launch Shortcuts
+									Button(role: .destructive
+									,action: {
+										bookmarksUpgrade_4()
+									}){
+										Image(systemName: "questionmark.app.dashed")
+										Text("Reset Shortcuts")
 									}
 									
 								}

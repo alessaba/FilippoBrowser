@@ -17,9 +17,12 @@ public let documents_directory = (fileManager.urls(for: .documentDirectory, in: 
 public let tmp_directory =  FSItem(url: fileManager.temporaryDirectory)
 
 
-public func setFavorite(name: String, path: String) {
-	userDefaults.set(path, forKey: "FB4_\(name)")
+public func setFavorite(_ item : FSItem){ //(name: String, path: String) {
+	userDefaults.set(item.path, forKey: "FB4_\(item.uuid)")
 	userDefaults.synchronize()
+	
+	let newFavorite = UIMutableApplicationShortcutItem(type: "FB4_\(item.uuid)", localizedTitle: item.lastComponent, localizedSubtitle: item.path, icon: UIApplicationShortcutIcon(systemImageName: item.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
+	UIApplication.shared.shortcutItems?.append(newFavorite)
 }
 
 /*
@@ -77,6 +80,8 @@ func md5(_ str : String) -> String {
 	String(CryptoKit.Insecure.MD5.hash(data: str.data(using: .utf8) ?? Data()).description.dropFirst(12))
 }
 
+// MARK: Troubleshooting Functions
+
 // v4 introduced a different way of handling bookmarks. let's make a function to convert old ones at launch
 // We could have also done this at the first v4 launch, then checking every launch if a userdefault named "v4Upgraded" was true. But i am going to use this manually in the "secret" debug menu
 public func bookmarksUpgrade_4(){
@@ -92,4 +97,9 @@ public func bookmarksUpgrade_4(){
 	}
 	
 	print(oldKeys.description)
+}
+
+public func rebuildShortcuts(){
+	UIApplication.shared.shortcutItems?.removeAll()
+	//setFavorite(<#T##item: FSItem##FSItem#>)
 }

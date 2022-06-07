@@ -51,7 +51,7 @@ public class FSItem : Identifiable, Equatable {
 	
 	// MARK: Properties
 	
-	private var uuid : String{
+	public var uuid : String{
 		return md5(self.path)
 	}
 	
@@ -190,7 +190,7 @@ public class FSItem : Identifiable, Equatable {
 			if (newValue == true){
 				// Add a Favourite to Bookmarks
 				print("Adding favourite \"\(name)\"")
-				setFavorite(name: self.uuid, path: self.path)
+				setFavorite(self)
 			} else {
 				// Remove a Favourite from Bookmarks
 				print("Removing favourite \"\(name)\"")
