@@ -44,6 +44,7 @@ struct DirectoryBrowser : View {
     @State private var searchText : String = ""
     @State private var gotoView_presented : Bool = false
 	@State private var bookmarkButtonPressed : Bool = false
+	@State private var resetAlertPresented : Bool = false
 
     var directory : FSItem
 
@@ -63,6 +64,12 @@ struct DirectoryBrowser : View {
 							// Add/Remove from Favourites button
 							Image(systemName: (directory.isBookmarked || bookmarkButtonPressed) ? "heart.slash" : "heart.fill").foregroundColor(.red)
 							Text((directory.isBookmarked || bookmarkButtonPressed) ? " Remove from Favourites" : "  Add to Favorites")
+								.onLongPressGesture {
+									self.resetAlertPresented = true
+								}
+						}.alert("Reset Bookmarks", isPresented: $resetAlertPresented){
+							Button("Reset", role: .destructive){bookmarksUpgrade_4()}
+							Button("Cancel", role: .cancel){}
 						}
 					}
 				}
@@ -148,16 +155,16 @@ struct gotoView : View {
 			
 			Spacer()
 			
-			/*HStack{
-				Gauge(value: usedSpace(),
+			HStack{
+				Gauge(value: usedCapacity(),
 					  in: 0...totalCapacity(),
 					  label: {Text("GB")},
-					  currentValueLabel: {Text(String(format: "%.2f", usedSpace())).foregroundColor(.indigo)}
+					  currentValueLabel: {Text(GBFormatter(usedCapacity())).foregroundColor(.indigo).dynamicTypeSize(.small)}
 				)
 					.gaugeStyle(CircularGaugeStyle(tint: .indigo))
 			}.onTapGesture {
-				print("Total Space: \(totalCapacity())")
-			}*/
+				print("Total Space: \(GBFormatter(totalCapacity()))")
+			}
 			
 		}.onAppear{
 			userDefaultsKeys = userDefaults.dictionaryRepresentation().keys.filter{
@@ -177,8 +184,8 @@ struct BookmarkItem: View {
 	}
 	
 	var key : String
-	var name : String
 	var path : String
+	var name : String
 	var type : BookmarkItemType
 	
 	@Binding var defaultsList : [String]
@@ -197,8 +204,8 @@ struct BookmarkItem: View {
 	// Used for System defined buttons or bookmarks
 	init(name: String, path: String, isButton: Bool = false){
 		self.key = ""
-		self.name = name
 		self.path = path
+		self.name = name
 		self.type = isButton ? .button : .system
 		self._defaultsList = .constant([])
 	}
@@ -206,8 +213,8 @@ struct BookmarkItem: View {
 	// Used for user added bookmarks
 	init(key: String, defaultsArray : Binding<Array<String>>){
 		self.key = key
-		self.name = String(key.split(separator: "_").last!)
 		self.path = String(userDefaults.string(forKey: key) ?? "/")
+		self.name = String(self.path.split(by: "/").last ?? "???")
 		self.type = .userAdded
 		self._defaultsList = defaultsArray
 	}
@@ -267,24 +274,38 @@ struct EmptyItem : View {
 
 
 // MARK: Disk Space
-// This section tries (not so well) to get the used and free space on disk. Need to optimize this
-#warning("Improve disk space calculations")
-let resvalues = try? URL(fileURLWithPath: "/").resourceValues(forKeys: [.volumeTotalCapacityKey, .volumeAvailableCapacityKey])
+// This section tries to get the used and free space on disk. Need to optimize this
 
 func totalCapacity() -> Double {
-	if let resvalues = resvalues{
-		return round(Double(0 - (resvalues.volumeTotalCapacity ?? 0)) * 0.000000011835758)
-	} else {
+	do{
+		let systemAttributes = try fileManager.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
+		let space = (systemAttributes[FileAttributeKey.systemSize] as? NSNumber)?.doubleValue
+		return round(space ?? 1)
+	} catch {
 		return 1
 	}
 }
 
-func usedSpace() -> Double {
-	if let resvalues = resvalues{
-		return (Double(resvalues.volumeAvailableCapacity ?? 0) / 1000000000) * 16
-	} else {
+func freeCapacity() -> Double {
+	do{
+		let systemAttributes = try fileManager.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
+		let space = (systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber)?.doubleValue
+		return round(space ?? 1)
+	} catch {
 		return 1
 	}
+}
+
+func usedCapacity() -> Double {
+	totalCapacity() - freeCapacity()
+}
+
+func GBFormatter(_ bytes: Double) -> String {
+	let formatter = ByteCountFormatter()
+	formatter.allowedUnits = ByteCountFormatter.Units.useGB
+	formatter.countStyle = ByteCountFormatter.CountStyle.decimal
+	formatter.includesUnit = false
+	return formatter.string(fromByteCount: Int64(bytes)) as String
 }
 
 // Decide what view to present: FileViewer for files, DirectoryBrowser for directories

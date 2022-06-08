@@ -28,7 +28,8 @@ struct Browser : View {
 		NavigationView {
 		#warning("Would be nice to mantain the previous path before launching the sheet")
 			properView(for: FSItem(path: (presentSheet) ? "/" : path))
-				.navigationBarTitle(Text("File Browser"), displayMode: .inline)
+				.navigationTitle("File Browser")
+				.navigationBarTitleDisplayMode(.inline)
 				.toolbar{
 					ToolbarItemGroup(placement: .navigationBarLeading){
 						
@@ -88,15 +89,6 @@ struct Browser : View {
 									}){
 										Image(systemName: "arrow.clockwise.heart.fill")
 										Text("Upgrade Bookmarks")
-									}
-									
-									// Delete Launch Shortcuts
-									Button(role: .destructive
-									,action: {
-										bookmarksUpgrade_4()
-									}){
-										Image(systemName: "questionmark.app.dashed")
-										Text("Reset Shortcuts")
 									}
 									
 								}
@@ -401,8 +393,8 @@ struct BookmarkItem: View {
 	}
 	
 	var key : String
-	var name : String
 	var path : String
+	var name : String
 	var type : BookmarkItemType
 	
 	@Binding var defaultsList : [String]
@@ -419,8 +411,8 @@ struct BookmarkItem: View {
 	// Used for System defined buttons or bookmarks
 	init(name: String, path: String){
 		self.key = ""
-		self.name = name
 		self.path = path
+		self.name = name
 		self.type = .system
 		self._defaultsList = .constant([])
 	}

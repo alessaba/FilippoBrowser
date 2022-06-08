@@ -21,8 +21,10 @@ public func setFavorite(_ item : FSItem){ //(name: String, path: String) {
 	userDefaults.set(item.path, forKey: "FB4_\(item.uuid)")
 	userDefaults.synchronize()
 	
+	#if os(iOS)
 	let newFavorite = UIMutableApplicationShortcutItem(type: "FB4_\(item.uuid)", localizedTitle: item.lastComponent, localizedSubtitle: item.path, icon: UIApplicationShortcutIcon(systemImageName: item.isFolder ? "folder.fill" : "square.and.arrow.down.fill"))
 	UIApplication.shared.shortcutItems?.append(newFavorite)
+	#endif
 }
 
 /*
@@ -86,23 +88,19 @@ func hash(_ str : String) -> String {
 // We could have also done this at the first v4 launch, then checking every launch if a userdefault named "v4Upgraded" was true. But i am going to use this manually in the "secret" debug menu
 public func bookmarksUpgrade_4(){
 	let oldKeys = userDefaults.dictionaryRepresentation().keys.filter{
-		($0.starts(with: "FB4_"))
+		$0.starts(with: "FB4_") || $0.starts(with: "FB_")
 	}
 	
-	rebuildShortcuts()
+	#if os(iOS)
+	UIApplication.shared.shortcutItems?.removeAll()
+	#endif
 	
 	for k in oldKeys {
 		let val = userDefaults.string(forKey:k)
 		print("Setting \("FB4_\(hash(val!))") for \(val!.dropLast(1))")
 		userDefaults.removeObject(forKey: k)
 		setFavorite(FSItem(path: val!))
-		//userDefaults.set(val!.dropLast(1), forKey: "FB4_\(hash(val!))")
 	}
 	
 	print(oldKeys.description)
-}
-
-public func rebuildShortcuts(){
-	UIApplication.shared.shortcutItems?.removeAll()
-	//setFavorite(<#T##item: FSItem##FSItem#>)
 }

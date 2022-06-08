@@ -28,7 +28,7 @@ class FileProviderExtension: NSFileProviderExtension {
     override func urlForItem(withPersistentIdentifier identifier: NSFileProviderItemIdentifier) -> URL? {
         // Resolve the given identifier to a file on disk
 		guard let sourceURL = identifierLookupTable[identifier] else {
-			print("source URL not in lookup table")
+			print("source URL for \"\(identifier)\" not in lookup table")
 			return nil
 		}
 		var isDir : ObjCBool = false
