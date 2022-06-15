@@ -19,6 +19,8 @@ struct FileViewer : View {
 	
 	var body: some View {
 		VStack {
+			#warning("Would be nice to be able to share the real file")
+			ShareLink(item: self.file.url)
 			// We can only view images for now
 			if (self.file.itemType == .Image){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)
@@ -50,31 +52,6 @@ struct DirectoryBrowser : View {
 
 	var body: some View {
 		List{
-            Section{
-				if (directory.path == "/"){
-					NavigationLink(destination: gotoView()){
-						Text("Go To...")
-					}
-				} else {
-					Button(action: {
-						directory.isBookmarked.toggle()
-						bookmarkButtonPressed.toggle()
-					}){
-						HStack{
-							// Add/Remove from Favourites button
-							Image(systemName: (directory.isBookmarked || bookmarkButtonPressed) ? "heart.slash" : "heart.fill").foregroundColor(.red)
-							Text((directory.isBookmarked || bookmarkButtonPressed) ? " Remove from Favourites" : "  Add to Favorites")
-								.onLongPressGesture {
-									self.resetAlertPresented = true
-								}
-						}.alert("Reset Bookmarks", isPresented: $resetAlertPresented){
-							Button("Reset", role: .destructive){bookmarksUpgrade_4()}
-							Button("Cancel", role: .cancel){}
-						}
-					}
-				}
-            }
-            
 			let subelements = directory.subelements.filter{
 				// MARK: Search Function
 				// The entries will update automatically eveerytime searchText changes! 🤩
@@ -120,7 +97,34 @@ struct DirectoryBrowser : View {
                     }
                 }
 			}
-		}.searchable(text: $searchText) // Search Bar
+		}
+		.searchable(text: $searchText) // Search Bar
+		.toolbar{
+			Section{
+				if (directory.path == "/"){
+					NavigationLink(destination: gotoView()){
+						Text("Go To...")
+					}
+				} else {
+					Button(action: {
+						directory.isBookmarked.toggle()
+						bookmarkButtonPressed.toggle()
+					}){
+						HStack{
+							// Add/Remove from Favourites button
+							Image(systemName: (directory.isBookmarked || bookmarkButtonPressed) ? "heart.slash" : "heart.fill").foregroundColor(.red)
+							Text((directory.isBookmarked || bookmarkButtonPressed) ? " Remove from Favourites" : "  Add to Favorites")
+								.onLongPressGesture {
+									self.resetAlertPresented = true
+								}
+						}.alert("Reset Bookmarks", isPresented: $resetAlertPresented){
+							Button("Reset", role: .destructive){bookmarksUpgrade_4()}
+							Button("Cancel", role: .cancel){}
+						}
+					}
+				}
+			}
+		}
     }
 }
 
