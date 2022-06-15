@@ -27,11 +27,7 @@ func uti(for url: URL) -> String {
 	if isFolder(path: url.path) {
 		return "public.folder"
 	} else {
-		return UTTypeCreatePreferredIdentifierForTag(
-					UTTagClass.filenameExtension.rawValue as CFString,
-					url.pathExtension as CFString,
-					nil)!
-				.takeRetainedValue() as String
+		return UTType(tag: url.pathExtension, tagClass: .filenameExtension, conformingTo: nil)?.identifier ?? "public.file"
 	}
 }
 
