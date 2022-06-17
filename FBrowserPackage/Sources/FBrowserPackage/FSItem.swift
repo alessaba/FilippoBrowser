@@ -119,27 +119,21 @@ public class FSItem : Identifiable, Equatable {
 	
 	// We return the size of a file in a human readable form
 	public var fileSize : String {
-		if (!isFolder) {
-			var fileSizeString : String = ""
-			let fileSize = self.size
-			// Convert the number of bytes in a human readable form
-			if (fileSize < 1024) {
-				fileSizeString = "\(fileSize) bytes"
-			} else if (fileSize >= 1024) && (fileSize < 1048576) {
-				fileSizeString = "\(fileSize / 1024) KB"
-			} else if (fileSize >= 1048576) && (fileSize < 1073741824) {
-				fileSizeString = "\(fileSize / 1048576) MB"
-			} else if (fileSize >= 1073741824) && (fileSize < 1099511627776) {
-				fileSizeString = "\(fileSize / 1073741824) GB"
-			} else {
-				fileSizeString = "\(fileSize / 1099511627776) TB" // We'll probably reach this condition in 2030 but thatever lol
-			}
-			
-			return fileSizeString
+		if (!isFolder){
+			var bytescount = self.size
+        		var ordineGrandezza = 0
+        		let formati = ["B","KB","MB","GB","TB"]
+        		while Double(bytescount) > 1024 {
+            		bytescount /= 1024
+            		ordineGrandezza += 1
+        		}
+        		return "\(bytescount) \(formati[ordineGrandezza])"
 		} else {
 			return ""
 		}
-	}
+        
+    }
+		
 	
 	public var isRoot : Bool {
 		self.url == URL(fileURLWithPath: "file:///")
