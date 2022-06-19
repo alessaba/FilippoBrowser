@@ -20,7 +20,8 @@ struct FileViewer : View {
 	var body: some View {
 		VStack {
 			#warning("Would be nice to be able to share the real file")
-			ShareLink(item: self.file.url)
+			ShareLink("Share Path", item: self.file.path)
+			//ShareLink(items: Data(contentsOf: self.file.url))
 			// We can only view images for now
 			if (self.file.itemType == .Image){
 				Image(uiImage: UIImage(contentsOfFile: self.file.path)!)

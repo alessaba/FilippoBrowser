@@ -133,7 +133,6 @@ public class FSItem : Identifiable, Equatable {
 		}
         
     }
-		
 	
 	public var isRoot : Bool {
 		self.url == URL(fileURLWithPath: "file:///")
