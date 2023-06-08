@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -292,9 +292,9 @@
 		0BA1E75626FF7DD600ABD4B9 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				0B9F5407257FD5A6004365E5 /* FilippoBrowser WatchKit Extension.entitlements */,
 				0B4BED9F233531DA005E5BB1 /* Assets.xcassets */,
 				0B4BEDA4233531DA005E5BB1 /* Info.plist */,
-				0B9F5407257FD5A6004365E5 /* FilippoBrowser WatchKit Extension.entitlements */,
 				0B4BEDA1233531DA005E5BB1 /* Preview Content */,
 			);
 			name = Misc;
@@ -497,8 +497,9 @@
 		0BD2431322AD5296006A4929 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1300;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1500;
 				ORGANIZATIONNAME = "Filippo Claudi";
 				TargetAttributes = {
 					0B12893D270F5FA8008CB412 = {
@@ -876,7 +877,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "FilippoBrowser WatchKit App/FilippoBrowser WatchKit App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 070622;
+				CURRENT_PROJECT_VERSION = 080623;
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				IBSC_MODULE = FilippoBrowser_WatchKit_Extension;
 				INFOPLIST_FILE = "FilippoBrowser WatchKit App/Info.plist";
@@ -884,14 +885,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -903,7 +904,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "FilippoBrowser WatchKit App/FilippoBrowser WatchKit App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 070622;
+				CURRENT_PROJECT_VERSION = 080623;
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				IBSC_MODULE = FilippoBrowser_WatchKit_Extension;
 				INFOPLIST_FILE = "FilippoBrowser WatchKit App/Info.plist";
@@ -911,14 +912,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -926,10 +927,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "/Users/filippoclaudi/Developer/FilippoBrowser/FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/FilippoBrowser WatchKit Extension.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/FilippoBrowser WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 070622;
-				DEVELOPMENT_ASSET_PATHS = "\"/Users/filippoclaudi/Developer/FilippoBrowser/FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/Preview Content\"";
+				CURRENT_PROJECT_VERSION = 080623;
+				DEVELOPMENT_ASSET_PATHS = "\"FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/Info.plist";
@@ -938,14 +939,14 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -953,10 +954,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "/Users/filippoclaudi/Developer/FilippoBrowser/FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/FilippoBrowser WatchKit Extension.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/FilippoBrowser WatchKit Extension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 070622;
-				DEVELOPMENT_ASSET_PATHS = "\"/Users/filippoclaudi/Developer/FilippoBrowser/FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/Preview Content\"";
+				CURRENT_PROJECT_VERSION = 080623;
+				DEVELOPMENT_ASSET_PATHS = "\"FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/Preview Content\"";
 				DEVELOPMENT_TEAM = 974TR9G2UN;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser WatchKit App/FilippoBrowser WatchKit Extension/Info.plist";
@@ -965,14 +966,14 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser.watchkitapp.watchkitextension;
 				PRODUCT_NAME = "${TARGET_NAME}";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -1013,6 +1014,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1074,6 +1076,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1100,7 +1103,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = FilippoBrowser/FilippoBrowser.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 070622;
+				CURRENT_PROJECT_VERSION = 080623;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "FilippoBrowser/Preview\\ Content";
 				DEVELOPMENT_TEAM = 974TR9G2UN;
@@ -1113,12 +1116,12 @@
 				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "ƒBrowser";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1137,7 +1140,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = FilippoBrowser/FilippoBrowser.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 070622;
+				CURRENT_PROJECT_VERSION = 080623;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "FilippoBrowser/Preview\\ Content";
 				DEVELOPMENT_TEAM = 974TR9G2UN;
@@ -1150,12 +1153,12 @@
 				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "ƒBrowser";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0;
+				MARKETING_VERSION = 5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = claudi.filippo.FilippoBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

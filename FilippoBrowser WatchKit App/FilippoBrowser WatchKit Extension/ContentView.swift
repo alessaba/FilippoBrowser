@@ -219,7 +219,7 @@ struct BookmarkItem: View {
 	init(key: String, defaultsArray : Binding<Array<String>>){
 		self.key = key
 		self.path = String(userDefaults.string(forKey: key) ?? "/")
-		self.name = String(self.path.split(by: "/").last ?? "???")
+		self.name = String(self.path.split(separator: "/").last ?? "???")
 		self.type = .userAdded
 		self._defaultsList = defaultsArray
 	}
