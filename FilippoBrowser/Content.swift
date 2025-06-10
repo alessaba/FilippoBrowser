@@ -517,7 +517,7 @@ func scheduleTestNotif(item : FSItem){
 }
 
 func toggleAppIcons(){
-	let iconNames = [nil, "OriginalIcon"] // La icona di default è nil
+	let iconNames = [nil, "OriginalIcon", "GlassIcon"] // La icona di default è nil
 	let currentIndex = userDefaults.integer(forKey: "appIconIndex")
 	
 	var newIndex = currentIndex + 1

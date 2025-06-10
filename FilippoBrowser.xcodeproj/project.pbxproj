@@ -40,6 +40,10 @@
 		0BD2432522AD5298006A4929 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432422AD5297006A4929 /* Assets.xcassets */; };
 		0BD2432822AD5298006A4929 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432722AD5298006A4929 /* Preview Assets.xcassets */; };
 		0BD2432B22AD5298006A4929 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0BD2432922AD5298006A4929 /* LaunchScreen.storyboard */; };
+		19EFFC862DF856950079C7E3 /* GlassIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 19EFFC852DF856950079C7E3 /* GlassIcon.icon */; };
+		19EFFC872DF856950079C7E3 /* GlassIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 19EFFC852DF856950079C7E3 /* GlassIcon.icon */; };
+		19EFFC882DF856950079C7E3 /* GlassIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 19EFFC852DF856950079C7E3 /* GlassIcon.icon */; };
+		19EFFC892DF856950079C7E3 /* GlassIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 19EFFC852DF856950079C7E3 /* GlassIcon.icon */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +140,7 @@
 		0BD2432722AD5298006A4929 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0BD2432A22AD5298006A4929 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0BD2432C22AD5298006A4929 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		19EFFC852DF856950079C7E3 /* GlassIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = GlassIcon.icon; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +276,7 @@
 		0BA1E75426FF7DB600ABD4B9 /* Misc */ = {
 			isa = PBXGroup;
 			children = (
+				19EFFC852DF856950079C7E3 /* GlassIcon.icon */,
 				0BD2432422AD5297006A4929 /* Assets.xcassets */,
 				0B9A2DAA235A04FE001B3912 /* FilippoBrowser.entitlements */,
 				0BD2432622AD5298006A4929 /* Preview Content */,
@@ -561,6 +567,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19EFFC892DF856950079C7E3 /* GlassIcon.icon in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -568,6 +575,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19EFFC882DF856950079C7E3 /* GlassIcon.icon in Resources */,
 				0B45B56F266CDB0C007E0DCA /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -576,6 +584,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19EFFC872DF856950079C7E3 /* GlassIcon.icon in Resources */,
 				0B4BED8C233531DA005E5BB1 /* Assets.xcassets in Resources */,
 				0B4BED8A233531D9005E5BB1 /* Interface.storyboard in Resources */,
 			);
@@ -597,6 +606,7 @@
 				0B1E54F7245B2EDD00419AB7 /* TODO.md in Resources */,
 				0BD2432B22AD5298006A4929 /* LaunchScreen.storyboard in Resources */,
 				0BD2432822AD5298006A4929 /* Preview Assets.xcassets in Resources */,
+				19EFFC862DF856950079C7E3 /* GlassIcon.icon in Resources */,
 				0BD2432522AD5298006A4929 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -874,7 +884,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = /Users/alessaba/Developer/FilippoBrowser/FilippoBrowser/GlassIcon.icon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = "FilippoBrowser WatchKit App/FilippoBrowser WatchKit App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 080623;
@@ -901,7 +912,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = /Users/alessaba/Developer/FilippoBrowser/FilippoBrowser/GlassIcon.icon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = "FilippoBrowser WatchKit App/FilippoBrowser WatchKit App.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 080623;
@@ -1099,7 +1111,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = GlassIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = FilippoBrowser/FilippoBrowser.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1116,7 +1128,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "ƒBrowser";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1136,7 +1148,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = GlassIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = FilippoBrowser/FilippoBrowser.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -1153,7 +1165,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/FilippoBrowser/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "ƒBrowser";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
