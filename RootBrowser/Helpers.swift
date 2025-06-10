@@ -40,7 +40,7 @@ func isFolder(path : String) -> Bool {
 func subelements(url : URL) -> [String] {
 	
 	var isFolder : ObjCBool = false
-	guard (filemanager.fileExists(atPath: url.path, isDirectory: &isFolder) != false) else {
+	guard (filemanager.fileExists(atPath: url.standardized.path, isDirectory: &isFolder) != false) else {
 		return []
 	}
 	

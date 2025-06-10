@@ -9,8 +9,6 @@
 import FileProvider
 
 class FileProviderItem: NSObject, NSFileProviderItem {
-
-	#warning("Getting Info returns \".... /////////////System\" ")
 	
 	var fileURL : URL 
 	
