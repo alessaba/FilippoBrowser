@@ -96,25 +96,23 @@ struct Browser : View {
 					}
 					
 					ToolbarItemGroup(placement: .navigationBarTrailing){
-						HStack{
-							// If the text size is small enough for the grid view, let the user enable it
-							if (dtSize < .accessibility2) {
-								// The icon changes to reflect the outcome of the button
-								Image(systemName: gridStyleEnabled ? "list.bullet.circle.fill" :  "circle.grid.3x3.circle.fill")
-									.onTapGesture {
-										let oldVal = userDefaults.bool(forKey: "gridStyleEnabled")
-										userDefaults.set(!oldVal, forKey: "gridStyleEnabled")
-										gridStyleEnabled.toggle()
-									}
-							}
-							
-							// Button Linked to the GoTo launchpad view
-							NavigationLink(destination: gotoView()){
-								Image(systemName: "arrow.right.circle.fill")
-									.padding(.vertical, 10)
-									.foregroundColor(.primary)
-									.safeHover()
-							}
+						// If the text size is small enough for the grid view, let the user enable it
+						if (dtSize < .accessibility2) {
+							// The icon changes to reflect the outcome of the button
+							Image(systemName: gridStyleEnabled ? "list.bullet.circle.fill" :  "circle.grid.3x3.circle.fill")
+								.onTapGesture {
+									let oldVal = userDefaults.bool(forKey: "gridStyleEnabled")
+									userDefaults.set(!oldVal, forKey: "gridStyleEnabled")
+									gridStyleEnabled.toggle()
+								}
+						}
+						
+						// Button Linked to the GoTo launchpad view
+						NavigationLink(destination: gotoView()){
+							Image(systemName: "arrow.right.circle.fill")
+								.padding(.vertical, 10)
+								.foregroundColor(.primary)
+								.safeHover()
 						}
 					}
 				}
